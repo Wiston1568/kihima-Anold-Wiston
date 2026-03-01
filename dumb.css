@@ -514,3 +514,7 @@ section {
     font-size: 0.75rem;
   }
 }
+.logo-img {
+  max-height: 50px;
+  width: auto;
+}
