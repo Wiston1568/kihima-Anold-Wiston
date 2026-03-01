@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://wiston1568.github.io/kihima-Anold-Wiston/sitemap.xml
