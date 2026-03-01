@@ -474,6 +474,46 @@ section {
 .service-card h3 {
   margin-top: 0;
   color: orchid;
+} 
+.floating-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  perspective: 1000px; /* gives depth for 3D hover effect */
+}
+
+.service-card {
+  transition: transform 0.3s ease;
+  will-change: transform; /* smooth animation hint */
+}
+
+.service-card:hover {
+  transform: translateY(-15px) rotateX(3deg) rotateY(3deg) scale(1.05);
+  z-index: 10;
+}
+
+/* Floating animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.service-card {
+  animation: float 2.5s ease-in-out infinite; /* faster than 4s */
+}
+
+/* Slight stagger for each card */
+.service-card:nth-child(1) { animation-delay: 0s; }
+.service-card:nth-child(2) { animation-delay: 0.5s; }
+.service-card:nth-child(3) { animation-delay: 1s; }
+
+/* Mobile tweak: slower/simpler animation to avoid overlap */
+@media (max-width: 480px) {
+  .service-card {
+    animation: float 3s ease-in-out infinite;
+    transform: translateY(0); /* start at normal position */
+  }
 }
 
 .site-footer {
