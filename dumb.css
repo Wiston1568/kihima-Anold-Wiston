@@ -626,7 +626,7 @@ section {
 }
 
 .card p {
-  color: #aaa;
+  color: black;
   font-size: 0.9rem;
   line-height: 1.4;
   transition: color 0.5s ease;
