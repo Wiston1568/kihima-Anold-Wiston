@@ -10,7 +10,7 @@
         body { font-family: 'JetBrains Mono', monospace; background: #010409; color: #c9d1d9; overflow: hidden; }
         .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .nav-item { transition: 0.3s; cursor: pointer; border-left: 3px solid transparent; }
-        .nav-item.active { background: rgba(59, 130, 246, 0.1); border-left: 3px solid #3b82f6; color: white; }
+        .nav-item.active { background: rgba(188, 19, 254, 0.1); border-left: 3px solid #bc13fe; color: white; }
         .view { display: none; animation: fadeIn 0.4s ease-in-out; }
         .view.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -18,6 +18,10 @@
         ::-webkit-scrollbar-thumb { background: #21262d; border-radius: 10px; }
         .status-pulse { animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+        
+        /* Dropdown Style */
+        .dropdown-content { position: absolute; right: 0; top: 50px; background: #0d1117; border: 1px solid #bc13fe33; border-radius: 8px; width: 200px; z-index: 50; }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body class="flex h-screen">
@@ -25,11 +29,11 @@
     <aside class="w-64 border-r border-white/5 flex flex-col bg-black/20">
         <div class="p-6 mb-10 flex items-center gap-4">
             <div class="relative">
-                <img src="../Pictures/logo.jpg" alt="Charlie" class="w-10 h-10 rounded-full border border-blue-500/50 object-cover">
+                <img src="../Pictures/logo.jpg" alt="Charlie" class="w-10 h-10 rounded-full border border-[#bc13fe] object-cover">
                 <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-black rounded-full status-pulse"></div>
             </div>
             <div>
-                <h1 class="text-sm font-black tracking-tighter text-white">COMMAND<span class="text-blue-500">_</span></h1>
+                <h1 class="text-sm font-black tracking-tighter text-white">COMMAND<span class="text-[#bc13fe]">_</span></h1>
                 <p class="text-[8px] text-gray-500 uppercase">OP: CHARLIE // NODE_NAKURU</p>
             </div>
         </div>
@@ -42,127 +46,94 @@
             <div onclick="switchView('security')" id="nav-security" class="nav-item p-4 flex items-center gap-3 text-xs"><span>[05]</span> SECURITY_VAULT</div>
         </nav>
 
-        <div class="p-6 border-t border-white/5 text-[10px] text-blue-500 status-pulse">● SYSTEM_LIVE_CONNECTED</div>
+        <div class="p-6 border-t border-white/5 text-[10px] text-[#bc13fe] status-pulse">● SYSTEM_LIVE_CONNECTED</div>
     </aside>
 
-    <main class="flex-1 overflow-y-auto p-10">
-        <section id="view-system" class="view active space-y-8">
-            <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">CORE_SYSTEM_PROTOCOL</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="glass p-6 rounded-2xl space-y-4">
-                    <h3 class="text-xs font-bold text-blue-500 uppercase">Omni-Swapper</h3>
-                    <input id="appId" type="text" placeholder="APP_ID" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white">
-                    <input id="streamLink" type="text" placeholder="STREAM_URL" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white">
-                    <button onclick="updateVault()" class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded font-bold text-xs uppercase transition">Push to Vault</button>
-                </div>
-                <div class="glass p-6 rounded-2xl flex flex-col justify-center">
-                    <h3 class="text-xs font-bold text-red-500 uppercase mb-4">Master Kill Switch</h3>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="killSwitch" class="sr-only peer">
-                        <div class="w-14 h-7 bg-gray-700 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-red-600"></div>
-                        <span class="ml-3 text-sm font-medium">EMERGENCY_SHUTDOWN</span>
-                    </label>
+    <main class="flex-1 overflow-y-auto">
+        <header class="h-16 border-b border-white/5 flex items-center justify-end px-10 relative">
+            <div class="relative">
+                <button onclick="toggleDropdown()" class="flex items-center gap-2 hover:opacity-80 transition">
+                    <span class="text-[10px] text-gray-400">SESSION: 0x1568</span>
+                    <img src="../Pictures/logo.jpg" class="w-8 h-8 rounded-full border border-white/10">
+                </button>
+                <div id="logoutDropdown" class="dropdown-content hidden p-2 shadow-2xl">
+                    <p class="text-[9px] p-2 text-gray-500 border-b border-white/5 mb-1 uppercase">Operator Settings</p>
+                    <button onclick="switchView('security')" class="w-full text-left p-2 text-xs hover:bg-white/5 rounded text-white">Security Vault</button>
+                    <button onclick="logout()" class="w-full text-left p-2 text-xs hover:bg-red-500/10 rounded text-red-500 mt-1">Terminate Session</button>
                 </div>
             </div>
-        </section>
+        </header>
 
-        <section id="view-security" class="view space-y-8">
-            <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">SECURITY_PROTOCOL_VAULT</h2>
-            <div class="glass p-8 rounded-2xl max-w-xl">
-                <h3 class="text-xs font-bold text-blue-500 mb-6 uppercase">Manage System Credentials</h3>
-                <div class="space-y-4">
-                    <button onclick="requestOTPReset()" class="w-full bg-white/5 border border-white/10 hover:bg-white/10 py-4 rounded text-xs font-bold uppercase transition">Initiate OTP Reset (Gmail Dispatch)</button>
-                    <button onclick="logout()" class="w-full bg-red-900/20 border border-red-500/20 text-red-500 hover:bg-red-900/40 py-4 rounded text-xs font-bold uppercase transition">Terminate Session (Logout)</button>
+        <div class="p-10">
+            <section id="view-system" class="view active space-y-8">
+                <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">CORE_SYSTEM_PROTOCOL</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="glass p-6 rounded-2xl space-y-4">
+                        <h3 class="text-xs font-bold text-[#bc13fe] uppercase">Omni-Swapper</h3>
+                        <input id="appId" type="text" placeholder="APP_ID" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white">
+                        <input id="streamLink" type="text" placeholder="STREAM_URL" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white">
+                        <button class="w-full bg-[#bc13fe] hover:bg-[#a011d8] py-3 rounded font-bold text-xs uppercase transition text-white">Push to Vault</button>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="view-garden" class="view space-y-8">
-            <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">GARDEN_USER_REGISTRY</h2>
-            <div class="glass rounded-2xl overflow-hidden">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-white/5 text-[10px] uppercase">
-                        <tr><th class="p-4">Phone</th><th class="p-4">Device_ID</th><th class="p-4">Status</th><th class="p-4 text-right">Action</th></tr>
-                    </thead>
-                    <tbody id="userTable">
-                        </tbody>
-                </table>
-            </div>
-        </section>
-
-        <section id="view-financial" class="view space-y-8">
-            <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">FINANCIAL_GRID_LEADS</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="glass p-8 rounded-2xl"><p class="text-[10px] text-gray-500 uppercase">Today's Revenue</p><h3 id="rev-today" class="text-3xl font-bold text-green-500">KES 0</h3></div>
-                <div class="glass p-8 rounded-2xl"><p class="text-[10px] text-gray-500 uppercase">Active Subs</p><h3 id="sub-count" class="text-3xl font-bold text-blue-500">0</h3></div>
-            </div>
-            <div class="glass p-6 rounded-2xl">
-                <h3 class="text-xs font-bold text-green-500 mb-4 uppercase">Manual Payment Push (Daraja API)</h3>
-                <input id="payPhone" type="text" placeholder="2547XXXXXXXX" class="w-full bg-black/50 p-3 rounded border border-white/10 mb-4 text-white">
-                <button onclick="pushSTK()" class="w-full bg-green-600 hover:bg-green-700 py-3 rounded font-bold text-xs uppercase transition">Initiate STK Push</button>
-            </div>
-        </section>
-
-        <section id="view-terminal" class="view space-y-4">
-            <div class="flex justify-between items-center border-b border-white/5 pb-4">
-                <h2 class="text-2xl font-bold text-white">LIVE_TERMINAL_FEED</h2>
-                <div class="flex gap-4">
-                    <div class="glass px-3 py-1 rounded text-[10px]">CPU: <span class="text-green-500" id="cpu-load">2%</span></div>
-                    <div class="glass px-3 py-1 rounded text-[10px]">LATENCY: <span class="text-blue-500" id="ping-ms">42ms</span></div>
+            <section id="view-security" class="view space-y-8">
+                <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">SECURITY_PROTOCOL_VAULT</h2>
+                <div class="glass p-8 rounded-2xl max-w-xl">
+                    <h3 class="text-xs font-bold text-[#bc13fe] mb-6 uppercase">Credential Management</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="text-[10px] text-gray-500 block mb-2 uppercase">Update Master PIN</label>
+                            <div class="flex gap-2">
+                                <input id="newPin" type="password" placeholder="••••" maxlength="4" class="flex-1 bg-black border border-white/10 p-4 rounded text-sm text-white text-center tracking-widest">
+                                <button onclick="updateSystemPin()" class="bg-[#bc13fe] px-6 rounded font-bold text-xs uppercase text-white">Commit_Change</button>
+                            </div>
+                        </div>
+                        <div class="pt-6 border-t border-white/5">
+                            <button onclick="logout()" class="w-full bg-red-900/20 border border-red-500/20 text-red-500 hover:bg-red-900/40 py-4 rounded text-xs font-bold uppercase transition">Terminate Session (Logout)</button>
+                        </div>
+                    </div>
                 </div>
+            </section>
+
             </div>
-            <div class="bg-black/80 p-6 rounded-xl border border-white/10 h-[500px] font-mono text-xs overflow-y-auto shadow-2xl" id="terminalOutput">
-                <p class="text-blue-500">>> [SYSTEM] K-OS BOOTLOADER v2.1.0_READY</p>
-            </div>
-        </section>
     </main>
 
     <script>
         const API_BASE = 'https://kihima-backend.onrender.com/api/v1';
         const token = localStorage.getItem('charlie_token');
 
-        // 1. BOOT SEQUENCE
         if (!token) window.location.href = '../index.html';
 
-        // 2. DATA REFRESH LOGIC (THE MISSING PIECE)
-        async function fetchSystemData() {
+        // DROPDOWN LOGIC
+        function toggleDropdown() { document.getElementById('logoutDropdown').classList.toggle('hidden'); }
+        window.onclick = (e) => { if (!e.target.closest('button')) document.getElementById('logoutDropdown').classList.add('hidden'); }
+
+        // NEW PIN RESET LOGIC
+        async function updateSystemPin() {
+            const newPin = document.getElementById('newPin').value;
+            if (newPin.length < 4) return alert("ERROR: PIN_MUST_BE_4_DIGITS");
+
             try {
-                // Fetch Users
-                const userRes = await fetch(`${API_BASE}/users`, { headers: { 'Authorization': `Bearer ${token}` }});
-                const users = await userRes.json();
-                
-                const tableBody = document.getElementById('userTable');
-                tableBody.innerHTML = users.map(u => `
-                    <tr class="border-b border-white/5 hover:bg-white/5 transition">
-                        <td class="p-4 text-xs">${u.phone}</td>
-                        <td class="p-4 text-[10px] text-gray-500">${u.deviceId || 'N/A'}</td>
-                        <td class="p-4"><span class="px-2 py-0.5 rounded-full text-[10px] ${u.status === 'active' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}">${u.status}</span></td>
-                        <td class="p-4 text-right"><button class="text-blue-500 hover:underline text-[10px]">MOD</button></td>
-                    </tr>
-                `).join('');
+                const res = await fetch(`${API_BASE}/auth/reset-pin`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` 
+                    },
+                    body: JSON.stringify({ newPin })
+                });
 
-                // Fetch Stats
-                const statsRes = await fetch(`${API_BASE}/stats`, { headers: { 'Authorization': `Bearer ${token}` }});
-                const stats = await statsRes.json();
-                document.getElementById('rev-today').innerText = `KES ${stats.revenue}`;
-                document.getElementById('sub-count').innerText = stats.activeUsers;
-
-                logTerminal("SYNC_SUCCESS: Node_Nakuru registry updated.");
-            } catch (err) {
-                logTerminal("SYNC_ERROR: Backend pulse lost.");
+                if (res.ok) {
+                    logTerminal("SUCCESS: System PIN updated in database.");
+                    alert("PIN UPDATED SUCCESSFULLY");
+                    document.getElementById('newPin').value = '';
+                } else {
+                    alert("ERROR: SESSION_EXPIRED_OR_UNAUTHORIZED");
+                }
+            } catch(e) {
+                logTerminal("FAILURE: Could not reach backend node.");
             }
-        }
-
-        // 3. SECURITY & LOGOUT
-        async function requestOTPReset() {
-            const email = prompt("Confirm Admin Email:");
-            if (!email) return;
-            const res = await fetch(`${API_BASE}/auth/request-otp`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email })
-            });
-            if (res.ok) { alert("OTP Sent. Logging out..."); logout(); }
         }
 
         function logout() {
@@ -170,7 +141,6 @@
             window.location.href = '../index.html';
         }
 
-        // 4. UTILITIES
         function switchView(viewId) {
             document.querySelectorAll('.view, .nav-item').forEach(el => el.classList.remove('active'));
             document.getElementById(`view-${viewId}`).classList.add('active');
@@ -180,18 +150,14 @@
 
         function logTerminal(msg) {
             const term = document.getElementById('terminalOutput');
+            if(!term) return;
             const p = document.createElement('p');
-            p.innerHTML = `<span class="text-green-500">[${new Date().toLocaleTimeString()}]</span> ${msg}`;
+            p.innerHTML = `<span class="text-[#bc13fe]">[${new Date().toLocaleTimeString()}]</span> ${msg}`;
             term.appendChild(p);
             term.scrollTop = term.scrollHeight;
         }
 
-        // INITIALIZE
-        window.onload = () => {
-            logTerminal("Charlie session initialized.");
-            fetchSystemData();
-            setInterval(fetchSystemData, 30000); // Refresh every 30s
-        }
+        window.onload = () => { logTerminal("Charlie session initialized."); }
     </script>
 </body>
 </html>
