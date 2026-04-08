@@ -11,10 +11,8 @@
         .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .nav-item { transition: 0.3s; cursor: pointer; border-left: 3px solid transparent; }
         .nav-item.active { background: rgba(59, 130, 246, 0.1); border-left: 3px solid #3b82f6; color: white; }
-        
         .view { display: none; animation: fadeIn 0.4s ease-in-out; }
         .view.active { display: block; }
-        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-thumb { background: #21262d; border-radius: 10px; }
@@ -37,30 +35,17 @@
         </div>
         
         <nav class="flex-1 space-y-1">
-            <div onclick="switchView('system')" id="nav-system" class="nav-item active p-4 flex items-center gap-3 text-xs">
-                <span>[01]</span> CORE_SYSTEM
-            </div>
-            <div onclick="switchView('garden')" id="nav-garden" class="nav-item p-4 flex items-center gap-3 text-xs">
-                <span>[02]</span> GARDEN_MONITOR
-            </div>
-            <div onclick="switchView('financial')" id="nav-financial" class="nav-item p-4 flex items-center gap-3 text-xs">
-                <span>[03]</span> FINANCIAL_GRID
-            </div>
-            <div onclick="switchView('terminal')" id="nav-terminal" class="nav-item p-4 flex items-center gap-3 text-xs">
-                <span>[04]</span> LIVE_TERMINAL
-            </div>
-            <div onclick="switchView('security')" id="nav-security" class="nav-item p-4 flex items-center gap-3 text-xs">
-                <span>[05]</span> SECURITY_VAULT
-            </div>
+            <div onclick="switchView('system')" id="nav-system" class="nav-item active p-4 flex items-center gap-3 text-xs"><span>[01]</span> CORE_SYSTEM</div>
+            <div onclick="switchView('garden')" id="nav-garden" class="nav-item p-4 flex items-center gap-3 text-xs"><span>[02]</span> GARDEN_MONITOR</div>
+            <div onclick="switchView('financial')" id="nav-financial" class="nav-item p-4 flex items-center gap-3 text-xs"><span>[03]</span> FINANCIAL_GRID</div>
+            <div onclick="switchView('terminal')" id="nav-terminal" class="nav-item p-4 flex items-center gap-3 text-xs"><span>[04]</span> LIVE_TERMINAL</div>
+            <div onclick="switchView('security')" id="nav-security" class="nav-item p-4 flex items-center gap-3 text-xs"><span>[05]</span> SECURITY_VAULT</div>
         </nav>
 
-        <div class="p-6 border-t border-white/5 text-[10px] text-blue-500 status-pulse">
-            ● SYSTEM_LIVE_CONNECTED
-        </div>
+        <div class="p-6 border-t border-white/5 text-[10px] text-blue-500 status-pulse">● SYSTEM_LIVE_CONNECTED</div>
     </aside>
 
     <main class="flex-1 overflow-y-auto p-10">
-        
         <section id="view-system" class="view active space-y-8">
             <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">CORE_SYSTEM_PROTOCOL</h2>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -74,7 +59,7 @@
                     <h3 class="text-xs font-bold text-red-500 uppercase mb-4">Master Kill Switch</h3>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" id="killSwitch" class="sr-only peer">
-                        <div class="w-14 h-7 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-red-600"></div>
+                        <div class="w-14 h-7 bg-gray-700 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-red-600"></div>
                         <span class="ml-3 text-sm font-medium">EMERGENCY_SHUTDOWN</span>
                     </label>
                 </div>
@@ -86,12 +71,8 @@
             <div class="glass p-8 rounded-2xl max-w-xl">
                 <h3 class="text-xs font-bold text-blue-500 mb-6 uppercase">Manage System Credentials</h3>
                 <div class="space-y-4">
-                    <button onclick="requestOTPReset()" class="w-full bg-white/5 border border-white/10 hover:bg-white/10 py-4 rounded text-xs font-bold uppercase transition">
-                        Initiate OTP Reset (Gmail Dispatch)
-                    </button>
-                    <button onclick="logout()" class="w-full bg-red-900/20 border border-red-500/20 text-red-500 hover:bg-red-900/40 py-4 rounded text-xs font-bold uppercase transition">
-                        Terminate Session (Logout)
-                    </button>
+                    <button onclick="requestOTPReset()" class="w-full bg-white/5 border border-white/10 hover:bg-white/10 py-4 rounded text-xs font-bold uppercase transition">Initiate OTP Reset (Gmail Dispatch)</button>
+                    <button onclick="logout()" class="w-full bg-red-900/20 border border-red-500/20 text-red-500 hover:bg-red-900/40 py-4 rounded text-xs font-bold uppercase transition">Terminate Session (Logout)</button>
                 </div>
             </div>
         </section>
@@ -112,8 +93,8 @@
         <section id="view-financial" class="view space-y-8">
             <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">FINANCIAL_GRID_LEADS</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="glass p-8 rounded-2xl"><p class="text-[10px] text-gray-500 uppercase">Today's Revenue</p><h3 class="text-3xl font-bold text-green-500">KES 4,200</h3></div>
-                <div class="glass p-8 rounded-2xl"><p class="text-[10px] text-gray-500 uppercase">Active Subs</p><h3 class="text-3xl font-bold text-blue-500">128</h3></div>
+                <div class="glass p-8 rounded-2xl"><p class="text-[10px] text-gray-500 uppercase">Today's Revenue</p><h3 id="rev-today" class="text-3xl font-bold text-green-500">KES 0</h3></div>
+                <div class="glass p-8 rounded-2xl"><p class="text-[10px] text-gray-500 uppercase">Active Subs</p><h3 id="sub-count" class="text-3xl font-bold text-blue-500">0</h3></div>
             </div>
             <div class="glass p-6 rounded-2xl">
                 <h3 class="text-xs font-bold text-green-500 mb-4 uppercase">Manual Payment Push (Daraja API)</h3>
@@ -137,60 +118,66 @@
     </main>
 
     <script>
-        const API_BASE = 'https://kihima-backend.onrender.com/api/v1/auth';
-
-        // 1. NAVIGATION
-        function switchView(viewId) {
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            
-            document.getElementById(`view-${viewId}`).classList.add('active');
-            document.getElementById(`nav-${viewId}`).classList.add('active');
-            logTerminal(`Switched to ${viewId.toUpperCase()} view.`);
-        }
-
-        // 2. AUTH CHECK
+        const API_BASE = 'https://kihima-backend.onrender.com/api/v1';
         const token = localStorage.getItem('charlie_token');
-        if (!token) {
-            window.location.href = '../index.html';
-        }
 
-        // 3. SECURITY ACTIONS (OTP INTEGRATED)
-        async function requestOTPReset() {
-            const email = prompt("Confirm Admin Email for OTP dispatch:");
-            if (!email) return;
+        // 1. BOOT SEQUENCE
+        if (!token) window.location.href = '../index.html';
 
-            if(confirm("Initiate emergency PIN reset? You will be logged out to verify the code.")) {
-                try {
-                    const res = await fetch(`${API_BASE}/request-otp`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email: email })
-                    });
+        // 2. DATA REFRESH LOGIC (THE MISSING PIECE)
+        async function fetchSystemData() {
+            try {
+                // Fetch Users
+                const userRes = await fetch(`${API_BASE}/users`, { headers: { 'Authorization': `Bearer ${token}` }});
+                const users = await userRes.json();
+                
+                const tableBody = document.getElementById('userTable');
+                tableBody.innerHTML = users.map(u => `
+                    <tr class="border-b border-white/5 hover:bg-white/5 transition">
+                        <td class="p-4 text-xs">${u.phone}</td>
+                        <td class="p-4 text-[10px] text-gray-500">${u.deviceId || 'N/A'}</td>
+                        <td class="p-4"><span class="px-2 py-0.5 rounded-full text-[10px] ${u.status === 'active' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}">${u.status}</span></td>
+                        <td class="p-4 text-right"><button class="text-blue-500 hover:underline text-[10px]">MOD</button></td>
+                    </tr>
+                `).join('');
 
-                    if (res.ok) {
-                        logTerminal("RECOVERY_PROTOCOL: OTP code dispatched to Gmail.");
-                        alert("OTP Sent. You will now be redirected to the verification terminal.");
-                        logout();
-                    } else {
-                        logTerminal("AUTH_ERROR: Recovery email rejected by server.");
-                        alert("Error: Email does not match admin records.");
-                    }
-                } catch (err) {
-                    logTerminal("FATAL_ERROR: Connection to backend failed.");
-                }
+                // Fetch Stats
+                const statsRes = await fetch(`${API_BASE}/stats`, { headers: { 'Authorization': `Bearer ${token}` }});
+                const stats = await statsRes.json();
+                document.getElementById('rev-today').innerText = `KES ${stats.revenue}`;
+                document.getElementById('sub-count').innerText = stats.activeUsers;
+
+                logTerminal("SYNC_SUCCESS: Node_Nakuru registry updated.");
+            } catch (err) {
+                logTerminal("SYNC_ERROR: Backend pulse lost.");
             }
         }
 
-        function logout() {
-            logTerminal("TERMINATING_SESSION: Clearing secure tokens...");
-            localStorage.removeItem('charlie_token');
-            setTimeout(() => {
-                window.location.href = '../index.html';
-            }, 800);
+        // 3. SECURITY & LOGOUT
+        async function requestOTPReset() {
+            const email = prompt("Confirm Admin Email:");
+            if (!email) return;
+            const res = await fetch(`${API_BASE}/auth/request-otp`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            });
+            if (res.ok) { alert("OTP Sent. Logging out..."); logout(); }
         }
 
-        // 4. TERMINAL UTILITY
+        function logout() {
+            localStorage.removeItem('charlie_token');
+            window.location.href = '../index.html';
+        }
+
+        // 4. UTILITIES
+        function switchView(viewId) {
+            document.querySelectorAll('.view, .nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(`view-${viewId}`).classList.add('active');
+            document.getElementById(`nav-${viewId}`).classList.add('active');
+            logTerminal(`Switched to ${viewId.toUpperCase()}`);
+        }
+
         function logTerminal(msg) {
             const term = document.getElementById('terminalOutput');
             const p = document.createElement('p');
@@ -199,15 +186,12 @@
             term.scrollTop = term.scrollHeight;
         }
 
-        // PLACEHOLDERS / DUMMY LOGIC
-        function updateVault() { logTerminal("Pushing update to MongoDB Atlas..."); }
-        function pushSTK() { 
-            const phone = document.getElementById('payPhone').value;
-            logTerminal(`Initiating Daraja STK Push to ${phone}...`); 
+        // INITIALIZE
+        window.onload = () => {
+            logTerminal("Charlie session initialized.");
+            fetchSystemData();
+            setInterval(fetchSystemData, 30000); // Refresh every 30s
         }
-
-        // Startup Log
-        window.onload = () => logTerminal("Session validated. Charlie logged in from Node_Nakuru.");
     </script>
 </body>
 </html>
