@@ -13,7 +13,7 @@ document.querySelectorAll('.btn-magnetic').forEach(btn => {
 // Simple particles background
 function createParticles() {
     const container = document.getElementById('particles');
-    if (!container) return; // Guard clause to prevent errors
+    if (!container) return; 
     for (let i = 0; i < 50; i++) {
         const particle = document.createElement('div');
         particle.style.cssText = `
@@ -47,16 +47,18 @@ function showLoginPortal() {
     }
 }
 
-/* === NEW NECESSARY LOGIC === */
+/* === BACKEND INTEGRATION LOGIC === */
 
 // 1. Send Magic Link to your Backend
 async function requestMagicLink() {
-    const email = document.getElementById('admin-email').value;
+    const emailInput = document.getElementById('admin-email');
+    const email = emailInput ? emailInput.value : null;
+    
     if (!email) return alert("Email required, Charlie.");
 
     try {
-        // Update this URL to your actual Render/Backend URL
-        const response = await fetch('https://your-backend-api.onrender.com/api/v1/auth/magic-link', {
+        // Pointing to your live Render engine
+        const response = await fetch('https://kihima-backend.onrender.com/api/v1/auth/magic-link', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email })
@@ -69,6 +71,8 @@ async function requestMagicLink() {
         }
     } catch (err) {
         console.error("Connection failed:", err);
+        // Special alert for Render Free Tier spin-up
+        alert("Server is waking up... Please wait 30 seconds and try again.");
     }
 }
 
@@ -78,13 +82,14 @@ window.addEventListener('DOMContentLoaded', () => {
     const token = urlParams.get('token');
 
     if (token) {
-        // Save token for the dashboard to use
+        // Save token for the dashboard to use for authorized API calls
         localStorage.setItem('charlie_token', token);
         
-        // Clean the URL so the token isn't visible
+        // Clean the URL so the token doesn't stay in the history/address bar
         window.history.replaceState({}, document.title, "/");
         
         // Teleport to your internal dashboard folder
+        // Ensure this path matches your repo structure exactly
         window.location.href = "./console/index.html"; 
     }
 });
