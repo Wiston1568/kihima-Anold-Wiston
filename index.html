@@ -19,15 +19,14 @@
         .shh {
             color: red;
         }
-        /* Style for footer icons to ensure visibility */
         .site-footer ion-icon {
             font-size: 24px;
             vertical-align: middle;
             margin-left: 10px;
         }
 
-        /* Added for the new PIN UI */
-        #admin-pin {
+        /* Administrative Terminal UI */
+        #admin-pin, #otp-input {
             width: 100%;
             padding: 12px;
             margin-bottom: 15px;
@@ -35,9 +34,12 @@
             border: 1px solid rgba(255,255,255,0.1);
             color: white;
             text-align: center;
-            letter-spacing: 5px;
             border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
         }
+        #admin-pin { letter-spacing: 5px; }
+        #otp-input { letter-spacing: 10px; font-weight: bold; color: #bc13fe; border-color: rgba(188, 19, 254, 0.3); }
+
         .profile-head {
             display: flex;
             align-items: center;
@@ -51,8 +53,9 @@
             height: 45px;
             border-radius: 50%;
             border: 2px solid #3b82f6;
-            object-cover: cover;
+            object-fit: cover;
         }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -111,14 +114,23 @@
                 </div>
             </div>
 
-            <p style="font-size: 0.7rem; color: #888; margin-bottom: 20px;">ADMIN AUTHENTICATION REQUIRED</p>
-            
-            <input type="password" id="admin-pin" placeholder="••••">
-            <button onclick="handlePinLogin()">AUTHORIZE_ACCESS</button>
+            <div id="pin-login-ui">
+                <p style="font-size: 0.7rem; color: #888; margin-bottom: 20px;">ADMIN AUTHENTICATION REQUIRED</p>
+                <input type="password" id="admin-pin" placeholder="••••">
+                <button onclick="handlePinLogin()">AUTHORIZE_ACCESS</button>
+                <p onclick="initiateRecovery()" style="font-size: 0.6rem; color: #444; margin-top: 15px; cursor: pointer;">
+                    [05] FORGOT_PIN?_RECOVERY_MODE
+                </p>
+            </div>
 
-            <p onclick="requestReset()" style="font-size: 0.6rem; color: #444; margin-top: 15px; cursor: pointer;">
-                [05] FORGOT_PIN?_RECOVERY_MODE
-            </p>
+            <div id="otp-verify-ui" class="hidden">
+                <p style="font-size: 0.7rem; color: #bc13fe; margin-bottom: 10px;">ENTER 6-DIGIT RECOVERY CODE</p>
+                <input type="text" id="otp-input" placeholder="000000" maxlength="6">
+                <button onclick="handleOtpVerify()" style="background: #bc13fe;">VERIFY_CODE</button>
+                <p onclick="toggleUI('pin')" style="font-size: 0.6rem; color: #444; margin-top: 15px; cursor: pointer;">
+                    RETURN TO PIN LOGIN
+                </p>
+            </div>
             
             <button onclick="document.getElementById('admin-login-overlay').classList.add('hidden')" 
                     style="margin-top: 20px; background: transparent; border: none; color: orchid; cursor: pointer; font-size: 0.7rem;">
@@ -128,10 +140,24 @@
     </div>
 
     <script>
+        const API_BASE = 'https://kihima-backend.onrender.com/api/v1/auth';
+
+        // Helper to swap between PIN and OTP screens
+        function toggleUI(mode) {
+            if (mode === 'otp') {
+                document.getElementById('pin-login-ui').classList.add('hidden');
+                document.getElementById('otp-verify-ui').classList.remove('hidden');
+            } else {
+                document.getElementById('pin-login-ui').classList.remove('hidden');
+                document.getElementById('otp-verify-ui').classList.add('hidden');
+            }
+        }
+
+        // Standard PIN Login
         async function handlePinLogin() {
             const pin = document.getElementById('admin-pin').value;
             try {
-                const res = await fetch('https://kihima-backend.onrender.com/api/v1/auth/pin-login', {
+                const res = await fetch(`${API_BASE}/pin-login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ pin })
@@ -149,15 +175,49 @@
             }
         }
 
-        async function requestReset() {
+        // Step 1: Request the 6-digit code via Email
+        async function initiateRecovery() {
             const email = prompt("Enter Admin Email for Recovery:");
-            if (email) {
-                const res = await fetch('https://kihima-backend.onrender.com/api/v1/auth/request-reset', {
+            if (!email) return;
+
+            try {
+                const res = await fetch(`${API_BASE}/request-otp`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email })
                 });
-                alert("Recovery protocol initiated. Check your Gmail.");
+
+                if (res.ok) {
+                    toggleUI('otp');
+                    alert("Recovery protocol initiated. Check your Gmail for the 6-digit code.");
+                } else {
+                    alert("UNAUTHORIZED_EMAIL_ADDRESS");
+                }
+            } catch (err) {
+                alert("RECOVERY_FAILED: SERVER_ERROR");
+            }
+        }
+
+        // Step 2: Verify the code entered by the user
+        async function handleOtpVerify() {
+            const otp = document.getElementById('otp-input').value;
+            try {
+                const res = await fetch(`${API_BASE}/verify-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ otp })
+                });
+
+                const data = await res.json();
+                if (res.ok && data.token) {
+                    localStorage.setItem('charlie_token', data.token);
+                    alert("IDENTITY_VERIFIED. Redirecting to secure console...");
+                    window.location.href = './console/';
+                } else {
+                    alert("INVALID_OR_EXPIRED_CODE");
+                }
+            } catch (err) {
+                alert("VERIFICATION_ERROR");
             }
         }
     </script>

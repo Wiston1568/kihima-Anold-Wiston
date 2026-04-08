@@ -86,8 +86,8 @@
             <div class="glass p-8 rounded-2xl max-w-xl">
                 <h3 class="text-xs font-bold text-blue-500 mb-6 uppercase">Manage System Credentials</h3>
                 <div class="space-y-4">
-                    <button onclick="requestReset()" class="w-full bg-white/5 border border-white/10 hover:bg-white/10 py-4 rounded text-xs font-bold uppercase transition">
-                        Initiate PIN Reset (Email Recovery)
+                    <button onclick="requestOTPReset()" class="w-full bg-white/5 border border-white/10 hover:bg-white/10 py-4 rounded text-xs font-bold uppercase transition">
+                        Initiate OTP Reset (Gmail Dispatch)
                     </button>
                     <button onclick="logout()" class="w-full bg-red-900/20 border border-red-500/20 text-red-500 hover:bg-red-900/40 py-4 rounded text-xs font-bold uppercase transition">
                         Terminate Session (Logout)
@@ -103,7 +103,8 @@
                     <thead class="bg-white/5 text-[10px] uppercase">
                         <tr><th class="p-4">Phone</th><th class="p-4">Device_ID</th><th class="p-4">Status</th><th class="p-4 text-right">Action</th></tr>
                     </thead>
-                    <tbody id="userTable"></tbody>
+                    <tbody id="userTable">
+                        </tbody>
                 </table>
             </div>
         </section>
@@ -136,6 +137,8 @@
     </main>
 
     <script>
+        const API_BASE = 'https://kihima-backend.onrender.com/api/v1/auth';
+
         // 1. NAVIGATION
         function switchView(viewId) {
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -146,29 +149,48 @@
             logTerminal(`Switched to ${viewId.toUpperCase()} view.`);
         }
 
-        // 2. AUTH CHECK (Redirect if no token)
+        // 2. AUTH CHECK
         const token = localStorage.getItem('charlie_token');
         if (!token) {
             window.location.href = '../index.html';
         }
 
-        // 3. SECURITY ACTIONS
-        async function requestReset() {
-            if(confirm("Initiate emergency PIN reset? Recovery link will be sent to Admin Gmail.")) {
-                const res = await fetch('https://kihima-backend.onrender.com/api/v1/auth/request-reset', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: 'wistonanold2@gmail.com' })
-                });
-                logTerminal("RECOVERY_PROTOCOL: Gmail dispatcher signaled.");
+        // 3. SECURITY ACTIONS (OTP INTEGRATED)
+        async function requestOTPReset() {
+            const email = prompt("Confirm Admin Email for OTP dispatch:");
+            if (!email) return;
+
+            if(confirm("Initiate emergency PIN reset? You will be logged out to verify the code.")) {
+                try {
+                    const res = await fetch(`${API_BASE}/request-otp`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: email })
+                    });
+
+                    if (res.ok) {
+                        logTerminal("RECOVERY_PROTOCOL: OTP code dispatched to Gmail.");
+                        alert("OTP Sent. You will now be redirected to the verification terminal.");
+                        logout();
+                    } else {
+                        logTerminal("AUTH_ERROR: Recovery email rejected by server.");
+                        alert("Error: Email does not match admin records.");
+                    }
+                } catch (err) {
+                    logTerminal("FATAL_ERROR: Connection to backend failed.");
+                }
             }
         }
 
         function logout() {
+            logTerminal("TERMINATING_SESSION: Clearing secure tokens...");
             localStorage.removeItem('charlie_token');
-            window.location.href = '../index.html';
+            setTimeout(() => {
+                window.location.href = '../index.html';
+            }, 800);
         }
 
+        // 4. TERMINAL UTILITY
         function logTerminal(msg) {
             const term = document.getElementById('terminalOutput');
             const p = document.createElement('p');
@@ -177,9 +199,15 @@
             term.scrollTop = term.scrollHeight;
         }
 
-        // PLACEHOLDERS
+        // PLACEHOLDERS / DUMMY LOGIC
         function updateVault() { logTerminal("Pushing update to MongoDB Atlas..."); }
-        function pushSTK() { logTerminal(`Initiating Daraja STK Push...`); }
+        function pushSTK() { 
+            const phone = document.getElementById('payPhone').value;
+            logTerminal(`Initiating Daraja STK Push to ${phone}...`); 
+        }
+
+        // Startup Log
+        window.onload = () => logTerminal("Session validated. Charlie logged in from Node_Nakuru.");
     </script>
 </body>
 </html>
