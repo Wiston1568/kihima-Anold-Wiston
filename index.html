@@ -25,6 +25,34 @@
             vertical-align: middle;
             margin-left: 10px;
         }
+
+        /* Added for the new PIN UI */
+        #admin-pin {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            text-align: center;
+            letter-spacing: 5px;
+            border-radius: 4px;
+        }
+        .profile-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 15px;
+        }
+        .profile-img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid #3b82f6;
+            object-cover: cover;
+        }
     </style>
 </head>
 <body>
@@ -75,11 +103,22 @@
 
     <div id="admin-login-overlay" class="hidden">
         <div class="glass-panel">
-            <h2>COMMAND CONSOLE v1.1.0</h2>
+            <div class="profile-head">
+                <img src="Pictures/logo.jpg" class="profile-img" alt="Charlie">
+                <div style="text-align: left;">
+                    <h2 style="font-size: 1rem; margin: 0;">COMMAND_CONSOLE</h2>
+                    <p style="font-size: 0.6rem; color: #3b82f6; margin: 0;">OP: CHARLIE // NODE_NAKURU</p>
+                </div>
+            </div>
+
             <p style="font-size: 0.7rem; color: #888; margin-bottom: 20px;">ADMIN AUTHENTICATION REQUIRED</p>
             
-            <input type="email" id="admin-email" placeholder="Enter Admin Email">
-            <button onclick="requestMagicLink()">GET MAGIC LINK</button>
+            <input type="password" id="admin-pin" placeholder="••••">
+            <button onclick="handlePinLogin()">AUTHORIZE_ACCESS</button>
+
+            <p onclick="requestReset()" style="font-size: 0.6rem; color: #444; margin-top: 15px; cursor: pointer;">
+                [05] FORGOT_PIN?_RECOVERY_MODE
+            </p>
             
             <button onclick="document.getElementById('admin-login-overlay').classList.add('hidden')" 
                     style="margin-top: 20px; background: transparent; border: none; color: orchid; cursor: pointer; font-size: 0.7rem;">
@@ -87,6 +126,41 @@
             </button>
         </div>
     </div>
+
+    <script>
+        async function handlePinLogin() {
+            const pin = document.getElementById('admin-pin').value;
+            try {
+                const res = await fetch('https://kihima-backend.onrender.com/api/v1/auth/pin-login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pin })
+                });
+
+                const data = await res.json();
+                if (res.ok && data.token) {
+                    localStorage.setItem('charlie_token', data.token);
+                    window.location.href = './console/';
+                } else {
+                    alert("ACCESS_DENIED: INCORRECT_PIN");
+                }
+            } catch (err) {
+                alert("SYSTEM_OFFLINE: CHECK_BACKEND");
+            }
+        }
+
+        async function requestReset() {
+            const email = prompt("Enter Admin Email for Recovery:");
+            if (email) {
+                const res = await fetch('https://kihima-backend.onrender.com/api/v1/auth/request-reset', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                alert("Recovery protocol initiated. Check your Gmail.");
+            }
+        }
+    </script>
 
 </body>
 </html>

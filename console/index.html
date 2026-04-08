@@ -12,7 +12,6 @@
         .nav-item { transition: 0.3s; cursor: pointer; border-left: 3px solid transparent; }
         .nav-item.active { background: rgba(59, 130, 246, 0.1); border-left: 3px solid #3b82f6; color: white; }
         
-        /* The Logic behind the tabs */
         .view { display: none; animation: fadeIn 0.4s ease-in-out; }
         .view.active { display: block; }
         
@@ -26,23 +25,32 @@
 <body class="flex h-screen">
 
     <aside class="w-64 border-r border-white/5 flex flex-col bg-black/20">
-        <div class="p-6 mb-10">
-            <h1 class="text-xl font-black tracking-tighter text-white">COMMAND<span class="text-blue-500">_</span></h1>
-            <p class="text-[9px] text-gray-500">OP: CHARLIE // NODE_NAKURU</p>
+        <div class="p-6 mb-10 flex items-center gap-4">
+            <div class="relative">
+                <img src="../Pictures/logo.jpg" alt="Charlie" class="w-10 h-10 rounded-full border border-blue-500/50 object-cover">
+                <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-black rounded-full status-pulse"></div>
+            </div>
+            <div>
+                <h1 class="text-sm font-black tracking-tighter text-white">COMMAND<span class="text-blue-500">_</span></h1>
+                <p class="text-[8px] text-gray-500 uppercase">OP: CHARLIE // NODE_NAKURU</p>
+            </div>
         </div>
         
-        <nav class="flex-1 space-y-2">
-            <div onclick="switchView('system')" id="nav-system" class="nav-item active p-4 flex items-center gap-3 text-sm">
+        <nav class="flex-1 space-y-1">
+            <div onclick="switchView('system')" id="nav-system" class="nav-item active p-4 flex items-center gap-3 text-xs">
                 <span>[01]</span> CORE_SYSTEM
             </div>
-            <div onclick="switchView('garden')" id="nav-garden" class="nav-item p-4 flex items-center gap-3 text-sm">
+            <div onclick="switchView('garden')" id="nav-garden" class="nav-item p-4 flex items-center gap-3 text-xs">
                 <span>[02]</span> GARDEN_MONITOR
             </div>
-            <div onclick="switchView('financial')" id="nav-financial" class="nav-item p-4 flex items-center gap-3 text-sm">
+            <div onclick="switchView('financial')" id="nav-financial" class="nav-item p-4 flex items-center gap-3 text-xs">
                 <span>[03]</span> FINANCIAL_GRID
             </div>
-            <div onclick="switchView('terminal')" id="nav-terminal" class="nav-item p-4 flex items-center gap-3 text-sm">
+            <div onclick="switchView('terminal')" id="nav-terminal" class="nav-item p-4 flex items-center gap-3 text-xs">
                 <span>[04]</span> LIVE_TERMINAL
+            </div>
+            <div onclick="switchView('security')" id="nav-security" class="nav-item p-4 flex items-center gap-3 text-xs">
+                <span>[05]</span> SECURITY_VAULT
             </div>
         </nav>
 
@@ -73,20 +81,29 @@
             </div>
         </section>
 
+        <section id="view-security" class="view space-y-8">
+            <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">SECURITY_PROTOCOL_VAULT</h2>
+            <div class="glass p-8 rounded-2xl max-w-xl">
+                <h3 class="text-xs font-bold text-blue-500 mb-6 uppercase">Manage System Credentials</h3>
+                <div class="space-y-4">
+                    <button onclick="requestReset()" class="w-full bg-white/5 border border-white/10 hover:bg-white/10 py-4 rounded text-xs font-bold uppercase transition">
+                        Initiate PIN Reset (Email Recovery)
+                    </button>
+                    <button onclick="logout()" class="w-full bg-red-900/20 border border-red-500/20 text-red-500 hover:bg-red-900/40 py-4 rounded text-xs font-bold uppercase transition">
+                        Terminate Session (Logout)
+                    </button>
+                </div>
+            </div>
+        </section>
+
         <section id="view-garden" class="view space-y-8">
             <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">GARDEN_USER_REGISTRY</h2>
             <div class="glass rounded-2xl overflow-hidden">
                 <table class="w-full text-left text-sm">
                     <thead class="bg-white/5 text-[10px] uppercase">
-                        <tr>
-                            <th class="p-4">Phone</th>
-                            <th class="p-4">Device_ID</th>
-                            <th class="p-4">Status</th>
-                            <th class="p-4 text-right">Action</th>
-                        </tr>
+                        <tr><th class="p-4">Phone</th><th class="p-4">Device_ID</th><th class="p-4">Status</th><th class="p-4 text-right">Action</th></tr>
                     </thead>
-                    <tbody id="userTable">
-                        </tbody>
+                    <tbody id="userTable"></tbody>
                 </table>
             </div>
         </section>
@@ -94,14 +111,8 @@
         <section id="view-financial" class="view space-y-8">
             <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">FINANCIAL_GRID_LEADS</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="glass p-8 rounded-2xl">
-                    <p class="text-[10px] text-gray-500 uppercase">Today's Revenue</p>
-                    <h3 class="text-3xl font-bold text-green-500">KES 4,200</h3>
-                </div>
-                <div class="glass p-8 rounded-2xl">
-                    <p class="text-[10px] text-gray-500 uppercase">Active Subs</p>
-                    <h3 class="text-3xl font-bold text-blue-500">128</h3>
-                </div>
+                <div class="glass p-8 rounded-2xl"><p class="text-[10px] text-gray-500 uppercase">Today's Revenue</p><h3 class="text-3xl font-bold text-green-500">KES 4,200</h3></div>
+                <div class="glass p-8 rounded-2xl"><p class="text-[10px] text-gray-500 uppercase">Active Subs</p><h3 class="text-3xl font-bold text-blue-500">128</h3></div>
             </div>
             <div class="glass p-6 rounded-2xl">
                 <h3 class="text-xs font-bold text-green-500 mb-4 uppercase">Manual Payment Push (Daraja API)</h3>
@@ -110,59 +121,54 @@
             </div>
         </section>
 
-      <section id="view-terminal" class="view space-y-4">
-    <div class="flex justify-between items-center border-b border-white/5 pb-4">
-        <h2 class="text-2xl font-bold text-white">LIVE_TERMINAL_FEED</h2>
-        <div class="flex gap-4">
-            <div class="mt-4 flex gap-2 border-t border-white/5 pt-4">
-    <span class="text-blue-500 font-bold">$</span>
-    <input type="text" id="termInput" placeholder="Enter command (e.g., clear, ping, logs)..." 
-           class="bg-transparent border-none outline-none text-white w-full text-xs"
-           onkeydown="if(event.key === 'Enter') handleCommand(this.value)">
-</div>
-            <div class="glass px-3 py-1 rounded text-[10px]">
-                CPU: <span class="text-green-500" id="cpu-load">2%</span>
+        <section id="view-terminal" class="view space-y-4">
+            <div class="flex justify-between items-center border-b border-white/5 pb-4">
+                <h2 class="text-2xl font-bold text-white">LIVE_TERMINAL_FEED</h2>
+                <div class="flex gap-4">
+                    <div class="glass px-3 py-1 rounded text-[10px]">CPU: <span class="text-green-500" id="cpu-load">2%</span></div>
+                    <div class="glass px-3 py-1 rounded text-[10px]">LATENCY: <span class="text-blue-500" id="ping-ms">42ms</span></div>
+                </div>
             </div>
-            <div class="glass px-3 py-1 rounded text-[10px]">
-                LATENCY: <span class="text-blue-500" id="ping-ms">42ms</span>
+            <div class="bg-black/80 p-6 rounded-xl border border-white/10 h-[500px] font-mono text-xs overflow-y-auto shadow-2xl" id="terminalOutput">
+                <p class="text-blue-500">>> [SYSTEM] K-OS BOOTLOADER v2.1.0_READY</p>
             </div>
-        </div>
-    </div>
-    
-    <div class="bg-black/80 p-6 rounded-xl border border-white/10 h-[500px] font-mono text-xs overflow-y-auto shadow-2xl" id="terminalOutput">
-        <p class="text-blue-500">>> [SYSTEM] K-OS BOOTLOADER v2.1.0_READY</p>
-        <p class="text-gray-500">>> [SECURITY] WAITING_FOR_JWT_HANDSHAKE...</p>
-    </div>
-</section>
+        </section>
     </main>
 
     <script>
-        // 1. NAVIGATION LOGIC
+        // 1. NAVIGATION
         function switchView(viewId) {
-            // Hide all views
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            // Deactivate all nav items
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             
-            // Activate target
             document.getElementById(`view-${viewId}`).classList.add('active');
-            document.getElementById(`nav-${navId = viewId}`).classList.add('active');
-            
+            document.getElementById(`nav-${viewId}`).classList.add('active');
             logTerminal(`Switched to ${viewId.toUpperCase()} view.`);
         }
 
-        // 2. AUTHENTICATION (TOKEN SNAGGER)
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
-
-        if (token) {
-            localStorage.setItem('charlie_token', token);
-            // Remove token from URL for security
-            window.history.replaceState({}, document.title, window.location.pathname);
-            logTerminal("ADMIN_TOKEN_ACQUIRED: Session active for 15m.");
+        // 2. AUTH CHECK (Redirect if no token)
+        const token = localStorage.getItem('charlie_token');
+        if (!token) {
+            window.location.href = '../index.html';
         }
 
-        // 3. TERMINAL LOGGER
+        // 3. SECURITY ACTIONS
+        async function requestReset() {
+            if(confirm("Initiate emergency PIN reset? Recovery link will be sent to Admin Gmail.")) {
+                const res = await fetch('https://kihima-backend.onrender.com/api/v1/auth/request-reset', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: 'wistonanold2@gmail.com' })
+                });
+                logTerminal("RECOVERY_PROTOCOL: Gmail dispatcher signaled.");
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('charlie_token');
+            window.location.href = '../index.html';
+        }
+
         function logTerminal(msg) {
             const term = document.getElementById('terminalOutput');
             const p = document.createElement('p');
@@ -171,16 +177,9 @@
             term.scrollTop = term.scrollHeight;
         }
 
-        // 4. PLACEHOLDER ACTIONS
-        function updateVault() {
-            logTerminal("Pushing update to MongoDB Atlas...");
-            // Add your fetch() here to talk to kihima-backend.onrender.com
-        }
-
-        function pushSTK() {
-            const phone = document.getElementById('payPhone').value;
-            logTerminal(`Initiating Daraja STK Push to ${phone}...`);
-        }
+        // PLACEHOLDERS
+        function updateVault() { logTerminal("Pushing update to MongoDB Atlas..."); }
+        function pushSTK() { logTerminal(`Initiating Daraja STK Push...`); }
     </script>
 </body>
 </html>
