@@ -1,17 +1,23 @@
+/* === 1. GLOBAL RESET & FONTS === */
 * {
- font-family: "Z003", sans-serif;
- color: white;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Ensures padding doesn't break widths */
 }
+
 body {
     background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
     color: #ffffff;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    /* Clean fallback fonts for professional look */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 }
+
+/* === 2. HERO SECTION === */
 .hero {
-    background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
     padding: 100px 20px;
     min-height: 80vh;
     display: flex;
@@ -22,53 +28,6 @@ body {
     overflow: hidden;
 }
 
-
-ul { 
-  margin: 150px auto 0; 
-  padding: 0; 
-  list-style: none; 
-  display: table;
-  width: 600px;
-  text-align: center;
-}
-li { 
-  display: table-cell; 
-  position: relative; 
-  padding: 15px 0;
-}
-a {
-  color: red;
-  text-transform: uppercase;
-  text-decoration: none;
-  letter-spacing: 0.15em;
-  
-  display: inline-block;
-  padding: 15px 20px;
-  position: relative;
-}
-a:after {    
-  background: none repeat scroll 0 0 transparent;
-  bottom: 0;
-  content: "";
-  display: block;
-  height: 2px;
-  left: 50%;
-  position: absolute;
-  background: red;
-  transition: width 0.3s ease 0s, left 0.3s ease 0s;
-  width: 0;
-}
-a:hover:after { 
-  width: 100%; 
-  left: 0; 
-}
-@media screen and (max-height: 300px) {
-	ul {
-		margin-top: 40px;
-	}
-}
-
-
 .hero-content {
     flex: 1;
     max-width: 500px;
@@ -78,23 +37,10 @@ a:hover:after {
 .hero-content h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
+    font-family: "Z003", cursive; /* Keeping your signature font for the name */
 }
 
-.hero-content p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-}
-.shit1 {
-background: transparent;
-border: none;
-margin: 0;
-padding: 0;
-font: size: 1.2rem;
-
-}
-
-
-/* Floating Cards Container */
+/* === 3. FLOATING CARDS === */
 .hero-floating-cards {
     flex: 1;
     display: flex;
@@ -103,610 +49,118 @@ font: size: 1.2rem;
     perspective: 1000px;
 }
 
-/* Individual Floating Cards */
 .floating-shii {
     width: 200px;
     height: 250px;
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    border: 2px solid purple;
     transition: transform 0.4s ease, z-index 0.4s ease;
     position: relative;
+    animation: float 2.5s ease-in-out infinite;
 }
 
 .floating-shii img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s ease;
 }
 
-.shii-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-    padding: 20px 15px 15px;
-    font-weight: 600;
-    transform: translateY(100%);
-    transition: transform 0.3s ease;
-}
-
-/* Card Positions - Perpendicular, overlapping at edges */
-.thing-1 {
-    transform: translateX(-60px) rotateY(20deg);
-    z-index: 1;
-    border: 2px solid purple;
-}
-
-.thing-2 {
-    transform: translateX(0) rotateY(0deg);
-    z-index: 2;
-    border: 2px solid purple;
-}
-
-.thing-3 {
-    transform: translateX(60px) rotateY(-20deg);
-    z-index: 1;
-    border: 2px solid purple;
-}
-
-/* Hover Effects */
-.floating-shii:hover {
-    transform: scale(1.1) rotateY(0deg);
-    z-index: 10;
-}
-
-.floating-shii:hover img {
-    transform: scale(1.1);
-}
-
-.floating-shii:hover .shii-overlay {
-    transform: translateY(0);
-}
-
-/* Floating Animation */
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0) rotate(0deg);
-    }
-    50% {
-        transform: translateY(-20px) rotate(1deg);
-    }
-    
-}
-
-/* Mobile Responsive */
-@media (max-width: 968px) {
-    .hero {
-        flex-direction: column;
-        text-align: center;
-        gap: 40px;
-    }
-    
-    .hero-floating-cards {
-        height: 300px;
-        width: 100%;
-    }
-    
-    .floating-card {
-        width: 150px;
-        height: 200px;
-    }
-    
-    .card-1 {
-        top: 10%;
-        left: 5%;
-    }
-    
-    .card-2 {
-        top: 20%;
-        right: 5%;
-    }
-    
-    .card-3 {
-        bottom: 10%;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    
-    /* Simpler animation on mobile */
-    @keyframes float {
-        0%, 100% {
-            transform: translateY(0);
-        }
-        50% {
-            transform: translateY(-10px);
-        }
-    }
-}
-
-/* Small mobile */
-@media (max-width: 480px) {
-    .hero-floating-cards {
-        height: 250px;
-    }
-    
-    .floating-card {
-        width: 120px;
-        height: 160px;
-    }
-    
-    .card-overlay {
-        padding: 10px 8px 8px;
-        font-size: 0.8rem;
-        transform: translateY(0); /* Always visible on mobile */
-    }
-}
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap");
-
-* {
-  margin: 0;
-  padding: 0;
-}
-/* Content-1:Start */
-.box {
-  width: 350px;
-  height: fit-content;
-  border-radius: 20px;
-  padding: 10px;
-  text-align: center;
-  background: black;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.box1 {
-  margin-top: 10px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.content {
-  margin: 15px 2px;
-}
-
-.image img {
-  height: auto;
-  width: 120px;
-  border-radius: 50%;
-
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 5px;
-}
-
-.level {
-  font-size: 0.7em;
-  background-color: red;
-  width: 50px;
-  padding: 3px;
-  border-radius: 5px;
-  font-weight: bolder;
-  letter-spacing: 1px;
-
-  display: block;
-  margin: 0px auto 10px;
-}
-
-.name {
-  font-size: 1.25em;
-  font-weight: bolder;
-  letter-spacing: 1px;
-}
-
-.job_title {
-  font-size: 0.65em;
-  font-weight: bolder;
-  color: red;
-  margin-top: -2px;
-}
-
-.job_discription {
-  font-size: 0.7em;
-  color: orchid;
-  margin: 10px 30px 20px;
-}
-
-.icons {
-  margin: 0px 30px;
-  font-size: 1.5em;
-  display: flex;
-  justify-content: space-around;
-}
-
-.icons button {
-  width: fit-content;
-  height: fit-content;
-  border: none;
-  font-size: 1em;
-}
-
-ion-icon:hover {
-  color: red;
-  transition: 0.5s;
-}
-
-button {
-  width: 130px;
-  height: 40px;
-  border-radius: 10px;
-  font-weight: bolder;
-}
-
-.button {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  margin: 10px 30px 0px;
-  gap: 10px;
-}
-
-.button .message,
-.button .connect {
-  background-color: #000;
-  color: #ededed;
-  border: 2px solid orchid;
-  padding: 5px 12px;
-  border-radius: 5px;
-  font-weight: bolder;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  font-size: 0.75em;
-}
-
-a.message:hover,
-a.connect:hover {
-  letter-spacing: 2px;
-  transition: 0.5s;
-  background: red;
-}
-/* Content-1:End */
-
-/* Content-2:Start */
-.box2 {
-  margin-top: 50px;
-  margin-bottom: 10px;
-}
-
-.box2 img {
-  width: 80px;
-}
-
-.row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0px 0px 10px;
-}
-
-h5 {
-  font-weight: bolder;
-  font-size: 1em;
-}
-
-.row p {
-  font-size: 0.8em;
-}
-
-.box2 .text {
-  text-align: center;
-}
-
-.box2 .text .name {
-  font-size: 1.1em;
-}
-
-.box2 .text .job_title {
-  font-size: 0.6em;
-  margin-bottom: 10px;
-}
-
-.box2 .text .job_discription {
-  margin: 0px;
-}
-
-.box2 .text .about {
-  font-size: 0.9em;
-  font-weight: bolder;
-}
-/* Content-2:End */
-
-/* Responsiveness:Start */
-@media screen and (max-width: 480px) {
-    .box{
-        width: 100vw;
-        border-radius: 0px;
-    }
-    .button{
-        display: flex;
-        flex-direction: column;
-    }
-    .button button{
-        width: 250px;
-    }
-    button.connect{
-        margin-top: 10px;
-    }
-    .content2{
-        padding: 0px 20px;
-    }
-    .content2 img{
-        width: 60px;
-        height: 60px;
-    }
-}
-/* Responsiveness:End */
-/* Services page styles */
-.services-hero {
-  text-align: center;
-  padding: 60px 20px;
-  background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
-  color: #fff;
-  flex: 1;
-}
-
-section {
-  flex: 1;
-}
-
-.services-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  padding: 40px 20px;
-  flex: 1;
-}
-.service-card {
-  background: #000;
-  border: 2px solid orchid;
-  border-radius: 10px;
-  padding: 20px;
-  width: 200px;
-  text-align: center;
-}
-.service-card h3 {
-  margin-top: 0;
-  color: orchid;
-} 
-.floating-container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
-  perspective: 1000px; /* gives depth for 3D hover effect */
-}
-
-.service-card {
-  transition: transform 0.3s ease;
-  will-change: transform; /* smooth animation hint */
-}
-
-.service-card:hover {
-  transform: translateY(-15px) rotateX(3deg) rotateY(3deg) scale(1.05);
-  z-index: 10;
-}
-
-/* Floating animation */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-.service-card {
-  animation: float 2.5s ease-in-out infinite; /* faster than 4s */
-}
-
-/* Slight stagger for each card */
-.service-card:nth-child(1) { animation-delay: 0s; }
-.service-card:nth-child(2) { animation-delay: 0.5s; }
-.service-card:nth-child(3) { animation-delay: 1s; }
-
-/* Mobile tweak: slower/simpler animation to avoid overlap */
-@media (max-width: 480px) {
-  .service-card {
-    animation: float 3s ease-in-out infinite;
-    transform: translateY(0); /* start at normal position */
-  }
-}
-
-.site-footer {
-  text-align: center;
-  padding: 20px;
-  background: black;
-  color: #999;
-  width: 100%;
-  margin-top: auto;
-  border-top: 1px solid #333;
-}
-
-.site-footer p {
-  margin: 0;
-  font-size: 0.9rem;
-}
-
-.site-footer ion-icon {
-  margin-left: 8px;
-  font-size: 1rem;
-}
-
-/* Mobile footer styles */
-@media (max-width: 768px) {
-  .site-footer {
-    padding: 15px 10px;
-    font-size: 0.85rem;
-  }
-  
-  .site-footer p {
-    word-break: break-word;
-  }
-}
-
-@media (max-width: 480px) {
-  .site-footer {
-    padding: 12px 8px;
-    font-size: 0.75rem;
-  }
-}
-.logo-img {
-  max-height: 50px;
-  width: auto;
-}
-.offer-section {
-  text-align: center;
-  padding: 4rem 1rem;
-  font-family: 'Playfair Display', serif;
-}
-
-.offer-intro {
-  color: #999;
-  display: inline-flex;
-  align-items: center;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-  letter-spacing: 1px;
-}
-
-
-.offer-title {
-  font-size: 2.5rem;
-  margin-bottom: 3rem;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.2;
-}
-
-.cards-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.card {
-  position: relative;
-  background: black;
-  padding: 2rem 1rem 1rem;
-  border-radius: 15px;
-  overflow: hidden;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-}
-
-.card:hover {
-  transform: translateY(-10px) scale(1.05);
-  box-shadow: 0 20px 40px red;
-  z-index: 5;
-}
-
-.circle {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background-size: cover;
-  background-position: center;
-  margin: 0 auto 1.5rem;
-  transition: transform 0.5s ease;
-}
-
-.card:hover .circle {
-  transform: scale(1.1);
-}
-
-.card h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.card p {
-  color: black;
-  font-size: 0.9rem;
-  line-height: 1.4;
-  transition: color 0.5s ease;
-}
-
-.card:hover p {
-  color: #fff;
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 480px) {
-  .offer-title {
-    font-size: 2rem;
-  }
-
-  .circle {
-    width: 100px;
-    height: 100px;
-  }
-}
+/* Staggering the card positions */
+.thing-1 { transform: translateX(-60px) rotateY(20deg); animation-delay: 0s; }
+.thing-2 { transform: translateX(0) rotateY(0deg); z-index: 2; animation-delay: 0.5s; }
+.thing-3 { transform: translateX(60px) rotateY(-20deg); animation-delay: 1s; }
 
+/* === 4. ADMIN CONSOLE (The New Stuff) === */
 
-/* today*/
-/* 1. This is the most important part - it keeps the console hidden */
 .hidden {
     display: none !important;
 }
 
-/* 2. This creates the full-screen dark overlay */
 #admin-login-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.85); /* Black tint */
-    backdrop-filter: blur(8px);      /* Blurs your portfolio behind it */
-    z-index: 9999;                  /* Sits on top of everything else */
+    background: rgba(0, 0, 0, 0.9); /* Darker for better focus */
+    backdrop-filter: blur(10px);
+    z-index: 10000;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* 3. The actual Console Box */
 .glass-panel {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 30px;
-    border-radius: 20px;
-    width: 350px;
+    background: rgba(20, 20, 20, 0.8);
+    border: 1px solid orchid;
+    padding: 40px;
+    border-radius: 15px;
+    width: 380px;
     text-align: center;
-    box-shadow: 0 0 20px rgba(128, 0, 128, 0.5); /* Purple glow like your cards */
+    box-shadow: 0 0 30px rgba(153, 50, 204, 0.3);
 }
 
 .glass-panel h2 {
     color: orchid;
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-    letter-spacing: 2px;
+    font-family: 'Segoe UI', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 25px;
 }
 
 .glass-panel input {
-    width: 90%;
-    padding: 10px;
-    margin-bottom: 10px;
-    background: rgba(0,0,0,0.5);
-    border: 1px solid purple;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    background: #000;
+    border: 1px solid #444;
     border-radius: 5px;
-    color: white;
+    color: orchid;
+    outline: none;
+}
+
+.glass-panel input:focus {
+    border-color: orchid;
 }
 
 .glass-panel button {
     width: 100%;
-    background: purple;
+    padding: 12px;
+    background: orchid;
     color: white;
     border: none;
+    border-radius: 5px;
+    font-weight: bold;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.3s ease;
 }
 
 .glass-panel button:hover {
     background: red;
+    transform: scale(1.02);
+}
+
+/* === 5. FOOTER & MISC === */
+.site-footer {
+    text-align: center;
+    padding: 20px;
+    background: black;
+    color: #999;
+    width: 100%;
+    margin-top: auto;
+    border-top: 1px solid #333;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+/* Mobile Tweak */
+@media (max-width: 768px) {
+    .hero { flex-direction: column; text-align: center; }
+    .hero-floating-cards { margin-top: 50px; }
+    .glass-panel { width: 90%; }
 }
