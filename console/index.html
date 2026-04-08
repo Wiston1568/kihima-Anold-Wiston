@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COMMAND_CONSOLE // MULTI-BAY</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'JetBrains Mono', monospace; background: #010409; color: #c9d1d9; overflow: hidden; }
+        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .nav-item { transition: 0.3s; cursor: pointer; border-left: 3px solid transparent; }
+        .nav-item.active { background: rgba(59, 130, 246, 0.1); border-left: 3px solid #3b82f6; color: white; }
+        .view { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #21262d; border-radius: 10px; }
+        
+        /* Pulse for the live indicator */
+        .status-pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body class="flex h-screen">
+
+    <aside class="w-64 border-r border-white/5 flex flex-col bg-black/20">
+        <div class="p-6 mb-10">
+            <h1 class="text-xl font-black tracking-tighter text-white">COMMAND<span class="text-blue-500">_</span></h1>
+            <p class="text-[9px] text-gray-500">OP: CHARLIE // NODE_NAKURU</p>
+        </div>
+        
+        <nav class="flex-1 space-y-2">
+            <div onclick="switchView('system')" id="nav-system" class="nav-item active p-4 flex items-center gap-3 text-sm">
+                <span>[01]</span> CORE_SYSTEM
+            </div>
+            <div onclick="switchView('garden')" id="nav-garden" class="nav-item p-4 flex items-center gap-3 text-sm">
+                <span>[02]</span> GARDEN_MONITOR
+            </div>
+            <div onclick="switchView('financial')" id="nav-financial" class="nav-item p-4 flex items-center gap-3 text-sm">
+                <span>[03]</span> FINANCIAL_GRID
+            </div>
+            <div onclick="switchView('terminal')" id="nav-terminal" class="nav-item p-4 flex items-center gap-3 text-sm">
+                <span>[04]</span> LIVE_TERMINAL
+            </div>
+        </nav>
+
+        <div class="p-6 border-t border-white/5 text-[10px] text-blue-500 status-pulse">
+            ● SYSTEM_LIVE_CONNECTED
+        </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto p-10">
+        
+        <section id="view-system" class="view active space-y-8">
+            <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">CORE_SYSTEM_PROTOCOL</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="glass p-6 rounded-2xl space-y-4">
+                    <h3 class="text-xs font-bold text-blue-500 uppercase">Omni-Swapper</h3>
+                    <input id="appId" type="text" placeholder="APP_ID" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white">
+                    <input id="streamLink" type="text" placeholder="STREAM_URL" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white">
+                    <button onclick="updateApp()" class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded font-bold text-xs uppercase transition">Push to Vault</button>
+                </div>
+                <div class="glass p-6 rounded-2xl flex flex-col justify-center">
+                    <h3 class="text-xs font-bold text-red-500 uppercase mb-4">Master Kill Switch</h3>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="killSwitch" class="sr-only peer">
+                        <div class="w-14 h-7 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-red-600"></div>
+                        <span class="ml-3 text-sm font-medium">EMERGENCY_SHUTDOWN</span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-garden" class="view space-y-8">
+            <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">GARDEN_USER_REGISTRY</h2>
+            <div class="glass rounded-2xl overflow-hidden">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-white/5 text-[10px] uppercase">
+                        <tr>
+                            <th class="p-4">Phone</th>
+                            <th class="p-4">Device_ID</th>
+                            <th class="p-4">Status</th>
+                            <th class="p-4 text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTable">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="view-financial" class="view space-y-8">
+            <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">FINANCIAL_GRID_LEADS</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass p-8 rounded-2xl">
+                    <p class="text-[10px] text-gray-500 uppercase">Today's Revenue</p>
+                    <h3 class="text-3xl font-bold text-green-500">KES 4,200</h3>
+                </div>
+                <div class="glass p-8 rounded-2xl">
+                    <p class="text-[10px] text-gray-500 uppercase">Active Subs</p>
+                    <h3 class="text-3xl font-bold text-blue-500">128</h3>
+                </div>
+            </div>
+            
+            <div class="glass p-6 rounded-2xl">
+                <h3 class="text-xs font-bold text-green-500 mb-4 uppercase">Manual Payment Push (Daraja API)</h3>
+                <input id="payPhone" type="text" placeholder="2547XXXXXXXX" class="w-full bg-black/50 p-3 rounded border border-white/10 mb-4 text-white">
+                <button id="stkBtn" onclick
