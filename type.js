@@ -1,289 +1,115 @@
- = 1. VISUAL EFFECTS (Original) === */
-
-
+/* === 1. VISUAL EFFECTS === */
 
 // Magnetic button effect
-
 document.querySelectorAll('.btn-magnetic').forEach(btn => {
-
     btn.addEventListener('mousemove', (e) => {
-
         const rect = btn.getBoundingClientRect();
-
         const x = e.clientX - rect.left;
-
         const y = e.clientY - rect.top;
-
-        
-
         btn.style.setProperty('--x', `${x}px`);
-
         btn.style.setProperty('--y', `${y}px`);
-
     });
-
 });
 
-
-
 // Simple particles background
-
 function createParticles() {
-
     const container = document.getElementById('particles');
-
     if (!container) return;
-
     for (let i = 0; i < 50; i++) {
-
         const particle = document.createElement('div');
-
         particle.style.cssText = `
-
-            position: absolute;
-
-            width: 2px;
-
-            height: 2px;
-
-            background: rgba(255, 255, 255, 0.1);
-
-            border-radius: 50%;
-
-            top: ${Math.random() * 100}%;
-
-            left: ${Math.random() * 100}%;
-
+            position: absolute; width: 2px; height: 2px;
+            background: rgba(255, 255, 255, 0.1); border-radius: 50%;
+            top: ${Math.random() * 100}%; left: ${Math.random() * 100}%;
             animation: float ${Math.random() * 10 + 5}s infinite ease-in-out;
-
         `;
-
         container.appendChild(particle);
-
     }
-
 }
-
 createParticles();
-
-
 
 /* === 2. THE GATEKEEPER (Secret Access) === */
 
-
-
-// Listen for Ctrl + Shift + L to reveal the Admin Portal
-
 document.addEventListener('keydown', (e) => {
-
     if (e.ctrlKey && e.shiftKey && e.code === 'KeyL') {
-
         e.preventDefault();
-
-        showLoginPortal();
-
+        const portal = document.getElementById('admin-login-overlay');
+        if (portal) {
+            portal.classList.remove('hidden');
+            console.log("--- COMMAND DECK ACTIVATED ---");
+        }
     }
-
 });
-
-
-
-function showLoginPortal() {
-
-    const portal = document.getElementById('admin-login-overlay');
-
-    if (portal) {
-
-        portal.classList.remove('hidden');
-
-        console.log("--- COMMAND DECK ACTIVATED ---");
-
-    }
-
-}
-
-
 
 /* === 3. AUTHENTICATION (Magic Link) === */
 
-
-
 async function requestMagicLink() {
-
     const emailInput = document.getElementById('admin-email');
-
     const email = emailInput.value;
-
     const btn = event.target;
 
-
-
-    if (!email) return alert("Enter your admin email first!");
-
-
+    if (!email) return alert("Enter admin email!");
 
     btn.innerText = "SENDING...";
-
     btn.disabled = true;
 
-
-
     try {
-
         const response = await fetch('https://your-render-app.onrender.com/api/v1/auth/magic-link', {
-
             method: 'POST',
-
             headers: { 'Content-Type': 'application/json' },
-
             body: JSON.stringify({ email: email })
-
         });
-
-
 
         if (response.ok) {
-
-            alert("Check your Gmail, Charlie. The gate is open.");
-
+            alert("Check Gmail, Charlie. Gate is open.");
             btn.innerText = "LINK SENT";
-
         } else {
-
-            alert("Unauthorized access attempt.");
-
+            alert("Unauthorized access.");
             btn.innerText = "GET MAGIC LINK";
-
             btn.disabled = false;
-
         }
-
     } catch (err) {
-
-        console.error("Backend offline:", err);
-
-        alert("Could not connect to the Brain. Check Render logs.");
-
-        btn.innerText = "GET MAGIC LINK";
-
+        alert("Brain offline. Check Render.");
         btn.disabled = false;
-
     }
-
 }
 
-
-
-/* === 4. THE HANDSHAKE (Auto-Unlock) === */
-
-
+/* === 4. THE HANDSHAKE (Auto-Redirect) === */
 
 window.addEventListener('DOMContentLoaded', () => {
-
     const urlParams = new URLSearchParams(window.location.search);
-
     const token = urlParams.get('token');
 
-
-
     if (token) {
-
-        // 1. Store the key
-
+        // 1. Secure the token
         localStorage.setItem('charlie_token', token);
-
         
-
-        // 2. Clean the address bar
-
-        window.history.replaceState({}, document.title, "/");
-
-
-
-        // 3. Flip the UI state
-
-        const portal = document.getElementById('admin-login-overlay');
-
-        const loginState = document.getElementById('login-state');
-
-        const adminState = document.getElementById('admin-state');
-
-
-
-        if (portal) portal.classList.remove('hidden');
-
-        if (loginState) loginState.classList.add('hidden');
-
-        if (adminState) adminState.classList.remove('hidden');
-
-        
-
-        console.log("--- ACCESS GRANTED: WELCOME CHARLIE ---");
-
+        // 2. Teleport to the actual Dashboard folder
+        // This moves you from wiston1568.github.io to wiston1568.github.io/console/
+        window.location.href = "./console/index.html"; 
     }
-
 });
 
-
-
-/* === 5. ADMIN ACTIONS (STK Push) === */
-
-
-
+/* === 5. ADMIN ACTIONS === */
+// Note: These functions should move to a script inside /console/index.html 
+// but I'm keeping them here for backup.
 async function triggerManualPush() {
-
     const phone = document.getElementById('target-phone').value;
-
     const token = localStorage.getItem('charlie_token');
-
-    const btn = event.target;
-
-
-
-    if (!phone) return alert("Enter a phone number!");
-
-
-
-    btn.innerText = "PUSHING...";
-
-    btn.disabled = true;
-
-
+    if (!phone) return alert("Enter phone!");
 
     try {
-
         const response = await fetch('https://your-render-app.onrender.com/api/v1/mpesa/stk-push', {
-
             method: 'POST',
-
             headers: { 
-
                 'Content-Type': 'application/json',
-
                 'Authorization': `Bearer ${token}` 
-
             },
-
-            body: JSON.stringify({ phone: phone })
-
+            body: JSON.stringify({ phone })
         });
-
-
-
         const data = await response.json();
-
-        alert(data.CustomerMessage || "Request Processed");
-
+        alert(data.CustomerMessage || "Push Sent");
     } catch (err) {
-
-        alert("Failed to send STK push.");
-
-    } finally {
-
-        btn.innerText = "SEND PROMPT";
-
-        btn.disabled = false;
-
+        alert("STK Failed");
     }
-
 }

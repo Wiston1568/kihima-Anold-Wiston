@@ -12,19 +12,23 @@
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     
     <style> 
-        #shishi {
-            text-align: center;
-            color: purple;
+        /* Essential inline fixes for layout stability */
+        #shishi { text-align: center; color: purple; }
+        .shh { color: red; }
+        .site-footer ion-icon { font-size: 24px; vertical-align: middle; margin-left: 10px; }
+        
+        /* Ensure the login overlay doesn't break the portfolio layout */
+        #admin-login-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(15px);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        .shh {
-            color: red;
-        }
-        /* Style for footer icons to ensure visibility */
-        .site-footer ion-icon {
-            font-size: 24px;
-            vertical-align: middle;
-            margin-left: 10px;
-        }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -36,7 +40,7 @@
             <h1>Kihima Anold Wiston</h1>
             <p>Currently a student at Kabarak University TVET Institute</p>
             <div class="hero-buttons">
-                <button class="shit1"><a href="Services.html">More Info</a></button>
+                <a href="Services.html" class="shit1">More Info</a>
             </div>
         </div>
 
@@ -56,9 +60,6 @@
         </div>
     </section>
  
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-
     <footer class="site-footer">
         <img src="Pictures/logo.jpg" alt="Logo" height="40" style="vertical-align: middle;">
         &copy; 2026 Wiston Anold. All rights reserved.
@@ -71,29 +72,18 @@
         </a>
     </footer>
 
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="type.js"></script>
 
     <div id="admin-login-overlay" class="hidden">
         <div class="glass-panel">
-            <h2>COMMAND CONSOLE v1.1.0</h2>
+            <h2>COMMAND CONSOLE</h2>
+            <p style="font-size: 0.7rem; color: #888; margin-bottom: 20px;">ADMIN AUTH REQUIRED</p>
             
             <div id="login-state">
-                <p style="font-size: 0.7rem; color: #888; margin-bottom: 10px;">ADMIN AUTH REQUIRED</p>
-                <input type="email" id="admin-email" placeholder="Enter Admin Email">
-                <button onclick="requestMagicLink()">GET MAGIC LINK</button>
-            </div>
-
-            <div id="admin-state" class="hidden">
-                <div class="stats" style="margin: 20px 0;">
-                    <p style="font-size: 0.8rem;">Active Users: <span id="active-users">0</span></p>
-                    <p style="font-size: 0.8rem;">Revenue: <span id="total-revenue">KES 0</span></p>
-                </div>
-
-                <div id="mpesa-module">
-                    <h3 style="font-size: 0.9rem; color: red; margin-bottom: 10px;">Manual STK Push</h3>
-                    <input type="text" id="target-phone" placeholder="2547XXXXXXXX">
-                    <button onclick="triggerManualPush()">SEND PROMPT</button>
-                </div>
+                <input type="email" id="admin-email" placeholder="Enter Admin Email" style="width: 100%; padding: 10px; background: #000; border: 1px solid #444; color: orchid; margin-bottom: 15px;">
+                <button onclick="requestMagicLink()" style="width: 100%; padding: 10px; background: orchid; border: none; color: #fff; font-weight: bold; cursor: pointer;">GET MAGIC LINK</button>
             </div>
 
             <button onclick="document.getElementById('admin-login-overlay').classList.add('hidden')" 
