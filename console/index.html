@@ -114,6 +114,12 @@
     <div class="flex justify-between items-center border-b border-white/5 pb-4">
         <h2 class="text-2xl font-bold text-white">LIVE_TERMINAL_FEED</h2>
         <div class="flex gap-4">
+            <div class="mt-4 flex gap-2 border-t border-white/5 pt-4">
+    <span class="text-blue-500 font-bold">$</span>
+    <input type="text" id="termInput" placeholder="Enter command (e.g., clear, ping, logs)..." 
+           class="bg-transparent border-none outline-none text-white w-full text-xs"
+           onkeydown="if(event.key === 'Enter') handleCommand(this.value)">
+</div>
             <div class="glass px-3 py-1 rounded text-[10px]">
                 CPU: <span class="text-green-500" id="cpu-load">2%</span>
             </div>
