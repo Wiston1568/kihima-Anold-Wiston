@@ -11,15 +11,20 @@
         .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .nav-item { transition: 0.3s; cursor: pointer; border-left: 3px solid transparent; }
         .nav-item.active { background: rgba(188, 19, 254, 0.1); border-left: 3px solid #bc13fe; color: white; }
-        .view { display: none; animation: fadeIn 0.4s ease-in-out; }
-        .view.active { display: block; }
+        
+        /* The Fix: Ensure views are hidden by default unless they have .active */
+        .view { display: none; }
+        .view.active { display: block; animation: fadeIn 0.4s ease-in-out; }
+        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-thumb { background: #21262d; border-radius: 10px; }
         .status-pulse { animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+        
         .dropdown-content { position: absolute; right: 0; top: 50px; background: #0d1117; border: 1px solid #bc13fe33; border-radius: 8px; width: 200px; z-index: 50; }
-        .hidden { display: none !important; }
+        /* Renamed to avoid Tailwind conflict */
+        .ui-hidden { display: none !important; }
     </style>
 </head>
 <body class="flex h-screen">
@@ -54,7 +59,7 @@
                     <span class="text-[10px] text-gray-400">SESSION: 0x1568</span>
                     <img src="../Pictures/logo.jpg" class="w-8 h-8 rounded-full border border-white/10">
                 </button>
-                <div id="logoutDropdown" class="dropdown-content hidden p-2 shadow-2xl">
+                <div id="logoutDropdown" class="dropdown-content ui-hidden p-2 shadow-2xl">
                     <button onclick="switchView('security')" class="w-full text-left p-2 text-xs hover:bg-white/5 rounded text-white">Security Vault</button>
                     <button onclick="logout()" class="w-full text-left p-2 text-xs hover:bg-red-500/10 rounded text-red-500 mt-1">Terminate Session</button>
                 </div>
@@ -81,8 +86,7 @@
                         <thead class="bg-white/5 text-[10px] uppercase">
                             <tr><th class="p-4">Phone</th><th class="p-4">Device_ID</th><th class="p-4">Status</th><th class="p-4 text-right">Action</th></tr>
                         </thead>
-                        <tbody id="userTable">
-                            </tbody>
+                        <tbody id="userTable"></tbody>
                     </table>
                 </div>
             </section>
@@ -121,14 +125,13 @@
 
         if (!token) window.location.href = '../index.html';
 
-        // 1. DATA REFRESH LOGIC (Restored)
         async function fetchSystemData() {
             try {
                 const userRes = await fetch(`${API_BASE}/admin/users`, { headers: { 'Authorization': `Bearer ${token}` }});
                 const users = await userRes.json();
                 
                 const tableBody = document.getElementById('userTable');
-                if(tableBody) {
+                if(tableBody && Array.isArray(users)) {
                     tableBody.innerHTML = users.map(u => `
                         <tr class="border-b border-white/5 hover:bg-white/5 transition">
                             <td class="p-4 text-xs">${u.phone}</td>
@@ -150,8 +153,9 @@
             }
         }
 
-        // 2. LOGIC HELPERS
-        function toggleDropdown() { document.getElementById('logoutDropdown').classList.toggle('hidden'); }
+        function toggleDropdown() { 
+            document.getElementById('logoutDropdown').classList.toggle('ui-hidden'); 
+        }
         
         async function updateSystemPin() {
             const newPin = document.getElementById('newPin').value;
@@ -164,10 +168,19 @@
         }
 
         function switchView(viewId) {
-            document.querySelectorAll('.view, .nav-item').forEach(el => el.classList.remove('active'));
-            document.getElementById(`view-${viewId}`).classList.add('active');
-            document.getElementById(`nav-${viewId}`).classList.add('active');
-            logTerminal(`MOUNT_VIEW: ${viewId.toUpperCase()}`);
+            // Remove active from all
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            // Add to target
+            const targetView = document.getElementById(`view-${viewId}`);
+            const targetNav = document.getElementById(`nav-${viewId}`);
+            
+            if(targetView && targetNav) {
+                targetView.classList.add('active');
+                targetNav.classList.add('active');
+                logTerminal(`MOUNT_VIEW: ${viewId.toUpperCase()}`);
+            }
         }
 
         function logTerminal(msg) {
@@ -181,7 +194,6 @@
 
         function logout() { localStorage.removeItem('charlie_token'); window.location.href = '../index.html'; }
 
-        // INITIALIZE
         window.onload = () => { 
             logTerminal("Session Charlie authorized.");
             fetchSystemData();
