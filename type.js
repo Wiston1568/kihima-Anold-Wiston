@@ -28,5 +28,17 @@ function createParticles() {
         container.appendChild(particle);
     }
 }
-
 createParticles();
+// Listen for Ctrl + Shift + L to reveal the Admin Portal
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && e.code === 'KeyL') {
+        e.preventDefault();
+        showLoginPortal(); // This function unhides your login div
+    }
+});
+
+function showLoginPortal() {
+    const portal = document.getElementById('admin-login-overlay');
+    portal.classList.remove('hidden');
+    console.log("--- COMMAND DECK ACTIVATED ---");
+}
