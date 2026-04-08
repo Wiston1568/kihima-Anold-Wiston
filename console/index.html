@@ -18,8 +18,6 @@
         ::-webkit-scrollbar-thumb { background: #21262d; border-radius: 10px; }
         .status-pulse { animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
-        
-        /* Dropdown Style */
         .dropdown-content { position: absolute; right: 0; top: 50px; background: #0d1117; border: 1px solid #bc13fe33; border-radius: 8px; width: 200px; z-index: 50; }
         .hidden { display: none !important; }
     </style>
@@ -57,7 +55,6 @@
                     <img src="../Pictures/logo.jpg" class="w-8 h-8 rounded-full border border-white/10">
                 </button>
                 <div id="logoutDropdown" class="dropdown-content hidden p-2 shadow-2xl">
-                    <p class="text-[9px] p-2 text-gray-500 border-b border-white/5 mb-1 uppercase">Operator Settings</p>
                     <button onclick="switchView('security')" class="w-full text-left p-2 text-xs hover:bg-white/5 rounded text-white">Security Vault</button>
                     <button onclick="logout()" class="w-full text-left p-2 text-xs hover:bg-red-500/10 rounded text-red-500 mt-1">Terminate Session</button>
                 </div>
@@ -77,26 +74,45 @@
                 </div>
             </section>
 
+            <section id="view-garden" class="view space-y-8">
+                <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">GARDEN_USER_REGISTRY</h2>
+                <div class="glass rounded-2xl overflow-hidden">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-white/5 text-[10px] uppercase">
+                            <tr><th class="p-4">Phone</th><th class="p-4">Device_ID</th><th class="p-4">Status</th><th class="p-4 text-right">Action</th></tr>
+                        </thead>
+                        <tbody id="userTable">
+                            </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="view-financial" class="view space-y-8">
+                <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">FINANCIAL_GRID_LEADS</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass p-8 rounded-2xl"><p class="text-[10px] text-gray-500 uppercase">Today's Revenue</p><h3 id="rev-today" class="text-3xl font-bold text-green-500">KES 0</h3></div>
+                    <div class="glass p-8 rounded-2xl"><p class="text-[10px] text-gray-500 uppercase">Active Subs</p><h3 id="sub-count" class="text-3xl font-bold text-[#bc13fe]">0</h3></div>
+                </div>
+            </section>
+
+            <section id="view-terminal" class="view space-y-4">
+                <h2 class="text-2xl font-bold text-white">LIVE_TERMINAL_FEED</h2>
+                <div class="bg-black/80 p-6 rounded-xl border border-white/10 h-[450px] font-mono text-[10px] overflow-y-auto shadow-2xl" id="terminalOutput">
+                    <p class="text-[#bc13fe]">>> [SYSTEM] K-OS BOOTLOADER v2.1.0_READY</p>
+                </div>
+            </section>
+
             <section id="view-security" class="view space-y-8">
                 <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">SECURITY_PROTOCOL_VAULT</h2>
                 <div class="glass p-8 rounded-2xl max-w-xl">
                     <h3 class="text-xs font-bold text-[#bc13fe] mb-6 uppercase">Credential Management</h3>
                     <div class="space-y-6">
-                        <div>
-                            <label class="text-[10px] text-gray-500 block mb-2 uppercase">Update Master PIN</label>
-                            <div class="flex gap-2">
-                                <input id="newPin" type="password" placeholder="••••" maxlength="4" class="flex-1 bg-black border border-white/10 p-4 rounded text-sm text-white text-center tracking-widest">
-                                <button onclick="updateSystemPin()" class="bg-[#bc13fe] px-6 rounded font-bold text-xs uppercase text-white">Commit_Change</button>
-                            </div>
-                        </div>
-                        <div class="pt-6 border-t border-white/5">
-                            <button onclick="logout()" class="w-full bg-red-900/20 border border-red-500/20 text-red-500 hover:bg-red-900/40 py-4 rounded text-xs font-bold uppercase transition">Terminate Session (Logout)</button>
-                        </div>
+                        <input id="newPin" type="password" placeholder="NEW_PIN" maxlength="4" class="w-full bg-black border border-white/10 p-4 rounded text-white text-center tracking-widest">
+                        <button onclick="updateSystemPin()" class="w-full bg-[#bc13fe] py-4 rounded font-bold text-xs uppercase text-white">Commit_Change</button>
                     </div>
                 </div>
             </section>
-
-            </div>
+        </div>
     </main>
 
     <script>
@@ -105,47 +121,53 @@
 
         if (!token) window.location.href = '../index.html';
 
-        // DROPDOWN LOGIC
-        function toggleDropdown() { document.getElementById('logoutDropdown').classList.toggle('hidden'); }
-        window.onclick = (e) => { if (!e.target.closest('button')) document.getElementById('logoutDropdown').classList.add('hidden'); }
-
-        // NEW PIN RESET LOGIC
-        async function updateSystemPin() {
-            const newPin = document.getElementById('newPin').value;
-            if (newPin.length < 4) return alert("ERROR: PIN_MUST_BE_4_DIGITS");
-
+        // 1. DATA REFRESH LOGIC (Restored)
+        async function fetchSystemData() {
             try {
-                const res = await fetch(`${API_BASE}/auth/reset-pin`, {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}` 
-                    },
-                    body: JSON.stringify({ newPin })
-                });
-
-                if (res.ok) {
-                    logTerminal("SUCCESS: System PIN updated in database.");
-                    alert("PIN UPDATED SUCCESSFULLY");
-                    document.getElementById('newPin').value = '';
-                } else {
-                    alert("ERROR: SESSION_EXPIRED_OR_UNAUTHORIZED");
+                const userRes = await fetch(`${API_BASE}/admin/users`, { headers: { 'Authorization': `Bearer ${token}` }});
+                const users = await userRes.json();
+                
+                const tableBody = document.getElementById('userTable');
+                if(tableBody) {
+                    tableBody.innerHTML = users.map(u => `
+                        <tr class="border-b border-white/5 hover:bg-white/5 transition">
+                            <td class="p-4 text-xs">${u.phone}</td>
+                            <td class="p-4 text-[10px] text-gray-500">${u.deviceId || 'N/A'}</td>
+                            <td class="p-4"><span class="px-2 py-0.5 rounded-full text-[10px] ${u.status === 'active' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}">${u.status}</span></td>
+                            <td class="p-4 text-right"><button class="text-[#bc13fe] text-[10px]">MOD</button></td>
+                        </tr>
+                    `).join('');
                 }
-            } catch(e) {
-                logTerminal("FAILURE: Could not reach backend node.");
+
+                const statsRes = await fetch(`${API_BASE}/admin/stats`, { headers: { 'Authorization': `Bearer ${token}` }});
+                const stats = await statsRes.json();
+                if(document.getElementById('rev-today')) document.getElementById('rev-today').innerText = `KES ${stats.revenue || 0}`;
+                if(document.getElementById('sub-count')) document.getElementById('sub-count').innerText = stats.activeUsers || 0;
+
+                logTerminal("SYNC: Node registry updated.");
+            } catch (err) {
+                logTerminal("SYNC_ERROR: Handshake failed.");
             }
         }
 
-        function logout() {
-            localStorage.removeItem('charlie_token');
-            window.location.href = '../index.html';
+        // 2. LOGIC HELPERS
+        function toggleDropdown() { document.getElementById('logoutDropdown').classList.toggle('hidden'); }
+        
+        async function updateSystemPin() {
+            const newPin = document.getElementById('newPin').value;
+            const res = await fetch(`${API_BASE}/auth/reset-pin`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({ newPin })
+            });
+            if (res.ok) { alert("PIN_UPDATED"); logTerminal("SECURITY: Master PIN altered."); }
         }
 
         function switchView(viewId) {
             document.querySelectorAll('.view, .nav-item').forEach(el => el.classList.remove('active'));
             document.getElementById(`view-${viewId}`).classList.add('active');
             document.getElementById(`nav-${viewId}`).classList.add('active');
-            logTerminal(`Switched to ${viewId.toUpperCase()}`);
+            logTerminal(`MOUNT_VIEW: ${viewId.toUpperCase()}`);
         }
 
         function logTerminal(msg) {
@@ -157,7 +179,14 @@
             term.scrollTop = term.scrollHeight;
         }
 
-        window.onload = () => { logTerminal("Charlie session initialized."); }
+        function logout() { localStorage.removeItem('charlie_token'); window.location.href = '../index.html'; }
+
+        // INITIALIZE
+        window.onload = () => { 
+            logTerminal("Session Charlie authorized.");
+            fetchSystemData();
+            setInterval(fetchSystemData, 30000); 
+        }
     </script>
 </body>
 </html>
