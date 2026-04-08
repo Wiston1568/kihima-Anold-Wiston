@@ -110,14 +110,24 @@
             </div>
         </section>
 
-        <section id="view-terminal" class="view space-y-4">
-            <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">LIVE_TERMINAL_FEED</h2>
-            <div class="bg-black p-6 rounded-xl border border-white/10 h-96 font-mono text-xs overflow-y-auto" id="terminalOutput">
-                <p class="text-blue-500">[SYSTEM] Initialization successful...</p>
-                <p class="text-gray-500">[AUTH] Waiting for valid JWT token...</p>
+      <section id="view-terminal" class="view space-y-4">
+    <div class="flex justify-between items-center border-b border-white/5 pb-4">
+        <h2 class="text-2xl font-bold text-white">LIVE_TERMINAL_FEED</h2>
+        <div class="flex gap-4">
+            <div class="glass px-3 py-1 rounded text-[10px]">
+                CPU: <span class="text-green-500" id="cpu-load">2%</span>
             </div>
-        </section>
-
+            <div class="glass px-3 py-1 rounded text-[10px]">
+                LATENCY: <span class="text-blue-500" id="ping-ms">42ms</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-black/80 p-6 rounded-xl border border-white/10 h-[500px] font-mono text-xs overflow-y-auto shadow-2xl" id="terminalOutput">
+        <p class="text-blue-500">>> [SYSTEM] K-OS BOOTLOADER v2.1.0_READY</p>
+        <p class="text-gray-500">>> [SECURITY] WAITING_FOR_JWT_HANDSHAKE...</p>
+    </div>
+</section>
     </main>
 
     <script>
