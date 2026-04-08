@@ -11,13 +11,14 @@
         .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .nav-item { transition: 0.3s; cursor: pointer; border-left: 3px solid transparent; }
         .nav-item.active { background: rgba(59, 130, 246, 0.1); border-left: 3px solid #3b82f6; color: white; }
+        
+        /* The Logic behind the tabs */
         .view { display: none; animation: fadeIn 0.4s ease-in-out; }
         .view.active { display: block; }
+        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-thumb { background: #21262d; border-radius: 10px; }
-        
-        /* Pulse for the live indicator */
         .status-pulse { animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
     </style>
@@ -59,7 +60,7 @@
                     <h3 class="text-xs font-bold text-blue-500 uppercase">Omni-Swapper</h3>
                     <input id="appId" type="text" placeholder="APP_ID" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white">
                     <input id="streamLink" type="text" placeholder="STREAM_URL" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white">
-                    <button onclick="updateApp()" class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded font-bold text-xs uppercase transition">Push to Vault</button>
+                    <button onclick="updateVault()" class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded font-bold text-xs uppercase transition">Push to Vault</button>
                 </div>
                 <div class="glass p-6 rounded-2xl flex flex-col justify-center">
                     <h3 class="text-xs font-bold text-red-500 uppercase mb-4">Master Kill Switch</h3>
@@ -92,7 +93,7 @@
 
         <section id="view-financial" class="view space-y-8">
             <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">FINANCIAL_GRID_LEADS</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="glass p-8 rounded-2xl">
                     <p class="text-[10px] text-gray-500 uppercase">Today's Revenue</p>
                     <h3 class="text-3xl font-bold text-green-500">KES 4,200</h3>
@@ -102,8 +103,68 @@
                     <h3 class="text-3xl font-bold text-blue-500">128</h3>
                 </div>
             </div>
-            
             <div class="glass p-6 rounded-2xl">
                 <h3 class="text-xs font-bold text-green-500 mb-4 uppercase">Manual Payment Push (Daraja API)</h3>
                 <input id="payPhone" type="text" placeholder="2547XXXXXXXX" class="w-full bg-black/50 p-3 rounded border border-white/10 mb-4 text-white">
-                <button id="stkBtn" onclick
+                <button onclick="pushSTK()" class="w-full bg-green-600 hover:bg-green-700 py-3 rounded font-bold text-xs uppercase transition">Initiate STK Push</button>
+            </div>
+        </section>
+
+        <section id="view-terminal" class="view space-y-4">
+            <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">LIVE_TERMINAL_FEED</h2>
+            <div class="bg-black p-6 rounded-xl border border-white/10 h-96 font-mono text-xs overflow-y-auto" id="terminalOutput">
+                <p class="text-blue-500">[SYSTEM] Initialization successful...</p>
+                <p class="text-gray-500">[AUTH] Waiting for valid JWT token...</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // 1. NAVIGATION LOGIC
+        function switchView(viewId) {
+            // Hide all views
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            // Deactivate all nav items
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            // Activate target
+            document.getElementById(`view-${viewId}`).classList.add('active');
+            document.getElementById(`nav-${navId = viewId}`).classList.add('active');
+            
+            logTerminal(`Switched to ${viewId.toUpperCase()} view.`);
+        }
+
+        // 2. AUTHENTICATION (TOKEN SNAGGER)
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        if (token) {
+            localStorage.setItem('charlie_token', token);
+            // Remove token from URL for security
+            window.history.replaceState({}, document.title, window.location.pathname);
+            logTerminal("ADMIN_TOKEN_ACQUIRED: Session active for 15m.");
+        }
+
+        // 3. TERMINAL LOGGER
+        function logTerminal(msg) {
+            const term = document.getElementById('terminalOutput');
+            const p = document.createElement('p');
+            p.innerHTML = `<span class="text-green-500">[${new Date().toLocaleTimeString()}]</span> ${msg}`;
+            term.appendChild(p);
+            term.scrollTop = term.scrollHeight;
+        }
+
+        // 4. PLACEHOLDER ACTIONS
+        function updateVault() {
+            logTerminal("Pushing update to MongoDB Atlas...");
+            // Add your fetch() here to talk to kihima-backend.onrender.com
+        }
+
+        function pushSTK() {
+            const phone = document.getElementById('payPhone').value;
+            logTerminal(`Initiating Daraja STK Push to ${phone}...`);
+        }
+    </script>
+</body>
+</html>
