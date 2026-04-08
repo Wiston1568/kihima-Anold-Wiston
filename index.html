@@ -72,27 +72,35 @@
     </footer>
 
     <script src="type.js"></script>
+
     <div id="admin-login-overlay" class="hidden">
-    <div class="glass-panel">
-        <h2>COMMAND CONSOLE v1.1.0</h2>
-        
-        <input type="email" id="admin-email" placeholder="Enter Admin Email">
-        <button onclick="requestMagicLink()">GET MAGIC LINK</button>
-        
-        <div class="stats" style="margin: 20px 0;">
-            <p style="font-size: 0.8rem;">Active Users: <span id="active-users">0</span></p>
-            <p style="font-size: 0.8rem;">Revenue: <span id="total-revenue">KES 0</span></p>
-        </div>
+        <div class="glass-panel">
+            <h2>COMMAND CONSOLE v1.1.0</h2>
+            
+            <div id="login-state">
+                <p style="font-size: 0.7rem; color: #888; margin-bottom: 10px;">ADMIN AUTH REQUIRED</p>
+                <input type="email" id="admin-email" placeholder="Enter Admin Email">
+                <button onclick="requestMagicLink()">GET MAGIC LINK</button>
+            </div>
 
-        <div id="mpesa-module">
-            <h3 style="font-size: 0.9rem; color: red;">Manual STK Push</h3>
-            <input type="text" id="target-phone" placeholder="2547XXXXXXXX">
-            <button onclick="triggerManualPush()">SEND PROMPT</button>
-        </div>
+            <div id="admin-state" class="hidden">
+                <div class="stats" style="margin: 20px 0;">
+                    <p style="font-size: 0.8rem;">Active Users: <span id="active-users">0</span></p>
+                    <p style="font-size: 0.8rem;">Revenue: <span id="total-revenue">KES 0</span></p>
+                </div>
 
-        <button onclick="document.getElementById('admin-login-overlay').classList.add('hidden')" style="margin-top:20px; background: transparent; font-size: 0.7rem;">[ CLOSE ]</button>
-    </div>
-</div>
+                <div id="mpesa-module">
+                    <h3 style="font-size: 0.9rem; color: red; margin-bottom: 10px;">Manual STK Push</h3>
+                    <input type="text" id="target-phone" placeholder="2547XXXXXXXX">
+                    <button onclick="triggerManualPush()">SEND PROMPT</button>
+                </div>
+            </div>
+
+            <button onclick="document.getElementById('admin-login-overlay').classList.add('hidden')" 
+                    style="margin-top:20px; background: transparent; font-size: 0.7rem; border: none; color: orchid; cursor: pointer;">
+                [ CLOSE TERMINAL ]
+            </button>
+        </div>
     </div>
 </body>
 </html>
