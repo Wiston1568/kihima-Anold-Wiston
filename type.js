@@ -1,95 +1,120 @@
-// Magnetic button effect
-document.querySelectorAll('.btn-magnetic').forEach(btn => {
-    btn.addEventListener('mousemove', (e) => {
-        const rect = btn.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        btn.style.setProperty('--x', `${x}px`);
-        btn.style.setProperty('--y', `${y}px`);
-    });
+/**
+ * ARCHITECT: Kihima Arnold Wiston
+ * MODULE: System Logic & Interactive Handshake
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+    initScrollReveal();
+    initTerminalLogic();
+    initMagneticButtons();
+    initTabSystem();
+    initSecretTriggers();
+    console.log("NODE_ONLINE: System Handshake Complete.");
 });
 
-// Simple particles background
-function createParticles() {
-    const container = document.getElementById('particles');
-    if (!container) return; 
-    for (let i = 0; i < 50; i++) {
-        const particle = document.createElement('div');
-        particle.style.cssText = `
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            top: ${Math.random() * 100}%;
-            left: ${Math.random() * 100}%;
-            animation: float ${Math.random() * 10 + 5}s infinite ease-in-out;
-        `;
-        container.appendChild(particle);
-    }
-}
-createParticles();
-
-// Listen for Ctrl + Shift + L to reveal the Admin Portal
-document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.shiftKey && e.code === 'KeyL') {
-        e.preventDefault();
-        showLoginPortal();
-    }
-});
-
-function showLoginPortal() {
-    const portal = document.getElementById('admin-login-overlay');
-    if (portal) {
-        portal.classList.remove('hidden');
-        console.log("--- COMMAND DECK ACTIVATED ---");
-    }
+// 1. SCROLL REVEAL ANIMATIONS
+function initScrollReveal() {
+    const observerOptions = { threshold: 0.15 };
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, observerOptions);
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 }
 
-/* === BACKEND INTEGRATION LOGIC === */
+// 2. TERMINAL & AUTH LOGIC
+const API_BASE = 'https://kihima-backend.onrender.com/api/v1/auth';
 
-// 1. Send Magic Link to your Backend
-async function requestMagicLink() {
-    const emailInput = document.getElementById('admin-email');
-    const email = emailInput ? emailInput.value : null;
-    
-    if (!email) return alert("Email required, Charlie.");
+async function handlePinLogin() {
+    const pinInput = document.getElementById('admin-pin');
+    const authBtn = document.querySelector('.auth-btn');
+    const pin = pinInput.value;
+
+    if (pin.length !== 4) {
+        alert("CRITICAL_ERROR: PIN must be 4 digits.");
+        return;
+    }
 
     try {
-        // Pointing to your live Render engine
-        const response = await fetch('https://kihima-backend.onrender.com/api/v1/auth/magic-link', {
+        authBtn.innerText = "AUTHORIZING...";
+        const response = await fetch(`${API_BASE}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email })
+            body: JSON.stringify({ pin })
         });
 
+        const data = await response.json();
         if (response.ok) {
-            alert("Handshake initiated. Check your Gmail.");
+            localStorage.setItem('sys_token', data.token);
+            authBtn.innerText = "ACCESS_GRANTED";
+            authBtn.style.background = "#00ff88"; 
+            setTimeout(() => { window.location.href = 'admin-dashboard.html'; }, 1000);
         } else {
-            alert("Access Denied: Unauthorized Email.");
+            throw new Error(data.message || "UNAUTHORIZED");
         }
     } catch (err) {
-        console.error("Connection failed:", err);
-        // Special alert for Render Free Tier spin-up
-        alert("Server is waking up... Please wait 30 seconds and try again.");
+        authBtn.innerText = "ACCESS_DENIED";
+        authBtn.style.background = "var(--primary)";
+        pinInput.value = "";
+        setTimeout(() => { authBtn.innerText = "AUTHORIZE_ACCESS"; }, 2000);
     }
 }
 
-// 2. The Handshake (Detect token in URL and move to /console)
-window.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
+// 3. SECRET TRIGGERS (Shortcuts & Triple Tap)
+function initSecretTriggers() {
+    // Keyboard Shortcut: Ctrl + Shift + L
+    window.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'l') {
+            e.preventDefault();
+            window.toggleTerminal();
+        }
+    });
 
-    if (token) {
-        // Save token for the dashboard to use for authorized API calls
-        localStorage.setItem('charlie_token', token);
-        
-        // Clean the URL so the token doesn't stay in the history/address bar
-        window.history.replaceState({}, document.title, "/");
-        
-        // Teleport to your internal dashboard folder
-        // Ensure this path matches your repo structure exactly
-        window.location.href = "./console/index.html"; 
-    }
-});
+    // Mobile Triple Tap
+    let tapCount = 0;
+    document.querySelectorAll('.nav-logo img, .footer-logo').forEach(logo => {
+        logo.addEventListener('click', () => {
+            tapCount++;
+            if (tapCount === 3) {
+                window.toggleTerminal();
+                tapCount = 0;
+            }
+            setTimeout(() => { tapCount = 0; }, 500);
+        });
+    });
+}
+
+// 4. TAB SYSTEM
+function initTabSystem() {
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const target = btn.dataset.tab;
+            document.querySelectorAll('.tab-btn, .tab-content').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+            const activeTab = document.getElementById(`tab-${target}`);
+            if (activeTab) activeTab.classList.add('active');
+        });
+    });
+}
+
+// 5. UTILITIES
+window.toggleTerminal = function() {
+    const overlay = document.getElementById('admin-login-overlay');
+    if (overlay) overlay.classList.toggle('hidden');
+};
+
+function initMagneticButtons() {
+    document.querySelectorAll('.btn-magnetic').forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+            const pos = btn.getBoundingClientRect();
+            const x = e.pageX - pos.left - pos.width / 2;
+            const y = e.pageY - pos.top - pos.height / 2;
+            btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+        });
+        btn.addEventListener('mouseout', () => { btn.style.transform = `translate(0, 0)`; });
+    });
+}

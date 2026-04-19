@@ -3,224 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="Pictures/logo.png">
+    <title>Services | Technical Ecosystem</title>
+    
     <link rel="stylesheet" href="dumb.css">
-    <title>Services - Wiston1568</title>
- <link rel="icon" type="image/png" href="Pictures/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <!-- Ionicons for social logos -->
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    <!-- inline tweaks for new sections -->
+    <link rel="icon" type="image/png" href="Pictures/apple-touch-icon.png">
+    
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
     <style>
-      .testimonials, .cta { padding: 2rem 1rem; text-align:center; }
-      .testimonials h2, .cta h2 { margin-bottom: 1rem; }
-      /* chat-style bubbles */
-      .chat-bubble { max-width:600px; margin:1rem auto; padding:0.75rem 1rem; border-radius:10px; position:relative; transition:transform 0.2s; }
-      .chat-bubble.client { background:#f0f0f0; text-align:left; }
-      .chat-bubble.user { background:#6c5ce7; color:#fff; text-align:right; }
-      .chat-bubble:hover { transform:scale(1.02); }
-      .chat-bubble cite { display:block; font-size:0.85rem; margin-top:0.5rem; opacity:0.8; }
-      .cta .btn { background:#6c5ce7; color:#fff; padding:0.75rem 1.5rem; text-decoration:none; border-radius:4px; display:inline-block; white-space:nowrap; }
-      /* floating chat widget styles */
-      .chat-widget { position:fixed; bottom:20px; right:20px; background:#6c5ce7; color:#fff; border-radius:50%; width:60px; height:60px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.3); }
-      .chat-widget ion-icon { font-size:1.5rem; }
-    </style>
-    <style>
-      #why {
-        color: orchid;
-      }
+        .services-hero {
+            text-align: center;
+            padding: 160px 5% 60px;
+            background: radial-gradient(circle at top center, rgba(188, 19, 254, 0.1), transparent 70%);
+        }
+
+        .ecosystem-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 4rem;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--surface-border);
+            color: var(--muted);
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: var(--mono);
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tab-btn.active {
+            color: white;
+            border-color: var(--primary);
+            background: var(--primary-glow);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding-bottom: 5rem;
+        }
+
+        /* The fix for the broken tab visibility */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .service-card {
+            background: var(--surface);
+            border: 1px solid var(--surface-border);
+            padding: 3rem 2rem;
+            border-radius: var(--radius);
+            transition: 0.4s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            background: rgba(188, 19, 254, 0.03);
+        }
+
+        .service-card ion-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Footer Alignment Fix */
+        .site-footer {
+            border-top: 1px solid var(--surface-border);
+            padding: 2rem 0;
+            background: var(--background);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .footer-logo {
+            height: 30px;
+            cursor: pointer;
+        }
+
+        .footer-text {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-socials a {
+            color: var(--muted);
+            font-size: 1.2rem;
+            transition: 0.3s;
+        }
+
+        .footer-socials a:hover {
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .footer-container {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            .footer-brand {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
     </style>
 </head>
-<body>
-  <header class="site-header">
-    <nav>
-      <ul class="main-nav">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="Services.html" class="active">Services</a></li>
-        <li><a href="contact.htm">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+<body class="dark-theme">
 
-  <section class="services-hero">
-    <h1>What I Offer</h1>
-    <p>Professional IT &amp; design services to help you succeed.</p>
-  </section>
+    <header class="main-header">
+        <nav class="nav-container">
+            <div class="nav-logo">
+                <img src="Pictures/logo.jpg" alt="AW" onclick="toggleTerminal()">
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="Services.html" class="active">Services</a></li>
+                <li><a href="contact.htm">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <!-- addin shii here -->
-  
-  <section class="offer-section">
-  <h1 class="offer-title" style="color: red;">
-    The Tools & Technologies I Use
-  </h1>
-  
-  <div class="cards-container" id="tech-stack"> <div class="card">
-      <div class="circle" style="background-image: url('https://images.unsplash.com/photo-1516116216624-53e697fedbea?q=80&w=2128&auto=format&fit=crop');"></div>
-      <h2 class="card-title">Frontend <br> Development</h2> <p>Building modern interfaces using HTML5, CSS3, and JavaScript (ES6+) for a smooth user experience.</p>
+    <main class="container">
+        <section class="services-hero reveal">
+            <p class="job-badge">TECHNICAL_CAPABILITIES</p>
+            <h1 class="glitch-text">Expertise Ecosystem</h1>
+            <p style="max-width: 600px; margin: 0 auto; color: var(--muted);">Specialized deployment of high-performance code and secure infrastructure.</p>
+        </section>
+
+        <div class="ecosystem-tabs reveal">
+            <button class="tab-btn active" data-tab="engineering">Engineering & Dev</button>
+            <button class="tab-btn" data-tab="security">Security & IT</button>
+        </div>
+
+        <div id="tab-engineering" class="tab-content active">
+            <div class="services-grid">
+                <div class="service-card reveal">
+                    <ion-icon name="code-working-outline"></ion-icon>
+                    <h3>Full Stack Dev</h3>
+                    <p>Scalable Node.js architectures integrated with modern frontend frameworks and MongoDB systems.</p>
+                </div>
+                <div class="service-card reveal">
+                    <ion-icon name="terminal-outline"></ion-icon>
+                    <h3>Systems Logic</h3>
+                    <p>Low-level engineering using C and Rust for high-performance automation and custom kernel-level tasks.</p>
+                </div>
+                <div class="service-card reveal">
+                    <ion-icon name="cube-outline"></ion-icon>
+                    <h3>3D Visualization</h3>
+                    <p>Advanced rendering and modeling in Blender 4.5 for technical prototypes and environment design.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-security" class="tab-content">
+            <div class="services-grid">
+                <div class="service-card reveal">
+                    <ion-icon name="shield-checkmark-outline"></ion-icon>
+                    <h3>Cybersecurity Audits</h3>
+                    <p>Penetration testing and vulnerability assessments for resilient network infrastructure.</p>
+                </div>
+                <div class="service-card reveal">
+                    <ion-icon name="phone-portrait-outline"></ion-icon>
+                    <h3>Mobile Restoration</h3>
+                    <p>Specialized recovery and security bypassing for iOS/Android devices utilizing low-level exploits.</p>
+                </div>
+                <div class="service-card reveal">
+                    <ion-icon name="hardware-chip-outline"></ion-icon>
+                    <h3>Hardware Diagnostics</h3>
+                    <p>Advanced component-level troubleshooting and performance optimization for professional nodes.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <img src="Pictures/logo.jpg" class="footer-logo" alt="AW" onclick="toggleTerminal()">
+                <p class="footer-text">© 2026 Arnold Wiston. Modernity. Security. Resilience.</p>
+            </div>
+            <div class="footer-socials">
+                <a href="https://github.com/Wiston1568"><ion-icon name="logo-github"></ion-icon></a>
+                <a href="#"><ion-icon name="logo-twitter"></ion-icon></a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="admin-login-overlay" class="hidden">
+        <div class="glass-panel">
+            <h3 style="color:var(--primary); font-family:var(--mono);">SYSTEM_AUTH</h3>
+            <input type="password" id="admin-pin" placeholder="ENTER PIN" maxlength="4" style="margin: 1rem 0;">
+            <button class="auth-btn" onclick="handlePinLogin()" style="background:var(--primary); color:white; border:none; padding:10px; border-radius:8px; cursor:pointer; width:100%;">AUTHORIZE</button>
+            <button onclick="toggleTerminal()" style="background:none; border:none; color:var(--muted); margin-top:10px; cursor:pointer; width:100%;">CLOSE</button>
+        </div>
     </div>
 
-    <div class="card">
-      <div class="circle" style="background-image: url('https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop');"></div>
-      <h2 class="card-title">Backend & <br> Databases</h2>
-      <p>Managing server-side logic and data storage with Node.js and SQL to ensure application reliability.</p>
-    </div>
+    <script src="type.js"></script>
+    <script>
+        // Tab switching logic
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.getAttribute('data-tab');
+                
+                // Reset buttons
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
 
-    <div class="card">
-      <div class="circle" style="background-image: url('https://images.pexels.com/photos/17489151/pexels-photo-17489151.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');"></div>
-      <h2 class="card-title">3D Design <br> (Blender)</h2>
-      <p>Creating custom 3D models and environments using Blender 4.5 LTS for high-quality visual assets.</p>
-    </div>
+                // Reset content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Activate target
+                document.getElementById(`tab-${target}`).classList.add('active');
+            });
+        });
 
-    <div class="card">
-      <div class="circle" style="background-image: url('https://images.unsplash.com/photo-1629654297299-c8506221ca97?q=80&w=1974&auto=format&fit=crop');"></div>
-      <h2 class="card-title">Cybersecurity <br> & Linux</h2>
-      <p>Utilizing Kali Linux and professional diagnostic tools for system auditing and device troubleshooting.</p>
-    </div>
-
-  </div>
- </section>
-
-  <section class="services-list floating-container">
-    <div class="service-card">
-      <h3>Web Design</h3>
-      <img src="Pictures/web.jpg" alt="Web Icon" style="width:40px; height:40px; margin-bottom:8px;">
-      <p>Create beautiful and responsive websites tailored to your brand.</p>
-       <a href="#whyyy" class="shit1">More Info </a>
-    </div>
-    <div class="service-card">
-      <h3>App Development</h3>
-      <img src="Pictures/dev.jpg" alt="App Icon" style="width:40px; height:40px; margin-bottom:8px;">
-      <p>Build performant mobile and desktop applications.</p>
-       <a href="#are" class="shit1">More Info </a>
-    </div>
-    <div class="service-card">
-      <h3>Device Maintenance</h3>
-      <img src="Pictures/main.jpg" alt="Web Icon" style="width:40px; height:40px; margin-bottom:8px;">
-      <p>Keep your hardware running smoothly with expert support.</p>
-        <a href="#u here" class="shit1">More Info </a>
-    </div>
-  </section>
-<section class="testimonials" style="text-align: center; padding: 40px; font-family: sans-serif;">
-  <h2 style="color: orchid;">My Passion & Expertise</h2>
-  
-  <p style="max-width: 800px; margin: 0 auto; line-height: 1.6; font-size: 1.2rem;">
-    I am known for my passion and expertise in IT and my dedication to delivering for my clients. 
-    That’s where I get the confidence to say that <strong>I’m the best person for the job</strong> 
-    when it comes to all your IT needs.
-  </p>
-
-  <!--web dev section-->
-
-<section class="offer-section">
-  <h1 class="offer-title" style="color: red;">
-    What I Offer When It Comes to Web Design
-  </h1>
-<section id="whyyy">
-  <div class="cards-container">
-    <div class="card">
-      <div class="circle" style="background-image: url('https://images.unsplash.com/photo-1587440871875-191322ee64b0?q=80&w=2071&auto=format&fit=crop');"></div>
-      <h2 id="why">UI/UX <br> Creative Design</h2>
-      <p>Crafting intuitive user interfaces and engaging experiences with a focus on modern aesthetics and accessibility.</p>
-    </div>
-
-    <div class="card">
-      <div class="circle" style="background-image: url('https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop');"></div>
-      <h2 id="why">Visual <br> Graphic Design</h2>
-      <p>Creating high-impact visual elements and layouts that define brand identity and capture audience attention.</p>
-    </div>
-
-    <div class="card">
-      <div class="circle" style="background-image: url('https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1974&auto=format&fit=crop');"></div>
-      <h2 id="why">Strategy & <br> Digital Marketing</h2>
-      <p>Developing data-driven strategies and SEO optimizations to increase online visibility and user engagement.</p>
-    </div>
-
-    <div class="card">
-      <div class="circle" style="background-image: url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop');"></div>
-      <h2 id="why">Effective <br> Business Growth</h2>
-      <p>Building scalable web solutions designed to convert visitors into customers and drive long-term business success.</p>
-    </div>
-  </div>
-</section>
-</section>
-
-<!-- app dev section  -->
-
-<section class="offer-section">
-  <h1 class="offer-title" style="color: red;">
-    What I Offer When It Comes to App development 
-  </h1>
-<section id="are">
-  <div class="cards-container">
-    <div class="card">
-      <div class="circle" style="background-image: url('https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=2070&auto=format&fit=crop');"></div>
-      <h2 id="why">Custom <br> Mobile Apps</h2>
-      <p>Building responsive and powerful mobile applications tailored to specific user needs and platform requirements.</p>
-    </div>
-
-    <div class="card">
-      <div class="circle" style="background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop');"></div>
-      <h2 id="why">Frontend <br> Integration</h2>
-      <p>Connecting seamless user interfaces with robust logic to ensure a smooth and reactive app experience.</p>
-    </div>
-
-     <div class="card">
-      <div class="circle" style="background-image: url('https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');"></div>
-      <h2 id="why">Backend <br> Performance</h2>
-      <p>Optimizing server-side processes and database management for fast data retrieval and secure app stability.</p>
-    </div>
-    <div class="card">
-      <div class="circle" style="background-image: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070&auto=format&fit=crop');"></div>
-      <h2 id="why">Testing & <br> Deployment</h2>
-      <p>Ensuring bug-free performance through rigorous testing before deploying apps to cloud environments or stores.</p>
-    </div>
-  </div>
-</section>
-</section>
-
-<!-- device maintenance section  -->
-
-<section class="offer-section">
-  <h1 class="offer-title" style="color: red;">
-    What I Offer When It Comes to Device Maintenance 
-  </h1>
-<section id="u here">
-  <div class="cards-container">
-    <div class="card">
-      <div class="circle" style="background-image: url('https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?q=80&w=2069&auto=format&fit=crop');"></div>
-      <h2 id="why">System <br> Diagnostics</h2>
-      <p>Running deep system scans to identify hardware conflicts or software errors slowing down your machine.</p>
-    </div>
-
-    <div class="card">
-      <div class="circle" style="background-image: url('https://images.unsplash.com/photo-1633419461186-7d40a38105ec?q=80&w=2080&auto=format&fit=crop');"></div>
-      <h2 id="why">Software <br> Restoration</h2>
-      <p>Recovering corrupted operating systems and performing clean installs to return devices to peak performance.</p>
-    </div>
-
-    <div class="card">
-      <div class="circle" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop');"></div>
-      <h2 id="why">Malware <br> Removal</h2>
-      <p>Securing devices by identifying and removing malicious software, viruses, and unauthorized background processes.</p>
-    </div>
-
-    <div class="card">
-      <div class="circle" style="background-image: url('https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?q=80&w=1974&auto=format&fit=crop');"></div>
-      <h2 id="why">Hardware <br> Optimization</h2>
-      <p>Cleaning internal components and managing physical upgrades to prevent overheating and hardware failure.</p>
-    </div>
-  </div>
-</section>
-</section>
-
-
-<footer class="site-footer">
-  <img src="Pictures/logo.jpg" alt="Waterfall Tours Logo" height="40" align="middle">
-  &copy; 2026 Wiston Anold. All rights reserved.
-  <a href="https://github.com/Wiston1568">
-    <ion-icon name="logo-github"></ion-icon>
-  </a>
-</footer>
+        function toggleTerminal() {
+            document.getElementById('admin-login-overlay').classList.toggle('hidden');
+        }
+    </script>
 </body>
 </html>

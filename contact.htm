@@ -1,98 +1,204 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="Pictures/logo.png">
+    <title>Contact | Node Transmission</title>
     <link rel="stylesheet" href="dumb.css">
-    <title>Contact Info</title>
-    <link rel="icon" type="image/png" href="Pictures/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+     <link rel="icon" type="image/png" href="Pictures/apple-touch-icon.png">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <style>
-        #thr {
-            color: black;
+        /* Contact-specific styling to prevent the "trash" look */
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--surface-border);
+            border-radius: 16px;
+            color: var(--text);
+            text-decoration: none;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .social-link ion-icon {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        .social-link span {
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .social-link:hover {
+            background: var(--primary-glow);
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 23, 68, 0.2);
+        }
+
+        .contact-form-container {
+            position: relative;
+        }
+
+        .form-status {
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* Footer Alignment */
+        .site-footer {
+            margin-top: 6rem;
+            padding: 2.5rem 0;
+            border-top: 1px solid var(--surface-border);
+            background: var(--background);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .footer-logo {
+            height: 32px;
+            cursor: pointer;
+        }
+
+        .footer-text {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .social-grid { grid-template-columns: 1fr; }
+            .footer-container { flex-direction: column; gap: 1.5rem; text-align: center; }
+            .footer-brand { flex-direction: column; }
         }
     </style>
-      <ul>
-  <li><a href="index.html">Home</a></li>
-  <li><a href="Services.html">Services</a></li>
-  <li><a href="contact.htm">Contact</a></li>
-</ul>
 </head>
 <body>
-    <section>
+    <header class="main-header">
+        <nav class="nav-container">
+            <div class="nav-logo">
+                <img src="Pictures/logo.jpg" alt="AW" onclick="toggleTerminal()">
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="Services.html">Services</a></li>
+                <li><a href="contact.htm" class="active">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <div class="box1 box">
-    <div class="content">
-      <div class="image">
-        <img src="Pictures/logo.jpg" alt="Profile Image">
-      </div>
-      <div class="level">
-        <p id="thr">Student</p>
-      </div>
-      <div class="text">
-        <p class="name"></p>Kihima Anold Wiston</p>
-        <p class="job_title" style="font-size: 20px;">Computer Science</p>
-        <p class="job_discription"></p><b>IT specialist</b></p>
-      </div>
-      <div class="icons">
-        <a href="https://github.com/Wiston1568?tab=overview&from=2026-01-01&to=2026-01-31">
-          <ion-icon name="logo-github"></ion-icon>
-        </a>
-        <a href="https://www.instagram.com/wistonarnold/">
-          <ion-icon name="logo-instagram"></ion-icon>
-        </a>
-        <a href="https://x.com/wiston1568">
-          <ion-icon name="logo-x"></ion-icon>
-        </a>
-        <a href="https://www.linkedin.com/in/anold-kihima-575b3b368/">
-          <ion-icon name="logo-linkedin"></ion-icon>
-        </a>
-       
-      </div>
-      <div class="button">
-        <div>
-          <a href="https://wa.me/254707620397" class="message" target="_blank">message</a>
-        </div>
-        <div>
-          <a href="mailto:wistonanold2@gmail.com" class="connect">Connect</a>
-        </div>
-      </div>
-    </div>
-  </div>
-<div class="box2 box">
-    <div class="content">
-      <div class="row">
-        <div class="Finished Projects">
-          <p style="color: red;">Finished Projects</p>
-          <h5>2</h5>
-        </div>
-        <div class="Ongoing Projects">
-          <p style="color: orchid;">Ongoing Projects</p>
-          <h5>4</h5>
-        </div>
-        <div class="Unfinished Projects">
-          <p style="color: red;">Unfinished Projects</p>
-          <h5>2</h5>
-        </div>
-      </div>
-      <div class="text">
-        <p class="about" style="color: orchid;">About</p>
-        <p class="description"></p>Though Currently a Computer Science student at Kabarak university TVET Institue i possess invaluable skills in the feild of IT, as shown on the home page i am fairly compitent in Device software maintenance,Web Design and App Building</p>
-      </div>
-    </div>
-  </div>
+    <main class="container" style="padding-top:160px; display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:5rem; align-items: start;">
+        
+        <div class="reveal">
+            <p class="job-badge">COMMUNICATION_PORTAL</p>
+            <h1 class="glitch-text">Initiate Handshake</h1>
+            <p style="margin-top:1.5rem; color:var(--muted); line-height: 1.8;">
+                Available for architectural consultation, full-stack deployments, and security auditing. Choose your preferred protocol to establish a secure connection.
+            </p>
 
- 
-<script type="module" src="https://unpkg.com/ionicons@7.4.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.4.0/dist/ionicons/ionicons.js"></script>
-</section>
-  <footer class="site-footer">
-  <img src="Pictures/logo.jpg" alt="Waterfall Tours Logo" height="40" align="middle">
-  &copy; 2026 Wiston Anold. All rights reserved.
-  <a href="https://github.com/Wiston1568">
-    <ion-icon name="logo-github"></ion-icon>
-  </a>
-</footer>
+            <div class="social-grid">
+                <a href="https://wa.me/254700000000" class="social-link btn-magnetic">
+                    <ion-icon name="logo-whatsapp"></ion-icon>
+                    <span>SECURE_CHAT</span>
+                </a>
+                
+                <a href="mailto:kihima@node.com" class="social-link btn-magnetic">
+                    <ion-icon name="mail-outline"></ion-icon>
+                    <span>MAIL_PROTOCOL</span>
+                </a>
+
+                <a href="https://github.com/Wiston1568" class="social-link btn-magnetic">
+                    <ion-icon name="logo-github"></ion-icon>
+                    <span>SOURCE_CODE</span>
+                </a>
+
+                <a href="#" class="social-link btn-magnetic">
+                    <ion-icon name="logo-twitter"></ion-icon>
+                    <span>LOG_FEED</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="reveal contact-form-container">
+            <span class="form-status">SYSTEM_STATUS: READY_FOR_INPUT</span>
+            <form action="https://formspree.io/f/your-id" method="POST" class="glass-card">
+                <div style="margin-bottom:1.5rem;">
+                    <label style="display:block; font-family:var(--mono); font-size:0.7rem; color:var(--accent); margin-bottom:0.5rem;">IDENTIFIER_NAME</label>
+                    <input type="text" name="name" placeholder="Enter name..." required style="width:100%; padding:1rem; background:rgba(255,255,255,0.03); border:1px solid var(--surface-border); border-radius:12px; color:white; font-family:var(--mono);">
+                </div>
+                
+                <div style="margin-bottom:1.5rem;">
+                    <label style="display:block; font-family:var(--mono); font-size:0.7rem; color:var(--accent); margin-bottom:0.5rem;">NODE_EMAIL</label>
+                    <input type="email" name="email" placeholder="node@example.com" required style="width:100%; padding:1rem; background:rgba(255,255,255,0.03); border:1px solid var(--surface-border); border-radius:12px; color:white; font-family:var(--mono);">
+                </div>
+
+                <div style="margin-bottom:2rem;">
+                    <label style="display:block; font-family:var(--mono); font-size:0.7rem; color:var(--accent); margin-bottom:0.5rem;">TRANSMISSION_DATA</label>
+                    <textarea name="message" rows="5" placeholder="Define project scope or technical query..." required style="width:100%; padding:1rem; background:rgba(255,255,255,0.03); border:1px solid var(--surface-border); border-radius:12px; color:white; font-family:var(--mono); resize: none;"></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width:100%; padding:1.2rem; border:none; border-radius:12px; background:var(--primary); color:white; font-family:var(--mono); font-weight:bold; cursor:pointer; text-transform: uppercase; letter-spacing: 2px;">
+                    SEND_TRANSMISSION
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <img src="Pictures/logo.jpg" class="footer-logo" alt="AW" onclick="toggleTerminal()">
+                <p class="footer-text">© 2026 Arnold Wiston. Modernity. Security. Resilience.</p>
+            </div>
+            <div style="display:flex; gap:1.5rem;">
+                <a href="https://github.com/Wiston1568" style="color:var(--muted); font-size:1.5rem;"><ion-icon name="logo-github"></ion-icon></a>
+                <a href="#" style="color:var(--muted); font-size:1.5rem;"><ion-icon name="logo-twitter"></ion-icon></a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="admin-login-overlay" class="hidden">
+        <div class="glass-panel">
+            <h3 style="color:var(--primary); font-family:var(--mono); margin-bottom: 1rem;">SYSTEM_AUTH</h3>
+            <input type="password" id="admin-pin" placeholder="ENTER_PIN" maxlength="4" style="width:100%; padding:1rem; background:rgba(0,0,0,0.3); border:1px solid var(--primary); color:white; border-radius:8px; margin-bottom: 1rem;">
+            <button onclick="handlePinLogin()" style="width:100%; padding:1rem; background:var(--primary); color:white; border:none; border-radius:8px; cursor:pointer; font-family:var(--mono);">AUTHORIZE</button>
+            <button onclick="toggleTerminal()" style="background:none; border:none; color:var(--muted); margin-top:1rem; cursor:pointer; width:100%;">[CLOSE]</button>
+        </div>
+    </div>
+
+    <script src="type.js"></script>
+    <script>
+        function toggleTerminal() {
+            document.getElementById('admin-login-overlay').classList.toggle('hidden');
+        }
+    </script>
 </body>
 </html>
