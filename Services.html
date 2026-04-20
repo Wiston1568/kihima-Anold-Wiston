@@ -75,7 +75,7 @@
             z-index: 1000;
             display: flex;
             flex-direction: column;
-            overflow-y: auto;
+            overflow: hidden;
             box-shadow: -20px 0 60px rgba(0, 0, 0, 0.5);
         }
         .sidebar-nav.active { transform: translateX(0); }
@@ -96,10 +96,15 @@
         .sidebar-header img { width: 50px; height: 50px; border-radius: 12px; border: 2px solid var(--primary); object-fit: cover; }
         .sidebar-header-info h3 { font-size: 0.95rem; color: white; margin: 0; font-family: var(--mono); font-weight: bold; }
         .sidebar-header-info p { font-size: 0.75rem; color: var(--muted); margin: 3px 0 0 0; text-transform: uppercase; letter-spacing: 1px; }
-        .sidebar-menu { flex: 1; padding: 1.5rem 0; list-style: none; margin: 0; }
+        .sidebar-menu { flex: 1; padding: 1.5rem 0; list-style: none; margin: 0; overflow-y: auto; }
         .sidebar-menu a { display: flex; align-items: center; gap: 12px; padding: 1rem 1.5rem; color: var(--muted); text-decoration: none; font-size: 0.9rem; font-family: var(--mono); transition: all 0.3s ease; border-left: 3px solid transparent; }
         .sidebar-menu a:hover { background: rgba(188, 19, 254, 0.1); color: var(--primary); border-left-color: var(--primary); padding-left: 2rem; }
         .sidebar-menu a ion-icon { font-size: 1.3rem; flex-shrink: 0; }
+
+        .sidebar-footer {
+            flex-shrink: 0;
+            border-top: 1px solid rgba(188, 19, 254, 0.15);
+        }
 
         /* HAMBURGER MENU BUTTON */
         .hamburger-btn {
@@ -121,10 +126,9 @@
             gap: 5px;
         }
         .hamburger-btn:hover { background: rgba(188, 19, 254, 0.25); border-color: var(--primary); }
-        .hamburger-btn.active { background: transparent !important; border-color: #ff1744 !important; }
+        .hamburger-btn.active { background: transparent !important; border-color: transparent !important; }
         .hamburger-line { width: 24px; height: 2px; background: var(--primary); transition: all 0.3s ease; border-radius: 2px; }
-        .hamburger-btn.active .hamburger-line { background: transparent !important; }
-        .hamburger-btn.active .hamburger-line { background: transparent !important; }
+        .hamburger-btn.active .hamburger-line { background: var(--primary) !important; }
         .hamburger-btn.active .hamburger-line:nth-child(1) { transform: rotate(45deg) translateY(10px); }
         .hamburger-btn.active .hamburger-line:nth-child(2) { opacity: 0; }
         .hamburger-btn.active .hamburger-line:nth-child(3) { transform: rotate(-45deg) translateY(-10px); }

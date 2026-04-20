@@ -109,7 +109,7 @@
             z-index: 1000;
             display: flex;
             flex-direction: column;
-            overflow-y: auto;
+            overflow: hidden;
             box-shadow: -20px 0 60px rgba(0, 0, 0, 0.5);
         }
         .sidebar-nav.active { transform: translateX(0); }
@@ -155,10 +155,9 @@
             gap: 5px;
         }
         .hamburger-btn:hover { background: rgba(188, 19, 254, 0.25); border-color: var(--primary); }
-        .hamburger-btn.active { background: #ff1744 !important; border-color: #ff1744 !important; }
+        .hamburger-btn.active { background: transparent !important; border-color: transparent !important; }
         .hamburger-line { width: 24px; height: 2px; background: var(--primary); transition: all 0.3s ease; border-radius: 2px; }
-        .hamburger-btn.active .hamburger-line { background: #ffffff !important; }
-        .hamburger-btn.active .hamburger-line { background: #ffffff !important; }
+        .hamburger-btn.active .hamburger-line { background: var(--primary) !important; }
         .hamburger-btn.active .hamburger-line:nth-child(1) { transform: rotate(45deg) translateY(10px); }
         .hamburger-btn.active .hamburger-line:nth-child(2) { opacity: 0; }
         .hamburger-btn.active .hamburger-line:nth-child(3) { transform: rotate(-45deg) translateY(-10px); }
@@ -208,7 +207,7 @@
             <li><a href="Services.html" onclick="closeSidebar()"><ion-icon name="briefcase-outline"></ion-icon>Services</a></li>
             <li><a href="contact.htm" onclick="closeSidebar()"><ion-icon name="mail-outline"></ion-icon>Contact</a></li>
         </ul>
-        <div class="sidebar-footer" style="flex-direction: column; align-items: center; gap: 1rem; padding: 2rem 1.5rem;">
+        <div class="sidebar-footer" style="flex-direction: column; align-items: center; gap: 1rem; padding: 2rem 1.5rem; flex-shrink: 0;">
             <div class="footer-socials" style="display: flex; gap: 1.5rem;">
                 <a href="https://github.com/Wiston1568" style="color: var(--muted); font-size: 1.5rem;"><ion-icon name="logo-github"></ion-icon></a>
                 <a href="https://wa.me/254700000000" style="color: var(--muted); font-size: 1.5rem;"><ion-icon name="logo-whatsapp"></ion-icon></a>
