@@ -184,11 +184,12 @@
         }
 
         .hamburger-btn.active {
-            background: var(--primary);
+            background: #ff1744 !important;
+            border-color: #ff1744 !important;
         }
 
         .hamburger-line {
-            width: 22px;
+            width: 24px;
             height: 2px;
             background: var(--primary);
             transition: all 0.3s ease;
@@ -385,14 +386,16 @@
             <li><a href="index.html" onclick="closeSidebar()"><ion-icon name="home-outline"></ion-icon>Home</a></li>
             <li><a href="Services.html" onclick="closeSidebar()"><ion-icon name="briefcase-outline"></ion-icon>Services</a></li>
             <li><a href="contact.htm" onclick="closeSidebar()"><ion-icon name="mail-outline"></ion-icon>Contact</a></li>
-            <li><a href="console/index.html" onclick="closeSidebar()"><ion-icon name="terminal-outline"></ion-icon>Console</a></li>
             <li style="border-top: 1px solid rgba(188, 19, 254, 0.1); margin-top: 0.5rem;"><a href="#" onclick="scrollToProjects(event)"><ion-icon name="layers-outline"></ion-icon>Projects</a></li>
             <li><a href="#" onclick="scrollToSkills(event)"><ion-icon name="code-slash-outline"></ion-icon>Skills</a></li>
         </ul>
 
-        <div class="sidebar-footer">
-            <button onclick="openGithub()">GITHUB</button>
-            <button onclick="closeSidebar()">CLOSE</button>
+        <div class="sidebar-footer" style="flex-direction: column; align-items: center; gap: 1rem; padding: 2rem 1.5rem;">
+            <div class="footer-socials" style="display: flex; gap: 1.5rem;">
+                <a href="https://github.com/Wiston1568" style="color: var(--muted); font-size: 1.5rem;"><ion-icon name="logo-github"></ion-icon></a>
+                <a href="https://wa.me/254700000000" style="color: var(--muted); font-size: 1.5rem;"><ion-icon name="logo-whatsapp"></ion-icon></a>
+            </div>
+            <p style="color: var(--muted); font-size: 0.7rem; font-family: var(--mono); margin: 0; text-transform: uppercase; letter-spacing: 1px;">© DEV_BY_WISTON</p>
         </div>
     </nav>
 
@@ -495,7 +498,7 @@
         <div class="footer-container">
             <div class="footer-brand">
                 <img src="Pictures/logo.jpg" class="footer-logo secret-trigger" alt="AW">
-                <p class="footer-text">© 2026 Arnold Wiston. Modernity. Security. Resilience.</p>
+                <p class="footer-text">© DEV_BY_WISTON</p>
             </div>
             <div class="footer-socials">
                 <a href="https://github.com/Wiston1568"><ion-icon name="logo-github"></ion-icon></a>
