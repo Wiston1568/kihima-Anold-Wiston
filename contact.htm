@@ -62,7 +62,7 @@
 
         /* Footer Alignment */
         .site-footer {
-            margin-top: 6rem;
+            margin-top: auto;
             padding: 2.5rem 0;
             border-top: 1px solid var(--surface-border);
             background: var(--background);
@@ -158,14 +158,15 @@
         .hamburger-btn.active { background: #ff1744 !important; border-color: #ff1744 !important; }
         .hamburger-line { width: 24px; height: 2px; background: var(--primary); transition: all 0.3s ease; border-radius: 2px; }
         .hamburger-btn.active .hamburger-line { background: #ffffff !important; }
+        .hamburger-btn.active .hamburger-line { background: #ffffff !important; }
         .hamburger-btn.active .hamburger-line:nth-child(1) { transform: rotate(45deg) translateY(10px); }
         .hamburger-btn.active .hamburger-line:nth-child(2) { opacity: 0; }
         .hamburger-btn.active .hamburger-line:nth-child(3) { transform: rotate(-45deg) translateY(-10px); }
 
         @media (max-width: 768px) {
             .social-grid { grid-template-columns: 1fr; }
-            .footer-container { flex-direction: column; gap: 1.5rem; text-align: center; }
-            .footer-brand { flex-direction: column; }
+            .footer-container { flex-direction: column; gap: 1.5rem; text-align: center; padding: 0 1.5rem; }
+            .footer-brand { flex-direction: column; gap: 0.5rem; }
         }
     </style>
 </head>
@@ -277,11 +278,11 @@
         <div class="footer-container">
             <div class="footer-brand">
                 <img src="Pictures/logo.jpg" class="footer-logo" alt="AW" onclick="toggleTerminal()">
-                <p class="footer-text">© DEV_BY_WISTON</p>
+                <p class="footer-text">© 2026 Arnold Wiston. Modernity. Security. Resilience.</p>
             </div>
             <div style="display:flex; gap:1.5rem;">
                 <a href="https://github.com/Wiston1568" style="color:var(--muted); font-size:1.5rem;"><ion-icon name="logo-github"></ion-icon></a>
-                <a href="#" style="color:var(--muted); font-size:1.5rem;"><ion-icon name="logo-twitter"></ion-icon></a>
+                <a href="https://wa.me/254700000000" style="color:var(--muted); font-size:1.5rem;"><ion-icon name="logo-whatsapp"></ion-icon></a>
             </div>
         </div>
     </footer>
