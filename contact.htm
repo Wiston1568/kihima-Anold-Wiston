@@ -158,7 +158,7 @@
         }
         .hamburger-btn:hover { background: rgba(188, 19, 254, 0.25); border-color: var(--primary); }
         .hamburger-btn.active { background: transparent !important; border-color: transparent !important; }
-        .hamburger-line { width: 24px; height: 2px; background: var(--primary); transition: all 0.3s ease; border-radius: 2px; }
+        .hamburger-line { width: 24px; height: 2px; background: transparent; transition: all 0.3s ease; border-radius: 2px; }
         
         /* Hamburger Animation Classes */
         .hamburger-btn.active .hamburger-line:nth-child(1) { transform: rotate(45deg) translateY(10px); }
@@ -188,8 +188,10 @@
         </nav>
     </header>
 
+       <!-- SIDEBAR OVERLAY -->
     <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
+    <!-- HAMBURGER BUTTON -->
     <button id="hamburgerBtn" class="hamburger-btn" onclick="toggleSidebar()">
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
