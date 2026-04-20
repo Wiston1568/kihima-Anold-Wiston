@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact | Node Transmission</title>
     <link rel="stylesheet" href="dumb.css">
-     <link rel="icon" type="image/png" href="Pictures/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="Pictures/apple-touch-icon.png">
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <style>
-        /* Contact-specific styling to prevent the "trash" look */
+        /* Contact-specific styling */
         .social-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -101,18 +101,20 @@
             right: 0;
             width: 320px;
             height: 100vh;
+            height: 100dvh;
             background: linear-gradient(135deg, rgba(20, 24, 40, 0.98) 0%, rgba(15, 18, 30, 0.98) 100%);
             backdrop-filter: blur(20px);
             border-left: 1px solid rgba(188, 19, 254, 0.2);
             transform: translateX(350px);
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 1000;
+            z-index: 1100;
             display: flex;
             flex-direction: column;
             overflow: hidden;
             box-shadow: -20px 0 60px rgba(0, 0, 0, 0.5);
         }
         .sidebar-nav.active { transform: translateX(0); }
+
         .sidebar-overlay {
             position: fixed;
             top: 0;
@@ -122,10 +124,10 @@
             background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(5px);
             display: none;
-            z-index: 999;
-            animation: fadeIn 0.3s ease;
+            z-index: 1050;
         }
         .sidebar-overlay.active { display: block; }
+
         .sidebar-header { padding: 2rem 1.5rem; border-bottom: 1px solid rgba(188, 19, 254, 0.15); display: flex; align-items: center; gap: 12px; }
         .sidebar-header img { width: 50px; height: 50px; border-radius: 12px; border: 2px solid var(--primary); object-fit: cover; }
         .sidebar-header-info h3 { font-size: 0.95rem; color: white; margin: 0; font-family: var(--mono); font-weight: bold; }
@@ -146,10 +148,10 @@
             border: 1px solid rgba(188, 19, 254, 0.3);
             border-radius: 10px;
             cursor: pointer;
-            display: none;
+            display: none; /* Hidden by default, shown in @media */
             align-items: center;
             justify-content: center;
-            z-index: 1001;
+            z-index: 1200;
             transition: all 0.3s ease;
             flex-direction: column;
             gap: 5px;
@@ -157,12 +159,15 @@
         .hamburger-btn:hover { background: rgba(188, 19, 254, 0.25); border-color: var(--primary); }
         .hamburger-btn.active { background: transparent !important; border-color: transparent !important; }
         .hamburger-line { width: 24px; height: 2px; background: var(--primary); transition: all 0.3s ease; border-radius: 2px; }
-        .hamburger-btn.active .hamburger-line { background: var(--primary) !important; }
+        
+        /* Hamburger Animation Classes */
         .hamburger-btn.active .hamburger-line:nth-child(1) { transform: rotate(45deg) translateY(10px); }
         .hamburger-btn.active .hamburger-line:nth-child(2) { opacity: 0; }
         .hamburger-btn.active .hamburger-line:nth-child(3) { transform: rotate(-45deg) translateY(-10px); }
 
         @media (max-width: 768px) {
+            .hamburger-btn { display: flex; } /* FIX: Now shows on mobile */
+            .nav-links { display: none; } /* Hide standard nav on mobile */
             .social-grid { grid-template-columns: 1fr; }
             .footer-container { flex-direction: column; gap: 1.5rem; text-align: center; padding: 0 1.5rem; }
             .footer-brand { flex-direction: column; gap: 0.5rem; }
@@ -183,17 +188,14 @@
         </nav>
     </header>
 
-    <!-- SIDEBAR OVERLAY -->
     <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
-    <!-- HAMBURGER BUTTON -->
     <button id="hamburgerBtn" class="hamburger-btn" onclick="toggleSidebar()">
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
     </button>
 
-    <!-- SIDEBAR NAVIGATION -->
     <nav id="sidebarNav" class="sidebar-nav">
         <div class="sidebar-header">
             <img src="Pictures/logo.jpg" alt="AW">
@@ -207,7 +209,7 @@
             <li><a href="Services.html" onclick="closeSidebar()"><ion-icon name="briefcase-outline"></ion-icon>Services</a></li>
             <li><a href="contact.htm" onclick="closeSidebar()"><ion-icon name="mail-outline"></ion-icon>Contact</a></li>
         </ul>
-        <div class="sidebar-footer" style="flex-direction: column; align-items: center; gap: 1rem; padding: 2rem 1.5rem; flex-shrink: 0;">
+        <div class="sidebar-footer" style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; padding: 1.5rem; flex-shrink: 0;">
             <div class="footer-socials" style="display: flex; gap: 1.5rem;">
                 <a href="https://github.com/Wiston1568" style="color: var(--muted); font-size: 1.5rem;"><ion-icon name="logo-github"></ion-icon></a>
                 <a href="https://wa.me/254700000000" style="color: var(--muted); font-size: 1.5rem;"><ion-icon name="logo-whatsapp"></ion-icon></a>
@@ -217,7 +219,6 @@
     </nav>
 
     <main class="container" style="padding-top:160px; display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:5rem; align-items: start;">
-        
         <div class="reveal">
             <p class="job-badge">COMMUNICATION_PORTAL</p>
             <h1 class="glitch-text">Initiate Handshake</h1>
@@ -230,17 +231,14 @@
                     <ion-icon name="logo-whatsapp"></ion-icon>
                     <span>SECURE_CHAT</span>
                 </a>
-                
                 <a href="mailto:kihima@node.com" class="social-link btn-magnetic">
                     <ion-icon name="mail-outline"></ion-icon>
                     <span>MAIL_PROTOCOL</span>
                 </a>
-
                 <a href="https://github.com/Wiston1568" class="social-link btn-magnetic">
                     <ion-icon name="logo-github"></ion-icon>
                     <span>SOURCE_CODE</span>
                 </a>
-
                 <a href="#" class="social-link btn-magnetic">
                     <ion-icon name="logo-twitter"></ion-icon>
                     <span>LOG_FEED</span>
@@ -255,17 +253,14 @@
                     <label style="display:block; font-family:var(--mono); font-size:0.7rem; color:var(--accent); margin-bottom:0.5rem;">IDENTIFIER_NAME</label>
                     <input type="text" name="name" placeholder="Enter name..." required style="width:100%; padding:1rem; background:rgba(255,255,255,0.03); border:1px solid var(--surface-border); border-radius:12px; color:white; font-family:var(--mono);">
                 </div>
-                
                 <div style="margin-bottom:1.5rem;">
                     <label style="display:block; font-family:var(--mono); font-size:0.7rem; color:var(--accent); margin-bottom:0.5rem;">NODE_EMAIL</label>
                     <input type="email" name="email" placeholder="node@example.com" required style="width:100%; padding:1rem; background:rgba(255,255,255,0.03); border:1px solid var(--surface-border); border-radius:12px; color:white; font-family:var(--mono);">
                 </div>
-
                 <div style="margin-bottom:2rem;">
                     <label style="display:block; font-family:var(--mono); font-size:0.7rem; color:var(--accent); margin-bottom:0.5rem;">TRANSMISSION_DATA</label>
                     <textarea name="message" rows="5" placeholder="Define project scope or technical query..." required style="width:100%; padding:1rem; background:rgba(255,255,255,0.03); border:1px solid var(--surface-border); border-radius:12px; color:white; font-family:var(--mono); resize: none;"></textarea>
                 </div>
-
                 <button type="submit" class="btn-primary" style="width:100%; padding:1.2rem; border:none; border-radius:12px; background:var(--primary); color:white; font-family:var(--mono); font-weight:bold; cursor:pointer; text-transform: uppercase; letter-spacing: 2px;">
                     SEND_TRANSMISSION
                 </button>
@@ -297,6 +292,28 @@
 
     <script src="type.js"></script>
     <script>
+        // TOGGLE SIDEBAR LOGIC
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebarNav');
+            const overlay = document.getElementById('sidebarOverlay');
+            const btn = document.getElementById('hamburgerBtn');
+
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+            btn.classList.toggle('active');
+        }
+
+        // CLOSE SIDEBAR LOGIC
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebarNav');
+            const overlay = document.getElementById('sidebarOverlay');
+            const btn = document.getElementById('hamburgerBtn');
+
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            btn.classList.remove('active');
+        }
+
         function toggleTerminal() {
             document.getElementById('admin-login-overlay').classList.toggle('hidden');
         }

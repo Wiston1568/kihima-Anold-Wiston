@@ -34,7 +34,7 @@
             border-left: 1px solid rgba(188, 19, 254, 0.2);
             transform: translateX(350px);
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 1000;
+            z-index: 1100;
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -54,7 +54,7 @@
             background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(5px);
             display: none;
-            z-index: 999;
+            z-index: 1050;
             animation: fadeIn 0.3s ease;
         }
 
@@ -96,7 +96,7 @@
 
         .sidebar-menu {
             flex: 1;
-            padding: 1.5rem 0;
+            padding: 1rem 0;
             list-style: none;
             margin: 0;
             overflow-y: auto;
@@ -187,7 +187,7 @@
 
         .hamburger-btn.active {
             background: transparent !important;
-            border-color: transparent !important;
+            border-color: transparent !important; box-shadow: none !important;
         }
 
         .hamburger-line {
@@ -398,7 +398,7 @@
             <li><a href="#" onclick="scrollToSkills(event)"><ion-icon name="code-slash-outline"></ion-icon>Skills</a></li>
         </ul>
 
-        <div class="sidebar-footer" style="flex-direction: column; align-items: center; gap: 1rem; padding: 2rem 1.5rem;">
+        <div class="sidebar-footer" style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; padding: 1.5rem; flex-shrink: 0;">
             <div class="footer-socials" style="display: flex; gap: 1.5rem;">
                 <a href="https://github.com/Wiston1568" style="color: var(--muted); font-size: 1.5rem;"><ion-icon name="logo-github"></ion-icon></a>
                 <a href="https://wa.me/254700000000" style="color: var(--muted); font-size: 1.5rem;"><ion-icon name="logo-whatsapp"></ion-icon></a>

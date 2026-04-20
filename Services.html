@@ -72,7 +72,7 @@
             border-left: 1px solid rgba(188, 19, 254, 0.2);
             transform: translateX(350px);
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 1000;
+            z-index: 1100;
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -88,7 +88,7 @@
             background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(5px);
             display: none;
-            z-index: 999;
+            z-index: 1050;
             animation: fadeIn 0.3s ease;
         }
         .sidebar-overlay.active { display: block; }
@@ -96,7 +96,7 @@
         .sidebar-header img { width: 50px; height: 50px; border-radius: 12px; border: 2px solid var(--primary); object-fit: cover; }
         .sidebar-header-info h3 { font-size: 0.95rem; color: white; margin: 0; font-family: var(--mono); font-weight: bold; }
         .sidebar-header-info p { font-size: 0.75rem; color: var(--muted); margin: 3px 0 0 0; text-transform: uppercase; letter-spacing: 1px; }
-        .sidebar-menu { flex: 1; padding: 1.5rem 0; list-style: none; margin: 0; overflow-y: auto; }
+        .sidebar-menu { flex: 1; padding: 1rem 0; list-style: none; margin: 0; overflow-y: auto; }
         .sidebar-menu a { display: flex; align-items: center; gap: 12px; padding: 1rem 1.5rem; color: var(--muted); text-decoration: none; font-size: 0.9rem; font-family: var(--mono); transition: all 0.3s ease; border-left: 3px solid transparent; }
         .sidebar-menu a:hover { background: rgba(188, 19, 254, 0.1); color: var(--primary); border-left-color: var(--primary); padding-left: 2rem; }
         .sidebar-menu a ion-icon { font-size: 1.3rem; flex-shrink: 0; }
@@ -104,6 +104,8 @@
         .sidebar-footer {
             flex-shrink: 0;
             border-top: 1px solid rgba(188, 19, 254, 0.15);
+            display: flex;
+            flex-direction: column;
         }
 
         /* HAMBURGER MENU BUTTON */
@@ -120,13 +122,13 @@
             display: none;
             align-items: center;
             justify-content: center;
-            z-index: 1001;
+            z-index: 1200;
             transition: all 0.3s ease;
             flex-direction: column;
             gap: 5px;
         }
         .hamburger-btn:hover { background: rgba(188, 19, 254, 0.25); border-color: var(--primary); }
-        .hamburger-btn.active { background: transparent !important; border-color: transparent !important; }
+        .hamburger-btn.active { background: transparent !important; border-color: transparent !important; box-shadow: none !important; }
         .hamburger-line { width: 24px; height: 2px; background: var(--primary); transition: all 0.3s ease; border-radius: 2px; }
         .hamburger-btn.active .hamburger-line { background: var(--primary) !important; }
         .hamburger-btn.active .hamburger-line:nth-child(1) { transform: rotate(45deg) translateY(10px); }
@@ -257,7 +259,7 @@
             <li><a href="Services.html" onclick="closeSidebar()"><ion-icon name="briefcase-outline"></ion-icon>Services</a></li>
             <li><a href="contact.htm" onclick="closeSidebar()"><ion-icon name="mail-outline"></ion-icon>Contact</a></li>
         </ul>
-        <div class="sidebar-footer" style="flex-direction: column; align-items: center; gap: 1rem; padding: 2rem 1.5rem;">
+        <div class="sidebar-footer" style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; padding: 1.5rem; flex-shrink: 0;">
             <div class="footer-socials" style="display: flex; gap: 1.5rem;">
                 <a href="https://github.com/Wiston1568" style="color: var(--muted); font-size: 1.5rem;"><ion-icon name="logo-github"></ion-icon></a>
                 <a href="https://wa.me/254700000000" style="color: var(--muted); font-size: 1.5rem;"><ion-icon name="logo-whatsapp"></ion-icon></a>
