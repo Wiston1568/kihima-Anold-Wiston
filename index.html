@@ -22,6 +22,206 @@
             padding: 140px 5% 60px;
         }
 
+        /* SIDEBAR NAVIGATION */
+        .sidebar-nav {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 320px;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(20, 24, 40, 0.98) 0%, rgba(15, 18, 30, 0.98) 100%);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(188, 19, 254, 0.2);
+            transform: translateX(350px);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            box-shadow: -20px 0 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .sidebar-nav.active {
+            transform: translateX(0);
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            display: none;
+            z-index: 999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        .sidebar-header {
+            padding: 2rem 1.5rem;
+            border-bottom: 1px solid rgba(188, 19, 254, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-header img {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            border: 2px solid var(--primary);
+            object-fit: cover;
+        }
+
+        .sidebar-header-info h3 {
+            font-size: 0.95rem;
+            color: white;
+            margin: 0;
+            font-family: var(--mono);
+            font-weight: bold;
+        }
+
+        .sidebar-header-info p {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin: 3px 0 0 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu {
+            flex: 1;
+            padding: 1.5rem 0;
+            list-style: none;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            margin: 0;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 1rem 1.5rem;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-family: var(--mono);
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            position: relative;
+        }
+
+        .sidebar-menu a:hover {
+            background: rgba(188, 19, 254, 0.1);
+            color: var(--primary);
+            border-left-color: var(--primary);
+            padding-left: 2rem;
+        }
+
+        .sidebar-menu a ion-icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .sidebar-footer {
+            padding: 1.5rem;
+            border-top: 1px solid rgba(188, 19, 254, 0.15);
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .sidebar-footer button {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(188, 19, 254, 0.3);
+            background: rgba(188, 19, 254, 0.1);
+            color: var(--primary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: bold;
+            font-family: var(--mono);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-footer button:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* HAMBURGER MENU BUTTON */
+        .hamburger-btn {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            width: 45px;
+            height: 45px;
+            background: rgba(188, 19, 254, 0.15);
+            border: 1px solid rgba(188, 19, 254, 0.3);
+            border-radius: 10px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            transition: all 0.3s ease;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .hamburger-btn:hover {
+            background: rgba(188, 19, 254, 0.25);
+            border-color: var(--primary);
+        }
+
+        .hamburger-btn.active {
+            background: var(--primary);
+        }
+
+        .hamburger-line {
+            width: 22px;
+            height: 2px;
+            background: var(--primary);
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .hamburger-btn.active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translateY(10px);
+        }
+
+        .hamburger-btn.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-btn.active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translateY(-10px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger-btn {
+                display: flex;
+            }
+            
+            .sidebar-nav {
+                width: 280px;
+            }
+        }
+
         /* 2. TRIPLE IMAGE SWAP LOGIC */
         .image-node {
             width: 100%;
@@ -139,6 +339,11 @@
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* OVERLAY STYLING */
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body class="dark-theme">
@@ -155,6 +360,41 @@
             </ul>
         </nav>
     </header>
+
+    <!-- SIDEBAR OVERLAY -->
+    <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <!-- HAMBURGER BUTTON -->
+    <button id="hamburgerBtn" class="hamburger-btn" onclick="toggleSidebar()">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+    </button>
+
+    <!-- SIDEBAR NAVIGATION -->
+    <nav id="sidebarNav" class="sidebar-nav">
+        <div class="sidebar-header">
+            <img src="Pictures/logo.jpg" alt="AW">
+            <div class="sidebar-header-info">
+                <h3>Arnold Wiston</h3>
+                <p>Systems Architect</p>
+            </div>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li><a href="index.html" onclick="closeSidebar()"><ion-icon name="home-outline"></ion-icon>Home</a></li>
+            <li><a href="Services.html" onclick="closeSidebar()"><ion-icon name="briefcase-outline"></ion-icon>Services</a></li>
+            <li><a href="contact.htm" onclick="closeSidebar()"><ion-icon name="mail-outline"></ion-icon>Contact</a></li>
+            <li><a href="console/index.html" onclick="closeSidebar()"><ion-icon name="terminal-outline"></ion-icon>Console</a></li>
+            <li style="border-top: 1px solid rgba(188, 19, 254, 0.1); margin-top: 0.5rem;"><a href="#" onclick="scrollToProjects(event)"><ion-icon name="layers-outline"></ion-icon>Projects</a></li>
+            <li><a href="#" onclick="scrollToSkills(event)"><ion-icon name="code-slash-outline"></ion-icon>Skills</a></li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <button onclick="openGithub()">GITHUB</button>
+            <button onclick="closeSidebar()">CLOSE</button>
+        </div>
+    </nav>
 
     <main class="container">
         <section class="hero">
@@ -214,13 +454,40 @@
         </section>
     </main>
 
+    <!-- LOGIN OVERLAY -->
     <div id="admin-login-overlay" class="hidden">
         <div class="glass-panel" style="text-align: center; max-width: 400px; padding: 2.5rem;">
             <p class="job-badge">SECURE_HANDSHAKE_REQUIRED</p>
             <h3 style="color: var(--primary); font-family: var(--mono); margin: 1rem 0;">ENTER_ADMIN_PIN</h3>
             <input type="password" id="admin-pin" maxlength="4" placeholder="••••" style="width: 100%; padding: 1.2rem; background: rgba(0,0,0,0.5); border: 1px solid var(--primary); border-radius: 12px; color: white; font-size: 2.5rem; text-align: center; letter-spacing: 15px; margin-bottom: 1.5rem; font-family: var(--mono);">
             <button class="auth-btn btn-magnetic" onclick="handlePinLogin()" style="width: 100%; padding: 1.2rem; background: var(--primary); color: white; border: none; border-radius: 12px; font-family: var(--mono); cursor: pointer; font-weight: bold;">AUTHORIZE_CONNECTION</button>
-            <button onclick="toggleTerminal()" style="background: none; border: none; color: var(--muted); margin-top: 1.5rem; cursor: pointer;">[DECLINE_REQUEST]</button>
+            <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center;">
+                <button onclick="toggleTerminal()" style="background: none; border: none; color: var(--muted); cursor: pointer;">[DECLINE_REQUEST]</button>
+                <button onclick="showRecoveryEmail()" style="background: none; border: none; color: var(--primary); cursor: pointer; font-family: var(--mono);">[RECOVER_PIN]</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- RECOVERY EMAIL OVERLAY -->
+    <div id="recovery-email-overlay" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 1000;">
+        <div class="glass-panel" style="text-align: center; max-width: 400px; padding: 2.5rem;">
+            <p class="job-badge">PIN_RECOVERY_PROTOCOL</p>
+            <h3 style="color: var(--primary); font-family: var(--mono); margin: 1rem 0;">ENTER_RECOVERY_EMAIL</h3>
+            <input type="email" id="recovery-email" placeholder="email@example.com" style="width: 100%; padding: 1.2rem; background: rgba(0,0,0,0.5); border: 1px solid var(--primary); border-radius: 12px; color: white; margin-bottom: 1.5rem; font-family: var(--mono);">
+            <button id="send-recovery-btn" onclick="sendRecoveryCode()" style="width: 100%; padding: 1.2rem; background: var(--primary); color: white; border: none; border-radius: 12px; font-family: var(--mono); cursor: pointer; font-weight: bold;">SEND_RECOVERY_CODE</button>
+            <button onclick="hideRecoveryEmail()" style="background: none; border: none; color: var(--muted); margin-top: 1rem; cursor: pointer; font-family: var(--mono);">[CANCEL]</button>
+        </div>
+    </div>
+
+    <!-- RECOVERY CODE OVERLAY -->
+    <div id="recovery-code-overlay" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 1000;">
+        <div class="glass-panel" style="text-align: center; max-width: 400px; padding: 2.5rem;">
+            <p class="job-badge">CODE_VERIFICATION</p>
+            <h3 style="color: var(--primary); font-family: var(--mono); margin: 1rem 0;">ENTER_RECOVERY_CODE</h3>
+            <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Check your email for the 6-digit code</p>
+            <input type="text" id="recovery-code" maxlength="6" placeholder="000000" style="width: 100%; padding: 1.2rem; background: rgba(0,0,0,0.5); border: 1px solid var(--primary); border-radius: 12px; color: white; font-size: 1.8rem; text-align: center; letter-spacing: 10px; margin-bottom: 1.5rem; font-family: var(--mono);">
+            <button id="verify-code-btn" onclick="verifyRecoveryCode()" style="width: 100%; padding: 1.2rem; background: var(--primary); color: white; border: none; border-radius: 12px; font-family: var(--mono); cursor: pointer; font-weight: bold;">VERIFY_CODE</button>
+            <button onclick="hideRecoveryCode()" style="background: none; border: none; color: var(--muted); margin-top: 1rem; cursor: pointer; font-family: var(--mono);">[CANCEL]</button>
         </div>
     </div>
 
@@ -238,55 +505,6 @@
     </footer>
 
     <script src="type.js"></script>
-    <script>
-        // 1. TRIPLE IMAGE CYCLE LOGIC
-        const images = [
-            'url("Pictures/image1.jpg")',
-            'url("Pictures/image2.jpg")',
-            'url("Pictures/image3.jpg")'
-        ];
-        let currentImg = 0;
-        const imgNode = document.getElementById('cycle-image');
 
-        function cycleImages() {
-            currentImg = (currentImg + 1) % images.length;
-            imgNode.style.backgroundImage = images[currentImg];
-        }
-        setInterval(cycleImages, 5000);
-        imgNode.addEventListener('click', cycleImages);
-
-        // 2. Tab Switching Logic
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const target = btn.dataset.tab;
-                document.querySelectorAll('.tab-btn, .tab-content').forEach(el => el.classList.remove('active'));
-                btn.classList.add('active');
-                document.getElementById(`tab-${target}`).classList.add('active');
-            });
-        });
-
-        // 3. CTRL + SHIFT + L Listener
-        window.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'l') {
-                e.preventDefault();
-                toggleTerminal();
-            }
-        });
-
-        // 4. Logo Triple-Tap
-        document.querySelectorAll('.secret-trigger').forEach(trigger => {
-            trigger.addEventListener('click', (e) => {
-                if (e.detail === 3) toggleTerminal();
-            });
-        });
-
-        function toggleTerminal() {
-            const overlay = document.getElementById('admin-login-overlay');
-            overlay.classList.toggle('hidden');
-            if (!overlay.classList.contains('hidden')) {
-                document.getElementById('admin-pin').focus();
-            }
-        }
-    </script>
 </body>
 </html>
