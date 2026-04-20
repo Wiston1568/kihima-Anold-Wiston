@@ -3,1068 +3,467 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COMMAND_CONSOLE // MULTI-BAY</title>
+    <title>COMMAND_CONSOLE // WISTON_CODESPACE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="icon" type="image/png" href="../Pictures/apple-touch-icon.png">
     <style>
-        body { font-family: 'JetBrains Mono', monospace; background: #010409; color: #c9d1d9; min-height: 100vh; overflow-y: auto; }
-        .glass { background: rgba(13, 17, 23, 0.7); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .nav-item { transition: 0.3s; cursor: pointer; border-left: 3px solid transparent; }
-        .nav-item.active { background: rgba(188, 19, 254, 0.1); border-left: 3px solid #bc13fe; color: white; }
-        
-        .view { display: none; }
-        .view.active { display: flex; flex-direction: column; animation: fadeIn 0.4s ease-in-out; }
-        
-        @media (max-width: 768px) { aside { position: fixed; z-index: 100; height: 100%; width: 280px; transform: translateX(-100%); transition: 0.3s transform ease; } aside.mobile-open { transform: translateX(0); } }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .modal-backdrop { background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); }
-        .app-card { background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid rgba(255,255,255,0.05); }
-        .app-card:hover { border-color: #bc13fe; box-shadow: 0 0 20px rgba(188,19,254,0.1); }
-        
-        .terminal-crit { color: #ff4a4a; border-left: 2px solid #ff4a4a; padding-left: 8px; background: rgba(255,74,74,0.05); }
-        .terminal-warn { color: #ffb86c; }
-        .terminal-info { color: #50fa7b; }
-        .resident-card { background: #0d1117; border: 1px solid #30363d; border-radius: 12px; transition: 0.2s; }
-        .resident-card:hover { border-color: #bc13fe; }
+        :root {
+            --accent-red: #ff1744;
+            --accent-orchid: #bc13fe;
+            --glass-bg: rgba(13, 17, 23, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
 
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: #21262d; border-radius: 10px; }
-        .status-pulse { animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
-        
-        .dropdown-content { position: absolute; right: 0; top: 50px; background: #0d1117; border: 1px solid #bc13fe33; border-radius: 8px; width: 200px; z-index: 50; }
-        /* Renamed to avoid Tailwind conflict */
-        .ui-hidden { display: none !important; }
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #05070a;
+            color: #f0f6fc;
+            margin: 0;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .main-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('../Pictures/background.png') no-repeat center center;
+            background-size: cover;
+            z-index: -1;
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            z-index: 100;
+        }
+
+        .logo-img {
+            width: 65px;
+            height: 65px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .sidebar-glass {
+            position: fixed;
+            top: 30px;
+            right: 40px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            width: 340px;
+            border-radius: 40px;
+            padding: 45px 35px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+            z-index: 100;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover {
+            color: var(--accent-orchid);
+            transform: translateX(-8px);
+        }
+
+        .arrow-box {
+            background: var(--accent-red);
+            color: #000;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        #content-bay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85%;
+            height: 75%;
+            background: rgba(13, 17, 23, 0.75);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--glass-border);
+            border-radius: 35px;
+            display: none;
+            z-index: 200;
+            padding: 50px;
+            box-shadow: 0 0 150px rgba(0,0,0,0.9);
+        }
+
+        .hero-text {
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .hero-title {
+            font-size: 85px;
+            font-weight: 900;
+            letter-spacing: -3px;
+            line-height: 0.9;
+        }
+
+        .terminal-line {
+            margin-bottom: 6px;
+        }
+
+        .terminal-info {
+            color: #58a6ff;
+        }
+
+        .terminal-warn {
+            color: var(--accent-red);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 45px;
+                line-height: 1.1;
+            }
+
+            .logo-container {
+                top: 25px;
+                left: 25px;
+            }
+
+            .logo-img {
+                width: 50px;
+                height: 50px;
+            }
+
+            .sidebar-glass {
+                top: auto;
+                bottom: 20px;
+                right: 15px;
+                left: 15px;
+                width: auto;
+                padding: 10px 15px;
+                border-radius: 25px;
+            }
+
+            .menu-list {
+                display: flex;
+                width: 100%;
+                justify-content: space-around;
+                align-items: center;
+            }
+
+            .menu-item {
+                border-bottom: none;
+                padding: 8px;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .menu-item span.text-xl {
+                font-size: 10px !important;
+                margin: 0;
+                letter-spacing: 0;
+            }
+
+            .menu-item .arrow-box,
+            .menu-item .mr-6,
+            .sidebar-glass .mt-10 {
+                display: none;
+            }
+
+            #content-bay {
+                width: 92%;
+                height: 85%;
+                padding: 25px;
+                top: 48%;
+            }
+        }
     </style>
 </head>
-<body class="flex h-screen">
+<body>
 
-    <!-- LOGIN VIEW -->
-    <div id="login-view" class="flex items-center justify-center w-full h-screen bg-[#010409]">
-        <div class="glass p-8 rounded-3xl w-full max-w-md border border-[#bc13fe]/30">
-            <div class="text-center mb-8">
-                <img src="../Pictures/logo.jpg" alt="Charlie" class="w-16 h-16 rounded-full border border-[#bc13fe] mx-auto mb-4 object-cover">
-                <h1 class="text-2xl font-bold text-white">COMMAND_CONSOLE</h1>
-                <p class="text-[10px] text-gray-400 uppercase tracking-wider">Multi-Bay Access Protocol</p>
-            </div>
-            <form id="login-form" class="space-y-6">
-                <div>
-                    <label class="block text-[10px] text-gray-400 uppercase mb-2">Master PIN</label>
-                    <input type="password" id="login-pin" maxlength="4" placeholder="Enter 4-digit PIN" class="w-full bg-black border border-white/10 p-4 rounded text-center text-white text-xl tracking-widest focus:border-[#bc13fe] outline-none" required>
-                </div>
-                <button type="submit" class="w-full bg-[#bc13fe] hover:bg-[#a011d8] py-4 rounded font-bold text-xs uppercase text-white transition shadow-lg shadow-[#bc13fe]/20">Authenticate</button>
-            </form>
-            <div id="login-error" class="mt-4 text-center text-red-500 text-[10px] ui-hidden"></div>
+    <div class="main-bg"></div>
+
+    <div class="logo-container">
+        <img src="../Pictures/logo.jpg" alt="Logo" class="logo-img">
+    </div>
+
+    <div class="hero-text absolute inset-0 flex flex-col items-center justify-center p-4">
+        <p class="text-[10px] md:text-xs tracking-[0.5em] uppercase opacity-40 mb-3">
+            Codespace_Active_Node
+        </p>
+
+        <h1 class="hero-title">
+            E DEY<br class="md:hidden"> HAPPEN
+        </h1>
+
+        <div class="mt-8 flex items-center justify-center gap-4">
+            <div class="w-2 h-2 bg-[#ff1744] rounded-full animate-ping"></div>
+            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-[#ff1744]">
+                System Live
+            </span>
         </div>
     </div>
 
-    <aside id="sidebar" class="flex w-64 border-r border-white/5 flex-col bg-[#0d1117] md:translate-x-0 ui-hidden">
-        <div class="p-6 mb-10 flex items-center gap-4">
-            <div class="relative">
-                <img src="../Pictures/logo.jpg" alt="Charlie" class="w-10 h-10 rounded-full border border-[#bc13fe] object-cover">
-                <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-black rounded-full status-pulse"></div>
+    <div class="sidebar-glass">
+        <div class="menu-list">
+            <div class="menu-item" onclick="openBay('CORE_SYSTEM')">
+                <span class="mr-6 text-[10px] opacity-30">01</span>
+                <span class="text-xl font-bold flex-grow tracking-tight">CORE</span>
+                <div class="arrow-box">❯</div>
             </div>
-            <div class="flex-1">
-                <h1 class="text-sm font-black tracking-tighter text-white">COMMAND<span class="text-[#bc13fe]">_</span></h1>
-                <p class="text-[8px] text-gray-500 uppercase">OP: CHARLIE // NODE_NAKURU</p>
+
+            <div class="menu-item" onclick="openBay('GARDEN_MONITOR')">
+                <span class="mr-6 text-[10px] opacity-30">02</span>
+                <span class="text-xl font-bold flex-grow tracking-tight">GARDEN</span>
+                <div class="arrow-box">❯</div>
             </div>
-            <div id="global-status-dot" class="w-3 h-3 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)] status-pulse"></div>
+
+            <div class="menu-item" onclick="openBay('FINANCIAL_GRID')">
+                <span class="mr-6 text-[10px] opacity-30">03</span>
+                <span class="text-xl font-bold flex-grow tracking-tight">FINANCE</span>
+                <div class="arrow-box">❯</div>
+            </div>
+
+            <div class="menu-item" onclick="openBay('LIVE_TERMINAL')">
+                <span class="mr-6 text-[10px] opacity-30">04</span>
+                <span class="text-xl font-bold flex-grow tracking-tight">LIVE</span>
+                <div class="arrow-box">❯</div>
+            </div>
+
+            <div class="menu-item" onclick="openBay('SECURITY_VAULT')">
+                <span class="mr-6 text-[10px] opacity-30">05</span>
+                <span class="text-xl font-bold flex-grow tracking-tight">VAULT</span>
+                <div class="arrow-box">❯</div>
+            </div>
         </div>
-        
-        <nav class="flex-1 space-y-1">
-            <div onclick="switchView('system')" id="nav-system" class="nav-item active p-4 flex items-center gap-3 text-xs"><span>[01]</span> CORE_SYSTEM</div>
-            <div onclick="switchView('garden')" id="nav-garden" class="nav-item p-4 flex items-center gap-3 text-xs"><span>[02]</span> GARDEN_MONITOR</div>
-            <div onclick="switchView('financial')" id="nav-financial" class="nav-item p-4 flex items-center gap-3 text-xs"><span>[03]</span> FINANCIAL_GRID</div>
-            <div onclick="switchView('terminal')" id="nav-terminal" class="nav-item p-4 flex items-center gap-3 text-xs"><span>[04]</span> LIVE_TERMINAL</div>
-            <div onclick="switchView('security')" id="nav-security" class="nav-item p-4 flex items-center gap-3 text-xs"><span>[05]</span> SECURITY_VAULT</div>
-        </nav>
 
-        <div class="p-6 border-t border-white/5 text-[10px] text-[#bc13fe] status-pulse">● SYSTEM_LIVE_CONNECTED</div>
-    </aside>
-
-    <main class="flex-1 overflow-y-auto">
-        <header class="h-16 border-b border-white/5 flex items-center justify-between px-6 md:px-10 relative">
-            <button onclick="toggleMobileNav()" class="block md:hidden text-[10px] uppercase tracking-[0.2em] text-white border border-white/10 px-3 py-2 rounded bg-black/30 hover:bg-white/5 transition">MENU</button>
-            <div class="relative">
-                <button onclick="toggleDropdown()" class="flex items-center gap-2 hover:opacity-80 transition">
-                    <span class="text-[10px] text-gray-400">SESSION: 0x1568</span>
-                    <img src="../Pictures/logo.jpg" class="w-8 h-8 rounded-full border border-white/10">
-                </button>
-                <div id="logoutDropdown" class="dropdown-content ui-hidden p-2 shadow-2xl">
-                    <button onclick="switchView('security')" class="w-full text-left p-2 text-xs hover:bg-white/5 rounded text-white">Security Vault</button>
-                    <button onclick="logout()" class="w-full text-left p-2 text-xs hover:bg-red-500/10 rounded text-red-500 mt-1">Terminate Session</button>
-                </div>
-            </div>
-        </header>
-
-        <div class="p-4 md:p-10">
-            <section id="view-system" class="view active h-full space-y-8">
-                <div class="flex items-center gap-4 bg-[#bc13fe]/5 p-3 rounded-lg border border-[#bc13fe]/20 mb-4">
-                    <span class="text-[9px] font-bold text-[#bc13fe] px-2 border-r border-[#bc13fe]/30">LIVE_PREVIEW</span>
-                    <marquee class="text-[9px] text-gray-400 font-mono italic" id="sys-marquee">Initializing neural link... System stable... Monitoring 4 active nodes...</marquee>
-                </div>
-
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                    <div class="glass p-4 rounded-xl border-l-2 border-blue-500">
-                        <p class="text-[8px] text-gray-500 uppercase">Latency</p>
-                        <h4 id="ping-stat" class="text-xl font-bold text-white">-- ms</h4>
-                    </div>
-                    <div class="glass p-4 rounded-xl border-l-2 border-green-500">
-                        <p class="text-[8px] text-gray-500 uppercase">Uptime</p>
-                        <h4 class="text-xl font-bold text-white">99.9%</h4>
-                    </div>
-                </div>
-
-                <div class="flex justify-between items-end border-b border-white/5 pb-4">
-                    <h2 class="text-2xl font-bold text-white">CORE_SYSTEM_PROTOCOL</h2>
-                    <button onclick="openSwapper()" class="bg-[#bc13fe] px-4 py-2 rounded text-[10px] font-bold uppercase tracking-wider hover:bg-[#a011d8] transition text-white">
-                        + Add New Connection
-                    </button>
-                </div>
-
-                <div id="appRegistry" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- App Cards will be injected here -->
-                </div>
-
-                <!-- OMNI-SWAPPER MODAL -->
-                <div id="swapperModal" class="fixed inset-0 z-50 flex items-center justify-center p-6 ui-hidden">
-                    <div class="absolute inset-0 modal-backdrop" onclick="closeSwapper()"></div>
-                    <div class="glass w-full max-w-xl p-8 rounded-3xl relative z-10 space-y-4 border-[#bc13fe]/30">
-                        <h3 id="swapperTitle" class="text-xs font-bold text-[#bc13fe] uppercase tracking-[0.2em] mb-4">Omni-Swapper // NEW_INIT</h3>
-                        <div class="grid grid-cols-2 gap-4">
-                            <input id="appName" type="text" placeholder="APP_NAME (e.g. Live TV)" class="bg-black border border-white/10 p-3 rounded text-sm text-white focus:border-[#bc13fe] outline-none">
-                            <input id="appId" type="text" placeholder="APP_ID (e.g. ftbl_001)" class="bg-black border border-white/10 p-3 rounded text-sm text-white focus:border-[#bc13fe] outline-none">
-                        </div>
-                        <select id="appType" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white focus:border-[#bc13fe] outline-none">
-                            <option value="APP">TYPE: NATIVE_APP</option>
-                            <option value="WEBSITE">TYPE: WEB_PORTAL</option>
-                        </select>
-                        <div class="grid grid-cols-2 gap-4">
-                            <input id="appVersion" type="text" placeholder="VERSION" class="bg-black border border-white/10 p-3 rounded text-sm text-white">
-                            <input id="heroImage" type="text" placeholder="HERO_IMAGE_URL" class="bg-black border border-white/10 p-3 rounded text-sm text-white">
-                        </div>
-                        <input id="downloadUrl" type="text" placeholder="UPDATE_DOWNLOAD_URL" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white focus:border-[#bc13fe] outline-none">
-                        <input id="streamLink" type="text" placeholder="PRIMARY_STREAM_URL" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white focus:border-[#bc13fe] outline-none">
-                        <input id="apiKey" type="text" placeholder="API_KEY" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white focus:border-[#bc13fe] outline-none">
-                        <input id="noticeMsg" type="text" placeholder="NOTIFICATION_MESSAGE" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white focus:border-[#bc13fe] outline-none">
-                        <div id="versionHistoryList" class="text-[9px] text-gray-500 bg-white/5 p-3 rounded border border-white/5 space-y-1 max-h-24 overflow-y-auto ui-hidden">
-                            <!-- Version history items -->
-                        </div>
-                        <textarea id="appDesc" placeholder="DESCRIPTION / METADATA" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white h-20 outline-none"></textarea>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="flex items-center gap-3 p-2 bg-black/40 rounded border border-white/5">
-                                <input type="checkbox" id="killSwitch" class="accent-[#bc13fe]">
-                                <label class="text-[8px] text-gray-400 font-bold">KILL_SWITCH</label>
-                            </div>
-                            <div class="flex items-center gap-3 p-2 bg-black/40 rounded border border-white/5">
-                                <input type="checkbox" id="paySwitch" class="accent-green-500">
-                                <label class="text-[8px] text-gray-400 font-bold">ENABLE_PAYMENTS</label>
-                            </div>
-                        </div>
-                        <button onclick="updateAppConfig()" class="w-full bg-[#bc13fe] hover:bg-[#a011d8] py-4 rounded font-bold text-xs uppercase transition text-white shadow-lg shadow-[#bc13fe]/20">Push to Vault</button>
-                    </div>
-                </div>
-
-                <!-- PASSWORD RESET MODAL -->
-                <div id="passwordResetModal" class="fixed inset-0 z-50 flex items-center justify-center p-6 ui-hidden">
-                    <div class="absolute inset-0 modal-backdrop" onclick="closePasswordReset()"></div>
-                    <div class="glass w-full max-w-md p-8 rounded-3xl relative z-10 space-y-4 border-red-500/30">
-                        <h3 class="text-xs font-bold text-red-500 uppercase tracking-[0.2em] mb-4">🔐 PASSWORD_RESET_PROTOCOL</h3>
-                        <div id="resetStep1" class="space-y-4">
-                            <p class="text-[10px] text-gray-400">Step 1: Request password reset OTP</p>
-                            <input id="resetEmail" type="email" value="" disabled placeholder="EMAIL" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-gray-400 opacity-50">
-                            <button onclick="requestPasswordReset()" class="w-full bg-red-500/10 text-red-500 py-3 rounded font-bold text-[10px] uppercase">Request Reset OTP</button>
-                        </div>
-                        <div id="resetStep2" class="space-y-4 ui-hidden">
-                            <p class="text-[10px] text-gray-400">Step 2: Enter OTP and new PIN</p>
-                            <input id="resetOtp" type="text" placeholder="OTP_CODE" maxlength="6" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white focus:border-red-500 outline-none">
-                            <input id="resetNewPin" type="password" placeholder="NEW_PIN (4 digits)" maxlength="4" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white focus:border-red-500 outline-none">
-                            <button onclick="verifyPasswordReset()" class="w-full bg-red-500/20 text-red-400 py-3 rounded font-bold text-[10px] uppercase">Confirm Password Reset</button>
-                        </div>
-                        <button onclick="closePasswordReset()" class="w-full border border-white/10 text-white py-2 rounded text-[10px] uppercase mt-4">CANCEL</button>
-                    </div>
-                </div>
-
-                <!-- VERSION ADDER MODAL -->
-                <div id="versionAdderModal" class="fixed inset-0 z-50 flex items-center justify-center p-6 ui-hidden">
-                    <div class="absolute inset-0 modal-backdrop" onclick="closeVersionAdder()"></div>
-                    <div class="glass w-full max-w-md p-8 rounded-3xl relative z-10 space-y-4 border-[#bc13fe]/30">
-                        <h3 class="text-xs font-bold text-[#bc13fe] uppercase tracking-[0.2em] mb-4">📱 ADD_PLATFORM_VERSION</h3>
-                        <select id="versionPlatform" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white focus:border-[#bc13fe] outline-none">
-                            <option value="">SELECT_PLATFORM</option>
-                            <option value="WEB">WEB_PORTAL</option>
-                            <option value="ANDROID">ANDROID_APP</option>
-                            <option value="IOS">IOS_APP</option>
-                            <option value="TVOS">TVOS_APP</option>
-                            <option value="WINDOWS">WINDOWS_DESKTOP</option>
-                            <option value="MACOS">MACOS_DESKTOP</option>
-                        </select>
-                        <input id="versionNumber" type="text" placeholder="VERSION (e.g. 1.5.2)" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white focus:border-[#bc13fe] outline-none">
-                        <input id="versionDownloadUrl" type="text" placeholder="DOWNLOAD_URL" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white focus:border-[#bc13fe] outline-none">
-                        <input id="versionMinOs" type="text" placeholder="MIN_OS_VERSION (optional)" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white">
-                        <textarea id="versionChangelog" placeholder="CHANGELOG" class="w-full bg-black border border-white/10 p-3 rounded text-sm text-white h-20 outline-none"></textarea>
-                        <button onclick="submitNewVersion()" class="w-full bg-[#bc13fe] hover:bg-[#a011d8] py-3 rounded font-bold text-xs uppercase transition text-white">Deploy_Version</button>
-                        <button onclick="closeVersionAdder()" class="w-full border border-white/10 text-white py-2 rounded text-[10px] uppercase">CANCEL</button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- APP NEXUS: THE INDIVIDUAL SYSTEM VIEW -->
-            <section id="view-app-nexus" class="view space-y-6">
-                <div class="flex items-center gap-4 border-b border-white/5 pb-6">
-                    <button onclick="switchView('system')" class="text-[#bc13fe] text-xs hover:underline">← BACK_TO_REGISTRY</button>
-                    <h2 id="nexus-title" class="text-2xl font-bold text-white uppercase tracking-tighter">APP_NEXUS // --</h2>
-                    <div id="nexus-status" class="px-2 py-0.5 rounded bg-green-500/10 text-green-500 text-[10px] font-bold">ONLINE</div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- LEFT: CONFIGURATION & CONTROL -->
-                    <div class="lg:col-span-2 space-y-6">
-                        <div class="glass p-6 rounded-2xl border-l-2 border-[#bc13fe]">
-                            <h3 class="text-[10px] font-bold text-gray-500 uppercase mb-4">Nexus_Configuration</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <div class="space-y-1">
-                                    <label class="text-[8px] text-gray-400">APP_NAME</label>
-                                    <input id="nex-name" class="w-full bg-black/40 border border-white/10 p-2 rounded text-xs text-white">
-                                </div>
-                                <div class="space-y-1">
-                                    <label class="text-[8px] text-gray-400">FORCE_VERSION</label>
-                                    <input id="nex-version" class="w-full bg-black/40 border border-white/10 p-2 rounded text-xs text-white">
-                                </div>
-                            </div>
-                            <div class="space-y-1 mb-4">
-                                <label class="text-[8px] text-gray-400">PRIMARY_STREAM_URL</label>
-                                <input id="nex-stream" class="w-full bg-black/40 border border-white/10 p-2 rounded text-xs text-white">
-                            </div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <button onclick="pushNexusUpdate()" class="bg-[#bc13fe] py-3 rounded text-[10px] font-bold text-white uppercase">Sync_Metadata</button>
-                                <button onclick="triggerRollback()" class="border border-red-500/30 text-red-500 py-3 rounded text-[10px] font-bold uppercase hover:bg-red-500/10">Execute_Rollback</button>
-                            </div>
-                        </div>
-
-                        <div class="glass p-6 rounded-2xl">
-                            <h3 class="text-[10px] font-bold text-gray-500 uppercase mb-4">Multi_Platform_Versions</h3>
-                            <div id="nexus-versions" class="space-y-2 max-h-48 overflow-y-auto text-[9px] font-mono">
-                                <!-- Platform versions injected here -->
-                            </div>
-                            <button onclick="openVersionAdder()" class="w-full mt-4 bg-[#bc13fe]/20 text-[#bc13fe] py-2 rounded text-[10px] font-bold uppercase">+ ADD_VERSION</button>
-                        </div>
-
-                        <div class="glass p-6 rounded-2xl">
-                            <h3 class="text-[10px] font-bold text-gray-500 uppercase mb-4">Telemetry_Reports</h3>
-                            <div id="nexus-reports" class="space-y-2 max-h-48 overflow-y-auto font-mono text-[9px]">
-                                <!-- Reports injected here -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- RIGHT: STATS & IDENTITY -->
-                    <div class="space-y-6">
-                        <div class="glass p-6 rounded-2xl">
-                            <h3 class="text-[10px] font-bold text-gray-500 uppercase mb-4">Financial_Leads</h3>
-                            <div class="text-center py-4">
-                                <p class="text-[8px] text-gray-400 mb-1">APP_REVENUE (EST)</p>
-                                <h4 class="text-3xl font-black text-green-500">KES 42,000</h4>
-                            </div>
-                        </div>
-                        <div class="glass p-6 rounded-2xl">
-                            <h3 class="text-[10px] font-bold text-gray-500 uppercase mb-4">Docked_Residents</h3>
-                            <div id="nexus-users" class="space-y-3">
-                                <!-- User small cards -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="view-garden" class="view space-y-8">
-                <div class="glass p-6 rounded-2xl mb-8 border-l-2 border-[#bc13fe]">
-                    <h3 class="text-xs font-bold text-[#bc13fe] mb-4">AUTHORIZE_NEW_RESIDENT</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-                        <input id="newUserPhone" type="text" oninput="checkExistingResident(this.value)" placeholder="PHONE" class="bg-black border border-white/10 p-2 rounded text-xs text-white">
-                        <input id="newUserEmail" type="text" placeholder="GARDEN_EMAIL" class="bg-black border border-white/10 p-2 rounded text-xs text-white">
-                        <input id="newUserHwid" type="text" placeholder="HWID" class="bg-black border border-white/10 p-2 rounded text-xs text-white">
-                        <select id="authAppId" class="bg-black border border-white/10 p-2 rounded text-xs text-white"></select>
-                        <button id="authBtn" onclick="addUser()" class="bg-[#bc13fe] text-white font-bold text-[10px] rounded hover:bg-[#a011d8] transition">GRANT_ACCESS</button>
-                    </div>
-                </div>
-                <div id="status-msg" class="text-[10px] hidden"></div>
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-2xl font-bold text-white">GARDEN_USER_REGISTRY</h2>
-                    <div class="flex gap-4">
-                        <input type="text" id="userSearch" oninput="fetchSystemData()" placeholder="Search Phone..." class="bg-black border border-white/10 px-4 py-2 rounded text-xs text-white outline-none focus:border-[#bc13fe]">
-                        <select id="userFilter" onchange="fetchSystemData()" class="bg-black border border-white/10 px-4 py-2 rounded text-xs text-white outline-none">
-                            <option value="all">ALL_USERS</option>
-                            <option value="active">ACTIVE_ONLY</option>
-                            <option value="banned">BANNED_ONLY</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="glass rounded-2xl overflow-hidden">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-white/10 text-[10px] uppercase">
-                            <tr><th class="p-4">Resident</th><th class="p-4">Device_ID</th><th class="p-4">Privilege</th><th class="p-4">Finances</th><th class="p-4">Status</th><th class="p-4 text-right">Protocol</th></tr>
-                        </thead>
-                        <tbody id="userTable"></tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section id="view-resident-bay" class="view space-y-8">
-                <div class="flex items-center gap-4 border-b border-white/5 pb-6">
-                    <button onclick="switchView('garden')" class="text-[#bc13fe] text-xs hover:underline">← BACK_TO_GARDEN</button>
-                    <h2 id="bay-user-title" class="text-2xl font-bold text-white uppercase tracking-tighter">RESIDENT_FILE // --</h2>
-                    <div id="bay-status" class="px-2 py-0.5 rounded bg-green-500/10 text-green-500 text-[10px] font-bold">ACTIVE</div>
-                </div>
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="glass p-6 rounded-2xl lg:col-span-2">
-                        <div class="flex flex-col gap-4">
-                            <div class="flex items-center gap-4">
-                                <img id="bay-photo" src="https://ui-avatars.com/api/?name=User&background=bc13fe&color=fff" class="w-20 h-20 rounded-full border border-white/10 object-cover">
-                                <div>
-                                    <p id="bay-phone" class="text-sm font-bold text-white">PHONE</p>
-                                    <p id="bay-hwid" class="text-[10px] text-gray-400">ID: --</p>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <button onclick="modifyUserProtocol({ hwid: activeResidentHwid, updates: { isBanned: true } })" class="bg-red-500/10 text-red-500 py-3 rounded text-[10px] font-bold uppercase">BAN_USER</button>
-                                <button onclick="modifyUserProtocol({ hwid: activeResidentHwid, updates: { paymentsEnabled: false } })" class="bg-yellow-500/10 text-yellow-500 py-3 rounded text-[10px] font-bold uppercase">DISABLE_PAYMENTS</button>
-                                <button onclick="modifyUserProtocol({ hwid: activeResidentHwid, updates: { paymentsEnabled: true } })" class="bg-green-500/10 text-green-500 py-3 rounded text-[10px] font-bold uppercase">ENABLE_PAYMENTS</button>
-                            </div>
-                            <div class="glass p-4 rounded-2xl">
-                                <h3 class="text-[10px] text-gray-500 uppercase mb-3">SUBSCRIPTION PORTFOLIO</h3>
-                                <div id="bay-subs-list" class="space-y-3"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="glass p-6 rounded-2xl space-y-4">
-                        <h3 class="text-[10px] font-bold text-gray-500 uppercase">QUICK COMMANDS</h3>
-                        <button onclick="openSwapper()" class="w-full bg-[#bc13fe] text-white py-3 rounded text-[10px] font-bold uppercase">REGISTER NEW APP</button>
-                        <button onclick="fetchSystemData()" class="w-full bg-white/5 text-white py-3 rounded text-[10px] font-bold uppercase">REFRESH GARDEN</button>
-                        <label class="text-[10px] text-gray-500 uppercase">APP_OVERRIDE</label>
-                        <select id="waiverApp" class="w-full bg-black border border-white/10 p-3 rounded text-xs text-white"></select>
-                        <button onclick="modifyUserProtocol({ hwid: activeResidentHwid, appId: document.getElementById('waiverApp').value, updates: { isBanned: false, paymentsEnabled: true } })" class="w-full bg-green-500/10 text-green-500 py-3 rounded text-[10px] font-bold uppercase">UNLOCK_APP_ACCESS</button>
-                        <p class="text-[10px] text-gray-500">Use the resident bay to manage a user's applications, subscription state, and payment lock.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section id="view-app-bay" class="view space-y-8">
-                <div class="flex items-center gap-4 border-b border-white/5 pb-6">
-                    <button onclick="switchView('garden')" class="text-[#bc13fe] text-xs hover:underline">← BACK_TO_GARDEN</button>
-                    <h2 id="app-bay-title" class="text-2xl font-bold text-white uppercase tracking-tighter">APP_BAY // --</h2>
-                </div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="glass p-6 rounded-2xl">
-                        <h3 class="text-[10px] font-bold text-gray-500 uppercase mb-4">APP_USERS</h3>
-                        <div id="app-users-list" class="space-y-3 max-h-96 overflow-y-auto"></div>
-                    </div>
-                    <div class="glass p-6 rounded-2xl space-y-4">
-                        <h3 class="text-[10px] font-bold text-gray-500 uppercase">BULK_ACTIONS</h3>
-                        <button onclick="bulkUpdateAppUsers(currentAppBayId, { isBanned: true })" class="w-full bg-red-500/10 text-red-500 py-3 rounded text-[10px] font-bold uppercase">BAN_ALL_USERS</button>
-                        <button onclick="bulkUpdateAppUsers(currentAppBayId, { paymentsEnabled: false })" class="w-full bg-yellow-500/10 text-yellow-500 py-3 rounded text-[10px] font-bold uppercase">DISABLE_PAYMENTS</button>
-                        <button onclick="bulkUpdateAppUsers(currentAppBayId, { paymentsEnabled: true })" class="w-full bg-green-500/10 text-green-500 py-3 rounded text-[10px] font-bold uppercase">ENABLE_PAYMENTS</button>
-                    </div>
-                </div>
-            </section>
-
-            <section id="view-financial" class="view space-y-8">
-                <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">FINANCIAL_GRID</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="glass p-8 rounded-2xl"><p class="text-[10px] text-gray-500 uppercase">Today's Revenue</p><h3 id="rev-today" class="text-3xl font-bold text-green-500">KES 0</h3></div>
-                    <div class="glass p-8 rounded-2xl"><p class="text-[10px] text-gray-500 uppercase">Active Subs</p><h3 id="sub-count" class="text-3xl font-bold text-[#bc13fe]">0</h3></div>
-                    <div class="glass p-8 rounded-2xl"><p class="text-[10px] text-gray-500 uppercase">Projected Monthly</p><h3 id="rev-forecast" class="text-3xl font-bold text-blue-500">KES 0</h3></div>
-                </div>
-                
-                <div class="glass p-6 rounded-2xl">
-                    <h4 class="text-xs font-bold text-gray-500 uppercase mb-4">Live Audit Feed</h4>
-                    <div id="auditFeed" class="space-y-2 text-[10px] font-mono">
-                        <!-- Audit logs will go here -->
-                    </div>
-                </div>
-                <div class="glass p-6 rounded-2xl">
-                    <h4 class="text-xs font-bold text-red-500 uppercase mb-4">Broken Node Reports</h4>
-                    <div id="reportList" class="space-y-2 text-[10px] font-mono">
-                        <!-- Reports will be injected here -->
-                    </div>
-                </div>
-            </section>
-
-            <section id="view-terminal" class="view h-full space-y-4">
-                <div class="flex justify-between items-center border-b border-white/5 pb-4">
-                    <h2 class="text-2xl font-bold text-white">LIVE_TERMINAL_FEED</h2>
-                    <div class="flex gap-2">
-                        <button class="px-3 py-1 bg-white/5 rounded text-[9px] text-gray-400 hover:text-white" onclick="clearTerminal()">CLEAR_LOGS</button>
-                        <span class="px-3 py-1 bg-green-500/10 rounded text-[9px] text-green-500 font-bold">STREAM_ACTIVE</span>
-                    </div>
-                </div>
-                <div class="flex-1 bg-black/80 p-6 rounded-xl border border-white/10 font-mono text-[11px] overflow-y-auto shadow-2xl space-y-1" id="terminalOutput">
-                    <p class="text-gray-500">>> Authenticating socket stream...</p>
-                </div>
-                <div class="relative">
-                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-[#bc13fe] text-xs">></span>
-                    <input id="termCommand" type="text" placeholder="EXECUTE_REMOTE_CMD..." class="w-full bg-black/50 border border-white/10 p-4 pl-8 rounded-xl text-xs text-white outline-none focus:border-[#bc13fe]" onkeypress="handleTerminalCommand(event)">
-                </div>
-            </section>
-
-            <section id="view-security" class="view space-y-8">
-                <h2 class="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-4">SECURITY_PROTOCOL_VAULT</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="glass p-8 rounded-2xl border-l-4 border-[#bc13fe]">
-                        <h3 class="text-xs font-bold text-[#bc13fe] mb-6 uppercase">Master Credential</h3>
-                        <div class="space-y-6">
-                            <input id="newPin" type="password" placeholder="NEW_MASTER_PIN" maxlength="4" class="w-full bg-black border border-white/10 p-4 rounded text-white text-center tracking-[1em]">
-                            <button onclick="updateSystemPin()" class="w-full bg-[#bc13fe] py-4 rounded font-bold text-xs uppercase text-white shadow-lg shadow-[#bc13fe]/30">Commit_Change</button>
-                            <div class="border-t border-white/10 pt-4">
-                                <p class="text-[10px] text-gray-500 mb-3">Or reset via secure OTP pipeline:</p>
-                                <button onclick="openPasswordReset()" class="w-full bg-orange-500/10 text-orange-500 py-3 rounded font-bold text-xs uppercase hover:bg-orange-500/20 transition">Initiate Password Reset</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="glass p-8 rounded-2xl border-l-4 border-red-500">
-                        <h3 class="text-xs font-bold text-red-500 mb-6 uppercase">System Lockdown Protocol</h3>
-                        <p class="text-[10px] text-gray-500 mb-4">Instantly blocks the handshake gateway across all connected apps.</p>
-                        <button id="lockdownBtn" onclick="toggleLockdown()" class="w-full border border-red-500/50 hover:bg-red-500/10 py-4 rounded font-bold text-xs uppercase text-red-500 transition">Initiate Global Lockdown</button>
-                        <p class="text-[10px] text-gray-500 my-4">Disable all M-Pesa/Payment integrations ecosystem-wide.</p>
-                        <button id="payLockdownBtn" onclick="toggleGlobalPayments()" class="w-full border border-green-500/50 hover:bg-green-500/10 py-4 rounded font-bold text-xs uppercase text-green-500 transition">Toggle Global Payments</button>
-                    </div>
-                </div>
-            </section>
+        <div class="mt-10 text-[9px] opacity-30 tracking-[0.3em] uppercase">
+            <p>© 2026 Anold Wiston</p>
         </div>
-    </main>
+    </div>
+
+    <div id="content-bay">
+        <div class="flex justify-between items-center mb-8 md:mb-12">
+            <h2 id="bay-title" class="text-3xl md:text-5xl font-black italic tracking-tighter uppercase text-[#bc13fe]"></h2>
+            <button onclick="closeBay()" class="text-2xl md:text-3xl hover:text-[#ff1744] transition-transform hover:scale-110">
+                ✕
+            </button>
+        </div>
+
+        <div id="bay-body" class="h-[80%] overflow-y-auto"></div>
+    </div>
 
     <script>
-        const API_BASE = window.location.hostname.includes('localhost') || window.location.hostname.includes('127.0.0.1')
-            ? 'http://localhost:3000/api/v1'
-            : 'https://kihima-backend.onrender.com/api/v1';
-        const token = localStorage.getItem('sys_token');
-        let activeResidentHwid = null;
-        let appDataStore = [];
-        let currentAppContext = null;
-        let currentAppBayId = null;
+        const API_BASE = 'https://kihima-backend.onrender.com/api/v1';
 
-        async function apiFetch(path, options = {}) {
-            const headers = options.headers ? { ...options.headers } : {};
-            if (token) headers.Authorization = `Bearer ${token}`;
-            const res = await fetch(`${API_BASE}${path}`, { ...options, headers });
-            return res;
-        }
-
-        function showAuthError() {
-            logTerminal('AUTH_ERROR: Missing session token.', 'warn');
-            document.body.innerHTML = '<div class="p-8 text-white font-bold bg-black min-h-screen">Authentication required. Please login before loading the console.</div>';
-        }
-
-        function showLogin() {
-            document.getElementById('login-view').classList.remove('ui-hidden');
-            document.getElementById('sidebar').classList.add('ui-hidden');
-            document.querySelector('main').classList.add('ui-hidden');
-        }
-
-        function hideLogin() {
-            document.getElementById('login-view').classList.add('ui-hidden');
-            document.getElementById('sidebar').classList.remove('ui-hidden');
-            document.querySelector('main').classList.remove('ui-hidden');
-        }
-
-        async function handleLogin(event) {
-            event.preventDefault();
-            const pin = document.getElementById('login-pin').value;
-            const errorDiv = document.getElementById('login-error');
-            errorDiv.classList.add('ui-hidden');
-
-            try {
-                const res = await fetch(`${API_BASE}/auth/pin-login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ pin })
-                });
-                const data = await res.json();
-                if (res.ok) {
-                    localStorage.setItem('sys_token', data.token);
-                    window.location.reload(); // Reload to initialize with token
-                } else {
-                    errorDiv.textContent = data.message || 'Login failed';
-                    errorDiv.classList.remove('ui-hidden');
-                }
-            } catch (err) {
-                errorDiv.textContent = 'Network error';
-                errorDiv.classList.remove('ui-hidden');
-            }
-        }
-
-        async function fetchSystemData() {
-            const startTime = Date.now();
-            try {
-                if (!token) return showAuthError();
-                const searchQuery = document.getElementById('userSearch')?.value || '';
-                const filterStatus = document.getElementById('userFilter')?.value || 'all';
-
-                const appRes = await apiFetch('/admin/apps');
-                appDataStore = appRes.ok ? await appRes.json() : [];
-                renderAppCards();
-
-                const authAppSelect = document.getElementById('authAppId');
-                if (authAppSelect) authAppSelect.innerHTML = appDataStore.map(a => `<option value="${a.appId}">${a.name}</option>`).join('');
-
-                const userRes = await apiFetch(`/admin/users?search=${encodeURIComponent(searchQuery)}&status=${filterStatus}`);
-                const users = userRes.ok ? await userRes.json() : [];
-                const tableBody = document.getElementById('userTable');
-                if (tableBody && Array.isArray(users)) {
-                    tableBody.innerHTML = users.map(u => `
-                        <tr class="border-b border-white/5 hover:bg-white/5 transition">
-                            <td class="p-4 flex items-center gap-3">
-                                <img src="${u.profilePhoto || 'https://ui-avatars.com/api/?name=U&background=bc13fe'}" class="w-6 h-6 rounded-full border border-white/10">
-                                <div>
-                                    <p class="text-xs text-white font-bold cursor-pointer" onclick="openResidentBay('${u.hwid}')">${u.phoneNumber}</p>
-                                    <p class="text-[8px] text-gray-500">${u.email || 'NO_GARDEN_MAIL'}</p>
-                                </div>
-                            </td>
-                            <td class="p-4 text-[10px] text-gray-500">${u.hwid || 'N/A'}</td>
-                            <td class="p-4"><select onchange="updatePrivilege('${u.hwid}', this.value)" class="bg-transparent text-[10px] border border-white/10 rounded px-1 text-[#bc13fe]">
-                                <option value="WATCHER" ${u.role === 'WATCHER' ? 'selected' : ''}>WATCHER</option>
-                                <option value="OPERATOR" ${u.role === 'OPERATOR' ? 'selected' : ''}>OPERATOR</option>
-                                <option value="OVERSEER" ${u.role === 'OVERSEER' ? 'selected' : ''}>OVERSEER</option>
-                            </select></td>
-                            <td class="p-4">
-                                <button onclick="toggleUserPayments('${u.hwid}', ${u.paymentsEnabled})" class="text-[9px] font-bold ${u.paymentsEnabled ? 'text-green-500' : 'text-yellow-500'}">
-                                    ${u.paymentsEnabled ? '[ PAY_ON ]' : '[ PAY_OFF ]'}
-                                </button>
-                            </td>
-                            <td class="p-4"><span class="px-2 py-0.5 rounded-full text-[10px] ${new Date(u.expiryDate) > new Date() ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}">
-                                ${new Date(u.expiryDate) > new Date() ? 'ACTIVE' : 'EXPIRED'}</span></td>
-                            <td class="p-4 text-right"><button onclick="toggleBan('${u.hwid}', ${u.isBanned})" class="text-[10px] font-bold ${u.isBanned ? 'text-green-500' : 'text-red-500'} underline">${u.isBanned ? 'RESTORE' : 'TERMINATE'}</button></td>
-                        </tr>
-                    `).join('');
-                }
-
-                const statsRes = await apiFetch('/admin/stats');
-                const stats = statsRes.ok ? await statsRes.json() : { revenue: 0, activeUsersCount: 0, auditLogs: [] };
-                if (document.getElementById('rev-today')) document.getElementById('rev-today').innerText = `KES ${stats.revenue || 0}`;
-                if (document.getElementById('rev-forecast')) document.getElementById('rev-forecast').innerText = `KES ${(stats.revenue || 0) * 30}`;
-                if (document.getElementById('sub-count')) document.getElementById('sub-count').innerText = stats.activeUsersCount || 0;
-
-                if (document.getElementById('auditFeed')) {
-                    document.getElementById('auditFeed').innerHTML = (stats.auditLogs || []).map(log => `
-                        <div class="flex justify-between border-b border-white/5 py-1 ${log.severity === 'CRIT' ? 'bg-red-500/5 text-red-400' : ''}">
-                            <span class="text-gray-500">[${new Date(log.createdAt).toLocaleTimeString()}]</span>
-                            <span class="${log.severity === 'CRIT' ? 'text-red-500 font-bold' : 'text-[#bc13fe]'}">${log.action}</span>
-                            <span class="text-white">${log.target || 'SYSTEM'}</span>
-                        </div>
-                    `).join('');
-                }
-
-                const settingsRes = await apiFetch('/admin/settings');
-                const settings = settingsRes.ok ? await settingsRes.json() : { globalLockdown: false, globalPaymentsEnabled: true };
-                document.getElementById('payLockdownBtn').innerText = settings.globalPaymentsEnabled ? 'DISABLE_PAYMENTS' : 'ENABLE_PAYMENTS';
-                document.getElementById('lockdownBtn').innerText = settings.globalLockdown ? 'DEACTIVATE_LOCKDOWN' : 'INITIATE_GLOBAL_LOCKDOWN';
-                document.getElementById('sys-marquee').innerText = `NODE_STATUS: ${settings.globalLockdown ? 'LOCKED' : 'STABLE'} // REVENUE_FORECAST: KES ${(stats.revenue || 0) * 30} // ACTIVE_SUBS: ${stats.activeUsersCount || 0} // PAYMENTS: ${settings.globalPaymentsEnabled ? 'ONLINE' : 'OFFLINE'}`;
-
-                const reportRes = await apiFetch('/admin/reports');
-                const reports = reportRes.ok ? await reportRes.json() : [];
-                if (document.getElementById('reportList')) {
-                    document.getElementById('reportList').innerHTML = reports.map(r => `
-                        <div class="flex justify-between border-b border-white/5 py-1 text-red-400">
-                            <span>[${r.issueType}] ${r.appId}: ${r.description}</span>
-                            <button onclick="fixReport('${r._id}')" class="text-green-500 hover:underline">MARK_FIXED</button>
-                        </div>
-                    `).join('');
-                }
-
-                document.getElementById('ping-stat').innerText = `${Date.now() - startTime}ms`;
-                logTerminal('Handshake sequence completed. Registry synced.', 'info');
-            } catch (err) {
-                logTerminal('SYNC_ERROR: Handshake failed.', 'crit');
-            }
-        }
-
-        async function addUser() {
-            const phone = document.getElementById('newUserPhone').value.trim();
-            const email = document.getElementById('newUserEmail').value.trim();
-            const hwid = document.getElementById('newUserHwid').value.trim();
-            const appId = document.getElementById('authAppId').value;
-
-            if (!phone || !hwid) return alert('PHONE and HWID are required.');
-            const res = await apiFetch('/admin/add-user', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phoneNumber: phone, hwid, email, appId, days: 30 })
-            });
-            if (!res.ok) return logTerminal('GARDEN: Failed to authorize resident.', 'warn');
-            const data = await res.json();
-            logTerminal(`GARDEN: Resident ${data.user.phoneNumber} registered.`, 'info');
-            fetchSystemData();
-            openResidentBay(data.user.hwid);
-        }
-
-        async function openResidentBay(hwid) {
-            activeResidentHwid = hwid;
-            switchView('resident-bay');
-            const res = await apiFetch(`/admin/users/${hwid}`);
-            if (!res.ok) return logTerminal('RESIDENT_BAY: Resident data unavailable.', 'warn');
-            const user = await res.json();
-            document.getElementById('bay-user-title').innerText = `RESIDENT_FILE // ${user.phoneNumber}`;
-            document.getElementById('bay-phone').innerText = user.phoneNumber;
-            document.getElementById('bay-hwid').innerText = `ID: ${user.hwid}`;
-            document.getElementById('bay-photo').src = user.profilePhoto || 'https://ui-avatars.com/api/?name=User&background=bc13fe&color=fff';
-            document.getElementById('bay-status').innerText = user.isBanned ? 'BLACKLISTED' : new Date(user.expiryDate) > new Date() ? 'ACTIVE' : 'EXPIRED';
-            document.getElementById('bay-status').className = `px-2 py-0.5 rounded text-[10px] font-bold ${user.isBanned ? 'bg-red-500/10 text-red-500' : new Date(user.expiryDate) > new Date() ? 'bg-green-500/10 text-green-500' : 'bg-yellow-500/10 text-yellow-500'}`;
-            const waiverSelect = document.getElementById('waiverApp');
-            if (waiverSelect) waiverSelect.innerHTML = appDataStore.map(a => `<option value="${a.appId}">${a.name}</option>`).join('');
-            const subsList = document.getElementById('bay-subs-list');
-            subsList.innerHTML = (user.subscriptions || []).map(s => `
-                <div class="resident-card p-4 space-y-2 bg-black/40 rounded border border-white/10">
-                    <div class="flex justify-between items-center">
-                        <span class="text-[10px] font-bold text-[#bc13fe]">${s.appId}</span>
-                        <span class="text-[9px] ${new Date(s.expiryDate) > new Date() ? 'text-green-500' : 'text-red-500'} font-bold">
-                            ${new Date(s.expiryDate) > new Date() ? 'ACTIVE' : 'EXPIRED'}
-                        </span>
-                    </div>
-                    <p class="text-[10px] text-gray-400">Expires: ${new Date(s.expiryDate).toLocaleDateString()}</p>
-                    ${(s.platformUsage && s.platformUsage.length > 0) ? `
-                    <div class="text-[9px] text-gray-500">
-                        <p class="font-bold mb-1">Platforms Used:</p>
-                        ${s.platformUsage.map(p => `<p>• ${p.platform} v${p.version} (${p.usageCount} times)</p>`).join('')}
-                    </div>
-                    ` : '<p class="text-[9px] text-gray-500">No platform usage tracked yet</p>'}
-                    <div class="flex gap-2 flex-wrap">
-                        <button onclick="modifyUserProtocol({ hwid: '${user.hwid}', appId: '${s.appId}', updates: { isBanned: ${!s.isBanned} } })" class="text-[8px] border border-white/10 px-2 py-1 rounded hover:bg-white/10">
-                            ${s.isBanned ? 'RESTORE' : 'BAN_APP'}
-                        </button>
-                        <button onclick="modifyUserProtocol({ hwid: '${user.hwid}', appId: '${s.appId}', updates: { paymentsEnabled: ${!s.paymentsEnabled} } })" class="text-[8px] border border-white/10 px-2 py-1 rounded hover:bg-white/10">
-                            ${s.paymentsEnabled ? 'DISABLE_PAY' : 'ENABLE_PAY'}
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        async function modifyUserProtocol(payload) {
-            const res = await apiFetch('/admin/modify-user-v2', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            if (res.ok) {
-                logTerminal(`USER_PROTOCOL: ${payload.hwid} updated.`, 'info');
-                fetchSystemData();
-                if (activeResidentHwid) openResidentBay(activeResidentHwid);
-            } else {
-                logTerminal('USER_PROTOCOL: Update failed.', 'warn');
-            }
-        }
-
-        function updatePrivilege(hwid, role) {
-            modifyUserProtocol({ hwid, updates: { role } });
-        }
-
-        function toggleUserPayments(hwid, currentState) {
-            modifyUserProtocol({ hwid, updates: { paymentsEnabled: !currentState } });
-        }
-
-        async function openAppBay(appId) {
-            currentAppBayId = appId;
-            switchView('app-bay');
-            const app = appDataStore.find(a => a.appId === appId);
-            document.getElementById('app-bay-title').innerText = `APP_BAY // ${app.name}`;
-            const res = await apiFetch(`/admin/apps/${appId}/users`);
-            if (!res.ok) return logTerminal('APP_BAY: Users fetch failed.', 'warn');
-            const users = await res.json();
-            const list = document.getElementById('app-users-list');
-            list.innerHTML = users.map(u => `
-                <div class="flex justify-between items-center p-3 bg-black/20 rounded">
-                    <div>
-                        <p class="text-[10px] font-bold text-white">${u.phoneNumber}</p>
-                        <p class="text-[9px] text-gray-400">${u.hwid}</p>
-                    </div>
-                    <div class="text-[9px] ${u.isBanned ? 'text-red-500' : 'text-green-500'} font-bold">
-                        ${u.isBanned ? 'BANNED' : 'ACTIVE'}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        async function bulkUpdateAppUsers(appId, updates) {
-            const res = await apiFetch(`/admin/apps/${appId}/bulk-update`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ updates })
-            });
-            if (res.ok) {
-                logTerminal(`APP_BAY: Bulk update applied.`, 'info');
-                fetchSystemData();
-                openAppBay(appId);
-            } else {
-                logTerminal('APP_BAY: Bulk update failed.', 'warn');
-            }
-        }
-
-        async function openNexus(appId) {
-            const res = await apiFetch(`/admin/apps/${appId}/nexus`);
-            if (!res.ok) return logTerminal('NEXUS_FETCH: Failed to load app nexus.', 'warn');
-            const data = await res.json();
-            currentAppContext = data.app;
-            switchView('app-nexus');
-            document.getElementById('nexus-title').innerText = `APP_NEXUS // ${data.app.name}`;
-            document.getElementById('nexus-status').innerText = data.app.killSwitch ? 'OFFLINE' : 'ONLINE';
-            document.getElementById('nex-name').value = data.app.name;
-            document.getElementById('nex-version').value = data.app.version;
-            document.getElementById('nex-stream').value = data.app.metadata?.stream_link || '';
-            document.getElementById('nexus-reports').innerHTML = data.reports.map(report => `<div class="text-[9px] text-gray-300">[${report.issueType}] ${report.description}</div>`).join('');
-            document.getElementById('nexus-users').innerHTML = data.users.map(user => `<div class="text-[10px] text-white">${user.phoneNumber} - ${user.role}</div>`).join('');
-            
-            // Load versions
-            const versionRes = await apiFetch(`/admin/apps/${appId}/versions`);
-            if (versionRes.ok) {
-                const verData = await versionRes.json();
-                const versionsDiv = document.getElementById('nexus-versions');
-                versionsDiv.innerHTML = (verData.versions || []).map(v => `
-                    <div class="p-2 bg-black/40 rounded border border-white/10 flex justify-between items-start">
-                        <div>
-                            <p class="text-[#bc13fe] font-bold text-[9px]">${v.platform}</p>
-                            <p class="text-gray-400 text-[8px]">v${v.version}</p>
-                            <p class="text-gray-500 text-[8px]">${verData.platformStats?.[v.platform]?.activeUsers || 0} users</p>
-                        </div>
-                        <div class="text-[8px] ${v.isActive ? 'text-green-500' : 'text-yellow-500'} font-bold">
-                            ${v.isActive ? 'ACTIVE' : 'INACTIVE'}
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        async function pushNexusUpdate() {
-            if (!currentAppContext) return logTerminal('NEXUS: No active app selected.', 'warn');
-            const name = document.getElementById('nex-name').value.trim();
-            const version = document.getElementById('nex-version').value.trim();
-            const streamLink = document.getElementById('nex-stream').value.trim();
-            const res = await apiFetch('/admin/update-app', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    appId: currentAppContext.appId,
-                    name,
-                    version,
-                    killSwitch: currentAppContext.killSwitch,
-                    metadata: { stream_link: streamLink, api_key: currentAppContext.metadata?.api_key }
-                })
-            });
-            if (res.ok) {
-                logTerminal(`NEXUS_UPDATE: ${currentAppContext.appId} metadata synced.`, 'info');
-                fetchSystemData();
-            } else {
-                logTerminal('NEXUS_UPDATE: Failed to save metadata.', 'warn');
-            }
-        }
-
-        async function triggerRollback() {
-            if (!currentAppContext) return logTerminal('ROLLBACK: No app selected.', 'warn');
-            const res = await apiFetch('/admin/rollback-app', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ appId: currentAppContext.appId })
-            });
-            if (res.ok) {
-                logTerminal(`ROLLBACK: ${currentAppContext.appId} reverted.`, 'warn');
-                fetchSystemData();
-                openNexus(currentAppContext.appId);
-            }
-        }
-
-        async function fixReport(reportId) {
-            const res = await apiFetch(`/admin/reports/${reportId}/fix`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
-            });
-            if (res.ok) {
-                logTerminal(`REPORT: ${reportId} resolved.`, 'info');
-                fetchSystemData();
-            }
-        }
-
-        function openSwapper(editId = null) {
-            const modal = document.getElementById('swapperModal');
-            const title = document.getElementById('swapperTitle');
-            const historyList = document.getElementById('versionHistoryList');
-            modal.classList.remove('ui-hidden');
-            if (editId) {
-                const app = appDataStore.find(a => a.appId === editId);
-                title.innerText = `Omni-Swapper // EDIT_${editId}`;
-                document.getElementById('appName').value = app.name;
-                document.getElementById('appId').value = app.appId;
-                document.getElementById('appId').disabled = true;
-                document.getElementById('appVersion').value = app.version;
-                document.getElementById('streamLink').value = app.metadata?.stream_link || '';
-                document.getElementById('apiKey').value = app.metadata?.api_key || '';
-                document.getElementById('noticeMsg').value = app.metadata?.notice_message || '';
-                document.getElementById('killSwitch').checked = app.killSwitch;
-                if (app.versionHistory?.length) {
-                    historyList.classList.remove('ui-hidden');
-                    historyList.innerHTML = `<p class="font-bold border-b border-white/10 pb-1 mb-1">VERSION_LOG</p>` + app.versionHistory.map(v => `<div>v${v.version} - ${new Date(v.createdAt).toLocaleDateString()}</div>`).join('');
-                }
-            } else {
-                title.innerText = 'Omni-Swapper // NEW_INIT';
-                document.getElementById('appId').disabled = false;
-                historyList.classList.add('ui-hidden');
-                document.querySelectorAll('#swapperModal input:not([type="checkbox"])').forEach(i => i.value = '');
-                document.getElementById('killSwitch').checked = false;
-            }
-        }
-
-        function closeSwapper() {
-            document.getElementById('swapperModal').classList.add('ui-hidden');
-        }
-
-        async function updateAppConfig() {
-            const name = document.getElementById('appName').value.trim();
-            const appId = document.getElementById('appId').value.trim();
-            const streamLink = document.getElementById('streamLink').value.trim();
-            const apiKey = document.getElementById('apiKey').value.trim();
-            const notice_message = document.getElementById('noticeMsg').value.trim();
-            const version = document.getElementById('appVersion').value.trim();
-            const killSwitch = document.getElementById('killSwitch').checked;
-            if (!appId || !name) return alert('CRITICAL: APP_ID and NAME required.');
-            const res = await apiFetch('/admin/update-app', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, appId, version, killSwitch, metadata: { stream_link: streamLink, api_key: apiKey, notice_message } })
-            });
-            if (res.ok) {
-                alert('VAULT_UPDATED');
-                logTerminal(`CONFIG_PUSH: ${appId} metadata synchronized.`, 'info');
-                closeSwapper();
-                fetchSystemData();
-            } else {
-                logTerminal('PUSH_ERROR: Vault write failed.', 'warn');
-            }
-        }
-
-        async function toggleBan(hwid, currentStatus) {
-            if (!confirm(`Confirm status change for device: ${hwid}?`)) return;
-            const res = await apiFetch('/admin/toggle-ban', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ hwid, status: !currentStatus })
-            });
-            if (res.ok) {
-                const data = await res.json();
-                logTerminal(`SECURITY: ${data.message}`, 'info');
-                fetchSystemData();
-            }
-        }
-
-        function toggleDropdown() {
-            document.getElementById('logoutDropdown').classList.toggle('ui-hidden');
-        }
-
-        function toggleMobileNav() {
-            const sidebar = document.getElementById('sidebar');
-            if (sidebar) sidebar.classList.toggle('mobile-open');
-        }
-
-        async function updateSystemPin() {
-            const newPin = document.getElementById('newPin').value;
-            const res = await apiFetch('/auth/reset-pin', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ newPin })
-            });
-            if (res.ok) {
-                alert('PIN_UPDATED');
-                logTerminal('SECURITY: Master PIN altered.', 'info');
-            }
-        }
-
-        function switchView(viewId) {
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            const targetView = document.getElementById(`view-${viewId}`);
-            const targetNav = document.getElementById(`nav-${viewId}`);
-            if (targetView) targetView.classList.add('active');
-            if (targetNav) targetNav.classList.add('active');
-            logTerminal(`MOUNT_VIEW: ${viewId.toUpperCase()}`, 'info');
-        }
-
-        function clearTerminal() {
-            const term = document.getElementById('terminalOutput');
-            if (term) term.innerHTML = '<p class="text-gray-500">>> Authenticating socket stream...</p>';
-        }
-
-        function logTerminal(msg, level = 'info') {
-            const term = document.getElementById('terminalOutput');
-            if (!term) return;
-            const p = document.createElement('p');
-            p.className = level === 'crit' ? 'terminal-crit' : level === 'warn' ? 'terminal-warn' : 'terminal-info';
-            p.innerHTML = `<span class="text-[#bc13fe]">[${new Date().toLocaleTimeString()}]</span> ${msg}`;
-            term.appendChild(p);
-            term.scrollTop = term.scrollHeight;
-        }
-
-        function logout() {
-            localStorage.removeItem('sys_token');
-            window.location.href = '../index.html';
-        }
-
-        async function toggleLockdown() {
-            const currentText = document.getElementById('lockdownBtn').innerText;
-            const enabled = currentText.includes('DEACTIVATE') ? false : true;
-            const res = await apiFetch('/admin/lockdown', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status: enabled })
-            });
-            if (res.ok) {
-                logTerminal(`LOCKDOWN: ${enabled ? 'activated' : 'deactivated'}.`, enabled ? 'crit' : 'info');
-                fetchSystemData();
-            }
-        }
-
-        async function toggleGlobalPayments() {
-            const currentText = document.getElementById('payLockdownBtn').innerText;
-            const enabled = currentText.includes('DISABLE') ? false : true;
-            const res = await apiFetch('/admin/payments', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ enabled })
-            });
-            if (res.ok) {
-                logTerminal(`PAYMENTS: ${enabled ? 'enabled' : 'disabled'}.`, enabled ? 'info' : 'warn');
-                fetchSystemData();
-            }
-        }
-
-        function renderAppCards() {
-            const registry = document.getElementById('appRegistry');
-            registry.innerHTML = appDataStore.map(app => {
-                const platformCount = (app.versions || []).length;
-                return `
-                <div class="glass p-6 rounded-2xl space-y-4">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="text-lg font-bold text-white">${app.name}</h3>
-                            <p class="text-[10px] text-gray-500 uppercase">${app.appId}</p>
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="openNexus('${app.appId}')" class="text-[#bc13fe] text-[10px] underline">NEXUS</button>
-                            <button onclick="openAppBay('${app.appId}')" class="text-green-500 text-[10px] underline">BAY</button>
-                        </div>
-                    </div>
-                    <div class="text-[10px] text-gray-400 space-y-1">
-                        <p>Version: ${app.version}</p>
-                        <p>Platforms: ${platformCount > 0 ? platformCount + ' active' : 'N/A'}</p>
-                        <p>Status: ${app.killSwitch ? '🔴 OFFLINE' : '🟢 ONLINE'}</p>
-                        <p>Payments: ${app.paymentsEnabled ? '✓ ENABLED' : '✗ DISABLED'}</p>
-                    </div>
-                </div>
-            `}).join('');
-        }
-
-        function openVersionAdder() {
-            if (!currentAppContext) return alert('No app selected');
-            document.getElementById('versionAdderModal').classList.remove('ui-hidden');
-            document.getElementById('versionPlatform').value = '';
-            document.getElementById('versionNumber').value = '';
-            document.getElementById('versionDownloadUrl').value = '';
-            document.getElementById('versionMinOs').value = '';
-            document.getElementById('versionChangelog').value = '';
-        }
-
-        function closeVersionAdder() {
-            document.getElementById('versionAdderModal').classList.add('ui-hidden');
-        }
-
-        async function submitNewVersion() {
-            const platform = document.getElementById('versionPlatform').value;
-            const version = document.getElementById('versionNumber').value;
-            const downloadUrl = document.getElementById('versionDownloadUrl').value;
-            const minOsVersion = document.getElementById('versionMinOs').value;
-            const changelog = document.getElementById('versionChangelog').value;
-
-            if (!platform || !version) return alert('Platform and version are required');
-
-            const res = await apiFetch(`/admin/apps/${currentAppContext}/add-version`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ platform, version, downloadUrl, changelog, minOsVersion })
-            });
-
-            if (res.ok) {
-                logTerminal(`VERSION_ADDED: ${platform} v${version}`, 'info');
-                closeVersionAdder();
-                openNexus(currentAppContext);
-            } else {
-                logTerminal('VERSION_ADD_FAILED', 'warn');
-            }
-        }
-
-        function openPasswordReset() {
-            document.getElementById('passwordResetModal').classList.remove('ui-hidden');
-            document.getElementById('resetEmail').value = config.ADMIN_EMAIL || 'admin@system.local';
-            document.getElementById('resetStep1').classList.remove('ui-hidden');
-            document.getElementById('resetStep2').classList.add('ui-hidden');
-        }
-
-        function closePasswordReset() {
-            document.getElementById('passwordResetModal').classList.add('ui-hidden');
-        }
-
-        async function requestPasswordReset() {
-            const email = config.ADMIN_EMAIL || document.getElementById('resetEmail').value;
-            const res = await apiFetch('/auth/password-reset-request', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email })
-            });
-
-            if (res.ok) {
-                logTerminal('PASSWORD_RESET_OTP: Sent to secure email.', 'info');
-                document.getElementById('resetStep1').classList.add('ui-hidden');
-                document.getElementById('resetStep2').classList.remove('ui-hidden');
-            } else {
-                logTerminal('PASSWORD_RESET_FAILED', 'warn');
-            }
-        }
-
-        async function verifyPasswordReset() {
-            const email = config.ADMIN_EMAIL || document.getElementById('resetEmail').value;
-            const otp = document.getElementById('resetOtp').value;
-            const newPin = document.getElementById('resetNewPin').value;
-
-            if (!otp || !newPin || newPin.length !== 4) return alert('OTP and 4-digit PIN required');
-
-            const res = await apiFetch('/auth/password-reset-verify', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, otp, newPin })
-            });
-
-            if (res.ok) {
-                logTerminal('PASSWORD_RESET_SUCCESS: System PIN updated.', 'info');
-                closePasswordReset();
-                alert('Password reset successful. Use your new PIN to login.');
-            } else {
-                const error = await res.json();
-                logTerminal(`PASSWORD_RESET_ERROR: ${error.message}`, 'warn');
-            }
-        }
-
-        // Global config object
-        const config = { ADMIN_EMAIL: 'admin@kihima.local' };
-
-        window.onload = () => {
-            if (!token) {
-                showLogin();
-                document.getElementById('login-form').addEventListener('submit', handleLogin);
-                return;
-            }
-            hideLogin();
-            logTerminal('Session Charlie authorized.', 'info');
-            fetchSystemData();
-            setInterval(fetchSystemData, 30000);
+        let statsData = {
+            appsCount: 12,
+            dailyRev: 15420,
+            activeUsersCount: 91
         };
+
+        let appDataStore = [
+            {
+                appId: 'APP-001',
+                name: 'Main Client',
+                version: '2.3.1',
+                killSwitch: false,
+                paymentsEnabled: true
+            },
+            {
+                appId: 'APP-002',
+                name: 'Beta Dashboard',
+                version: '1.9.8',
+                killSwitch: true,
+                paymentsEnabled: false
+            }
+        ];
+
+        let userDataStore = [
+            {
+                phoneNumber: '+254700111222',
+                hwid: 'HWID-1001',
+                isBanned: false
+            },
+            {
+                phoneNumber: '+254700333444',
+                hwid: 'HWID-1002',
+                isBanned: true
+            }
+        ];
+
+        let logs = [
+            '> NODE_ACTIVE: Wiston Codespace Initialized',
+            '> API_LAYER: Connected',
+            '> SYSTEM_BOOT: All systems nominal'
+        ];
+
+        function openBay(type) {
+            const bay = document.getElementById('content-bay');
+            const title = document.getElementById('bay-title');
+            const body = document.getElementById('bay-body');
+
+            bay.style.display = 'block';
+            title.innerText = type.replaceAll('_', ' ');
+
+            if (type === 'CORE_SYSTEM') {
+                body.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 h-[80%] overflow-y-auto';
+
+                body.innerHTML = `
+                    ${appDataStore.map(app => `
+                        <div class="p-6 bg-white/5 border border-white/10 rounded-2xl">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="text-xl font-bold">${app.name}</h3>
+                                    <p class="text-xs opacity-40">${app.appId}</p>
+                                </div>
+
+                                <span class="${app.killSwitch ? 'text-red-500' : 'text-green-400'} text-xs font-bold">
+                                    ${app.killSwitch ? 'OFFLINE' : 'ONLINE'}
+                                </span>
+                            </div>
+
+                            <div class="space-y-2 text-sm opacity-70">
+                                <p>Version: ${app.version}</p>
+                                <p>Payments: ${app.paymentsEnabled ? 'Enabled' : 'Disabled'}</p>
+                            </div>
+
+                            <div class="flex gap-3 mt-6">
+                                <button class="px-4 py-2 rounded-xl bg-[#bc13fe] text-xs font-bold">
+                                    NEXUS
+                                </button>
+
+                                <button class="px-4 py-2 rounded-xl bg-[#ff1744] text-xs font-bold">
+                                    BAY
+                                </button>
+                            </div>
+                        </div>
+                    `).join('')}
+                `;
+            }
+
+            else if (type === 'GARDEN_MONITOR') {
+                body.className = 'space-y-6 h-[80%] overflow-y-auto';
+
+                body.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <input placeholder="PHONE" class="bg-black/30 border border-white/10 p-3 rounded-xl">
+                        <input placeholder="EMAIL" class="bg-black/30 border border-white/10 p-3 rounded-xl">
+                        <input placeholder="HWID" class="bg-black/30 border border-white/10 p-3 rounded-xl">
+
+                        <button class="bg-[#bc13fe] rounded-xl font-bold text-xs">
+                            GRANT ACCESS
+                        </button>
+                    </div>
+
+                    <div class="space-y-4">
+                        ${userDataStore.map(user => `
+                            <div class="p-4 bg-white/5 border border-white/10 rounded-2xl flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-bold">${user.phoneNumber}</h4>
+                                    <p class="text-xs opacity-40">${user.hwid}</p>
+                                </div>
+
+                                <div class="flex gap-3">
+                                    <button class="px-4 py-2 rounded-xl bg-[#bc13fe] text-xs font-bold">
+                                        OPEN
+                                    </button>
+
+                                    <button class="px-4 py-2 rounded-xl bg-red-500/20 text-red-400 text-xs font-bold">
+                                        ${user.isBanned ? 'RESTORE' : 'BAN'}
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            else if (type === 'FINANCIAL_GRID') {
+                body.className = 'grid grid-cols-1 md:grid-cols-3 gap-6 h-[80%] overflow-y-auto';
+
+                body.innerHTML = `
+                    <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                        <p class="text-xs opacity-40">Today's Revenue</p>
+                        <h2 class="text-4xl font-black text-[#bc13fe]">
+                            KES ${statsData.dailyRev}
+                        </h2>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                        <p class="text-xs opacity-40">Active Subs</p>
+                        <h2 class="text-4xl font-black">
+                            ${statsData.activeUsersCount}
+                        </h2>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                        <p class="text-xs opacity-40">Projected Monthly</p>
+                        <h2 class="text-4xl font-black text-green-400">
+                            KES ${statsData.dailyRev * 30}
+                        </h2>
+                    </div>
+                `;
+            }
+
+            else if (type === 'LIVE_TERMINAL') {
+                body.className = 'space-y-4 h-[80%] overflow-y-auto';
+
+                body.innerHTML = `
+                    <div class="bg-black/40 rounded-2xl border border-white/10 p-4 h-full overflow-y-auto text-sm text-green-400">
+                        ${logs.map(log => `<p class="terminal-line">${log}</p>`).join('')}
+                    </div>
+                `;
+            }
+
+            else if (type === 'SECURITY_VAULT') {
+                body.className = 'grid grid-cols-1 md:grid-cols-2 gap-6 h-[80%] overflow-y-auto';
+
+                body.innerHTML = `
+                    <div class="p-6 bg-white/5 border border-white/10 rounded-2xl">
+                        <p class="text-xs uppercase opacity-40 mb-4">Master PIN</p>
+
+                        <input type="password" maxlength="4"
+                            class="w-full bg-black/30 border border-white/10 p-4 rounded-xl mb-4">
+
+                        <button class="w-full bg-[#bc13fe] py-4 rounded-xl font-bold text-xs">
+                            UPDATE PIN
+                        </button>
+                    </div>
+
+                    <div class="p-6 bg-white/5 border border-red-500/20 rounded-2xl">
+                        <p class="text-xs uppercase text-red-400 mb-4">
+                            Lockdown Protocol
+                        </p>
+
+                        <button class="w-full border border-red-500 text-red-500 py-4 rounded-xl font-bold text-xs mb-4">
+                            GLOBAL LOCKDOWN
+                        </button>
+
+                        <button class="w-full border border-green-500 text-green-500 py-4 rounded-xl font-bold text-xs">
+                            TOGGLE PAYMENTS
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function closeBay() {
+            document.getElementById('content-bay').style.display = 'none';
+        }
     </script>
 </body>
 </html>
