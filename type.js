@@ -361,3 +361,37 @@ window.openGithub = openGithub;
 window.scrollToProjects = scrollToProjects;
 window.scrollToSkills = scrollToSkills;
 window.verifyRecoveryCode = verifyRecoveryCode;
+function scrollToEngineering(event) {
+    event.preventDefault();
+    // 1. Trigger the tab click
+    document.querySelector('[data-tab="engineering"]').click();
+    // 2. Scroll to the section
+    document.querySelector('.tab-btn').scrollIntoView({ behavior: 'smooth' });
+}
+
+function scrollToSolutions(event) {
+    event.preventDefault();
+    // 1. Trigger the tab click
+    document.querySelector('[data-tab="solutions"]').click();
+    // 2. Scroll to the section
+    document.querySelector('.tab-btn').scrollIntoView({ behavior: 'smooth' });
+}
+function scrollToEngineering(event) {
+    event.preventDefault();
+    // Selects the button with data-tab="engineering" and clicks it
+    const btn = document.querySelector('.tab-btn[data-tab="engineering"]');
+    if (btn) {
+        btn.click();
+        btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+}
+
+function scrollToSolutions(event) {
+    event.preventDefault();
+    // Selects the button with data-tab="security" and clicks it
+    const btn = document.querySelector('.tab-btn[data-tab="security"]');
+    if (btn) {
+        btn.click();
+        btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+}

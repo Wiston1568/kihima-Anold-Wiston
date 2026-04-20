@@ -79,7 +79,10 @@
             overflow: hidden;
             box-shadow: -20px 0 60px rgba(0, 0, 0, 0.5);
         }
-        .sidebar-nav.active { transform: translateX(0); }
+
+        .sidebar-nav.active {
+            transform: translateX(0);
+        }
 
         .sidebar-overlay {
             position: fixed;
@@ -93,19 +96,82 @@
             z-index: 1050;
             animation: fadeIn 0.3s ease;
         }
-        .sidebar-overlay.active { display: block; }
 
-        .sidebar-header { padding: 2rem 1.5rem; border-bottom: 1px solid rgba(188, 19, 254, 0.15); display: flex; align-items: center; gap: 12px; }
-        .sidebar-header img { width: 50px; height: 50px; border-radius: 12px; border: 2px solid var(--primary); object-fit: cover; }
-        .sidebar-header-info h3 { font-size: 0.95rem; color: white; margin: 0; font-family: var(--mono); font-weight: bold; }
-        .sidebar-header-info p { font-size: 0.75rem; color: var(--muted); margin: 3px 0 0 0; text-transform: uppercase; letter-spacing: 1px; }
+        .sidebar-overlay.active {
+            display: block;
+        }
 
-        .sidebar-menu { flex: 1; padding: 1rem 0; list-style: none; margin: 0; overflow-y: auto; }
-        .sidebar-menu a { display: flex; align-items: center; gap: 12px; padding: 1rem 1.5rem; color: var(--muted); text-decoration: none; font-size: 0.9rem; font-family: var(--mono); transition: all 0.3s ease; border-left: 3px solid transparent; }
-        .sidebar-menu a:hover { background: rgba(188, 19, 254, 0.1); color: var(--primary); border-left-color: var(--primary); padding-left: 2rem; }
-        .sidebar-menu a ion-icon { font-size: 1.3rem; flex-shrink: 0; }
+        .sidebar-header {
+            padding: 2rem 1.5rem;
+            border-bottom: 1px solid rgba(188, 19, 254, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-        /* HAMBURGER MENU BUTTON FIX */
+        .sidebar-header img {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            border: 2px solid var(--primary);
+            object-fit: cover;
+        }
+
+        .sidebar-header-info h3 {
+            font-size: 0.95rem;
+            color: white;
+            margin: 0;
+            font-family: var(--mono);
+            font-weight: bold;
+        }
+
+        .sidebar-header-info p {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin: 3px 0 0 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu {
+            flex: 1;
+            padding: 1rem 0;
+            list-style: none;
+            margin: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-menu li {
+            margin: 0;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 1rem 1.5rem;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-family: var(--mono);
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            position: relative;
+        }
+
+        .sidebar-menu a:hover {
+            background: rgba(188, 19, 254, 0.1);
+            color: var(--primary);
+            border-left-color: var(--primary);
+            padding-left: 2rem;
+        }
+
+        .sidebar-menu a ion-icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        /* HAMBURGER MENU BUTTON */
         .hamburger-btn {
             position: fixed;
             top: 2rem;
@@ -119,36 +185,53 @@
             display: none;
             align-items: center;
             justify-content: center;
-            z-index: 1200;
+            z-index: 1001;
             transition: all 0.3s ease;
             flex-direction: column;
             gap: 5px;
         }
 
-        /* Make button background and border transparent when active */
-        .hamburger-btn.active { 
-            background: transparent !important; 
-            border-color: transparent !important; 
-            box-shadow: none !important; 
+        .hamburger-btn:hover {
+            background: rgba(188, 19, 254, 0.25);
+            border-color: var(--primary);
         }
 
-        .hamburger-line { width: 24px; height: 2px; background: var(--primary); transition: all 0.3s ease; border-radius: 2px; }
-        
-        /* Ensure the X remains visible but the box around it is gone */
-        .hamburger-btn.active .hamburger-line { background: var(--primary) !important; }
-        .hamburger-btn.active .hamburger-line:nth-child(1) { transform: rotate(45deg) translateY(10px); }
-        .hamburger-btn.active .hamburger-line:nth-child(2) { opacity: 0; }
-        .hamburger-btn.active .hamburger-line:nth-child(3) { transform: rotate(-45deg) translateY(-10px); }
+        .hamburger-btn.active {
+            background: transparent !important;
+            border-color: transparent !important;
+            box-shadow: none !important;
+        }
 
-        @media (max-width: 768px) {
-            .hamburger-btn { display: flex; }
-            .sidebar-nav { width: 280px; }
-            .nav-links { display: none; } /* Hide desktop nav on mobile */
+        .hamburger-line {
+            width: 24px;
+            height: 2px;
+            background: var(--primary);
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        /* When active, the lines should disappear */
+        .hamburger-btn.active .hamburger-line {
+            opacity: 0;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger-btn {
+                display: flex;
+            }
+            
+            .sidebar-nav {
+                width: 280px;
+            }
+
+            .nav-links {
+                display: none;
+            }
         }
 
         /* Service Cards */
@@ -232,8 +315,16 @@
             <li><a href="index.html" onclick="closeSidebar()"><ion-icon name="home-outline"></ion-icon>Home</a></li>
             <li><a href="Services.html" onclick="closeSidebar()"><ion-icon name="briefcase-outline"></ion-icon>Services</a></li>
             <li><a href="contact.htm" onclick="closeSidebar()"><ion-icon name="mail-outline"></ion-icon>Contact</a></li>
-            <li style="border-top: 1px solid rgba(188, 19, 254, 0.1); margin-top: 0.5rem;"><a href="#" onclick="scrollToProjects(event)"><ion-icon name="layers-outline"></ion-icon>Projects</a></li>
-            <li><a href="#" onclick="scrollToSkills(event)"><ion-icon name="code-slash-outline"></ion-icon>Skills</a></li>
+       <li style="border-top: 1px solid rgba(188, 19, 254, 0.1); margin-top: 0.5rem;">
+    <a href="#" onclick="scrollToEngineering(event)">
+        <ion-icon name="layers-outline"></ion-icon>Engineering & Dev
+    </a>
+</li>
+<li>
+    <a href="#" onclick="scrollToSolutions(event)">
+        <ion-icon name="code-slash-outline"></ion-icon>Security & IT
+    </a>
+</li>
         </ul>
         <div class="sidebar-footer" style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; padding: 1.5rem; flex-shrink: 0;">
             <div class="footer-socials" style="display: flex; gap: 1.5rem;">
@@ -323,11 +414,6 @@
                 document.getElementById(`tab-${target}`).classList.add('active');
             });
         });
-
-        function toggleTerminal() {
-            const overlay = document.getElementById('admin-login-overlay');
-            if(overlay) overlay.classList.toggle('hidden');
-        }
     </script>
 </body>
 </html>

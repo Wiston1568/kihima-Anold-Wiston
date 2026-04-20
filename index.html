@@ -200,20 +200,11 @@
             border-radius: 2px;
         }
 
+        /* When active, the lines should disappear */
         .hamburger-btn.active .hamburger-line {
-            background: #ffffff !important;
-        }
-
-        .hamburger-btn.active .hamburger-line:nth-child(1) {
-            transform: rotate(45deg) translateY(10px);
-        }
-
-        .hamburger-btn.active .hamburger-line:nth-child(2) {
             opacity: 0;
-        }
-
-        .hamburger-btn.active .hamburger-line:nth-child(3) {
-            transform: rotate(-45deg) translateY(-10px);
+            /* The background property is optional here as opacity: 0 makes it invisible */
+            /* background: #ffffff !important; */
         }
 
         @keyframes fadeIn {
@@ -396,8 +387,17 @@
             <li><a href="index.html" onclick="closeSidebar()"><ion-icon name="home-outline"></ion-icon>Home</a></li>
             <li><a href="Services.html" onclick="closeSidebar()"><ion-icon name="briefcase-outline"></ion-icon>Services</a></li>
             <li><a href="contact.htm" onclick="closeSidebar()"><ion-icon name="mail-outline"></ion-icon>Contact</a></li>
-            <li style="border-top: 1px solid rgba(188, 19, 254, 0.1); margin-top: 0.5rem;"><a href="#" onclick="scrollToProjects(event)"><ion-icon name="layers-outline"></ion-icon>Projects</a></li>
-            <li><a href="#" onclick="scrollToSkills(event)"><ion-icon name="code-slash-outline"></ion-icon>Skills</a></li>
+<li style="border-top: 1px solid rgba(188, 19, 254, 0.1); margin-top: 0.5rem;">
+    <a href="#" onclick="scrollToEngineering(event)">
+        <ion-icon name="layers-outline"></ion-icon>Engineering
+    </a>
+</li>
+<li>
+    <a href="#" onclick="scrollToSolutions(event)">
+        <ion-icon name="code-slash-outline"></ion-icon>Solutions
+    </a>
+</li>
+
         </ul>
 
         <div class="sidebar-footer" style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; padding: 1.5rem; flex-shrink: 0;">
