@@ -158,8 +158,10 @@
         }
         .hamburger-btn:hover { background: rgba(188, 19, 254, 0.25); border-color: var(--primary); }
         .hamburger-btn.active { background: transparent !important; border-color: transparent !important; }
-        .hamburger-line { width: 24px; height: 2px; background: transparent; transition: all 0.3s ease; border-radius: 2px; }
+        .hamburger-line { width: 24px; height: 2px; background: var(--primary); transition: all 0.3s ease; border-radius: 2px; }
         
+        .hamburger-btn.active .hamburger-line { background: var(--primary) !important; }
+
         /* Hamburger Animation Classes */
         .hamburger-btn.active .hamburger-line:nth-child(1) { transform: rotate(45deg) translateY(10px); }
         .hamburger-btn.active .hamburger-line:nth-child(2) { opacity: 0; }
@@ -210,8 +212,10 @@
             <li><a href="index.html" onclick="closeSidebar()"><ion-icon name="home-outline"></ion-icon>Home</a></li>
             <li><a href="Services.html" onclick="closeSidebar()"><ion-icon name="briefcase-outline"></ion-icon>Services</a></li>
             <li><a href="contact.htm" onclick="closeSidebar()"><ion-icon name="mail-outline"></ion-icon>Contact</a></li>
+            <li style="border-top: 1px solid rgba(188, 19, 254, 0.1); margin-top: 0.5rem;"><a href="#" onclick="scrollToProjects(event)"><ion-icon name="layers-outline"></ion-icon>Projects</a></li>
+            <li><a href="#" onclick="scrollToSkills(event)"><ion-icon name="code-slash-outline"></ion-icon>Skills</a></li>
         </ul>
-        <div class="sidebar-footer" style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; padding: 1.5rem; flex-shrink: 0;">
+        <div class="sidebar-footer">
             <div class="footer-socials" style="display: flex; gap: 1.5rem;">
                 <a href="https://github.com/Wiston1568" style="color: var(--muted); font-size: 1.5rem;"><ion-icon name="logo-github"></ion-icon></a>
                 <a href="https://wa.me/254700000000" style="color: var(--muted); font-size: 1.5rem;"><ion-icon name="logo-whatsapp"></ion-icon></a>
