@@ -12,6 +12,7 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
     <style>
+        /* General Styles */
         .services-hero {
             text-align: center;
             padding: 160px 5% 60px;
@@ -50,7 +51,6 @@
             padding-bottom: 5rem;
         }
 
-        /* The fix for the broken tab visibility */
         .tab-content {
             display: none;
             animation: fadeIn 0.5s ease;
@@ -79,6 +79,7 @@
             box-shadow: -20px 0 60px rgba(0, 0, 0, 0.5);
         }
         .sidebar-nav.active { transform: translateX(0); }
+
         .sidebar-overlay {
             position: fixed;
             top: 0;
@@ -92,23 +93,23 @@
             animation: fadeIn 0.3s ease;
         }
         .sidebar-overlay.active { display: block; }
+
         .sidebar-header { padding: 2rem 1.5rem; border-bottom: 1px solid rgba(188, 19, 254, 0.15); display: flex; align-items: center; gap: 12px; }
         .sidebar-header img { width: 50px; height: 50px; border-radius: 12px; border: 2px solid var(--primary); object-fit: cover; }
         .sidebar-header-info h3 { font-size: 0.95rem; color: white; margin: 0; font-family: var(--mono); font-weight: bold; }
         .sidebar-header-info p { font-size: 0.75rem; color: var(--muted); margin: 3px 0 0 0; text-transform: uppercase; letter-spacing: 1px; }
+
         .sidebar-menu { flex: 1; padding: 1rem 0; list-style: none; margin: 0; overflow-y: auto; }
         .sidebar-menu a { display: flex; align-items: center; gap: 12px; padding: 1rem 1.5rem; color: var(--muted); text-decoration: none; font-size: 0.9rem; font-family: var(--mono); transition: all 0.3s ease; border-left: 3px solid transparent; }
         .sidebar-menu a:hover { background: rgba(188, 19, 254, 0.1); color: var(--primary); border-left-color: var(--primary); padding-left: 2rem; }
         .sidebar-menu a ion-icon { font-size: 1.3rem; flex-shrink: 0; }
 
+        /* FIX: Mobile Sidebar Footer set to nothing */
         .sidebar-footer {
-            flex-shrink: 0;
-            border-top: 1px solid rgba(188, 19, 254, 0.15);
-            display: flex;
-            flex-direction: column;
+            display: none !important;
         }
 
-        /* HAMBURGER MENU BUTTON */
+        /* HAMBURGER MENU BUTTON FIX */
         .hamburger-btn {
             position: fixed;
             top: 2rem;
@@ -127,17 +128,26 @@
             flex-direction: column;
             gap: 5px;
         }
-        .hamburger-btn:hover { background: rgba(188, 19, 254, 0.25); border-color: var(--primary); }
-        .hamburger-btn.active { background: transparent !important; border-color: transparent !important; box-shadow: none !important; }
+
+        /* Make button background and border transparent when active */
+        .hamburger-btn.active { 
+            background: transparent !important; 
+            border-color: transparent !important; 
+            box-shadow: none !important; 
+        }
+
         .hamburger-line { width: 24px; height: 2px; background: var(--primary); transition: all 0.3s ease; border-radius: 2px; }
+        
+        /* Ensure the X remains visible but the box around it is gone */
         .hamburger-btn.active .hamburger-line { background: var(--primary) !important; }
-        .hamburger-btn.active .hamburger-line:nth-child(1) { transform: rotate(45deg) translateY(10px); }
+        .hamburger-btn.active .hamburger-line:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
         .hamburger-btn.active .hamburger-line:nth-child(2) { opacity: 0; }
-        .hamburger-btn.active .hamburger-line:nth-child(3) { transform: rotate(-45deg) translateY(-10px); }
+        .hamburger-btn.active .hamburger-line:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
         @media (max-width: 768px) {
             .hamburger-btn { display: flex; }
             .sidebar-nav { width: 280px; }
+            .nav-links { display: none; } /* Hide desktop nav on mobile */
         }
 
         @keyframes fadeIn {
@@ -145,6 +155,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Service Cards */
         .service-card {
             background: var(--surface);
             border: 1px solid var(--surface-border);
@@ -152,27 +163,24 @@
             border-radius: var(--radius);
             transition: 0.4s;
         }
-
         .service-card:hover {
             transform: translateY(-10px);
             border-color: var(--accent);
             background: rgba(188, 19, 254, 0.03);
         }
-
         .service-card ion-icon {
             font-size: 2.5rem;
             color: var(--primary);
             margin-bottom: 1.5rem;
         }
 
-        /* Footer Alignment Fix */
+        /* Footer Fix */
         .site-footer {
             border-top: 1px solid var(--surface-border);
             padding: 2rem 0;
             background: var(--background);
-            margin-top: auto;
+            margin-top: 4rem;
         }
-
         .footer-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -181,43 +189,16 @@
             justify-content: space-between;
             align-items: center;
         }
-
-        .footer-brand {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .footer-logo {
-            height: 30px;
-            cursor: pointer;
-        }
-
-        .footer-text {
-            color: var(--muted);
-            font-size: 0.9rem;
-            margin: 0;
-        }
-
-        .footer-socials {
-            display: flex;
-            gap: 20px;
-        }
-
-        .footer-socials a {
-            color: var(--muted);
-            font-size: 1.2rem;
-            transition: 0.3s;
-        }
-
-        .footer-socials a:hover {
-            color: var(--primary);
-        }
+        .footer-text { color: var(--muted); font-size: 0.9rem; margin: 0; }
+        .footer-socials { display: flex; gap: 20px; }
+        .footer-socials a { color: var(--muted); font-size: 1.2rem; transition: 0.3s; }
+        .footer-socials a:hover { color: var(--primary); }
 
         @media (max-width: 768px) {
-            .footer-container { flex-direction: column; gap: 1.5rem; text-align: center; padding: 0 1.5rem; }
-            .footer-brand { flex-direction: column; gap: 0.5rem; }
+            .footer-container { flex-direction: column; gap: 1.5rem; text-align: center; }
         }
+
+        .hidden { display: none; }
     </style>
 </head>
 <body class="dark-theme">
@@ -225,7 +206,7 @@
     <header class="main-header">
         <nav class="nav-container">
             <div class="nav-logo">
-                <img src="Pictures/logo.jpg" alt="AW" onclick="toggleTerminal()">
+                <img src="Pictures/logo.jpg" alt="AW" onclick="toggleTerminal()" style="height:40px; cursor:pointer;">
             </div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
@@ -235,17 +216,14 @@
         </nav>
     </header>
 
-    <!-- SIDEBAR OVERLAY -->
     <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
-    <!-- HAMBURGER BUTTON -->
     <button id="hamburgerBtn" class="hamburger-btn" onclick="toggleSidebar()">
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
     </button>
 
-    <!-- SIDEBAR NAVIGATION -->
     <nav id="sidebarNav" class="sidebar-nav">
         <div class="sidebar-header">
             <img src="Pictures/logo.jpg" alt="AW">
@@ -255,44 +233,38 @@
             </div>
         </div>
         <ul class="sidebar-menu">
-            <li><a href="index.html" onclick="closeSidebar()"><ion-icon name="home-outline"></ion-icon>Home</a></li>
-            <li><a href="Services.html" onclick="closeSidebar()"><ion-icon name="briefcase-outline"></ion-icon>Services</a></li>
-            <li><a href="contact.htm" onclick="closeSidebar()"><ion-icon name="mail-outline"></ion-icon>Contact</a></li>
+            <li><a href="index.html" onclick="toggleSidebar()"><ion-icon name="home-outline"></ion-icon>Home</a></li>
+            <li><a href="Services.html" onclick="toggleSidebar()"><ion-icon name="briefcase-outline"></ion-icon>Services</a></li>
+            <li><a href="contact.htm" onclick="toggleSidebar()"><ion-icon name="mail-outline"></ion-icon>Contact</a></li>
         </ul>
-        <div class="sidebar-footer" style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; padding: 1.5rem; flex-shrink: 0;">
-            <div class="footer-socials" style="display: flex; gap: 1.5rem;">
-                <a href="https://github.com/Wiston1568" style="color: var(--muted); font-size: 1.5rem;"><ion-icon name="logo-github"></ion-icon></a>
-                <a href="https://wa.me/254700000000" style="color: var(--muted); font-size: 1.5rem;"><ion-icon name="logo-whatsapp"></ion-icon></a>
-            </div>
-            <p style="color: var(--muted); font-size: 0.7rem; font-family: var(--mono); margin: 0; text-transform: uppercase; letter-spacing: 1px;">© DEV_BY_WISTON</p>
-        </div>
+        <div class="sidebar-footer"></div>
     </nav>
 
     <main class="container">
-        <section class="services-hero reveal">
+        <section class="services-hero">
             <p class="job-badge">TECHNICAL_CAPABILITIES</p>
             <h1 class="glitch-text">Expertise Ecosystem</h1>
             <p style="max-width: 600px; margin: 0 auto; color: var(--muted);">Specialized deployment of high-performance code and secure infrastructure.</p>
         </section>
 
-        <div class="ecosystem-tabs reveal">
+        <div class="ecosystem-tabs">
             <button class="tab-btn active" data-tab="engineering">Engineering & Dev</button>
             <button class="tab-btn" data-tab="security">Security & IT</button>
         </div>
 
         <div id="tab-engineering" class="tab-content active">
             <div class="services-grid">
-                <div class="service-card reveal">
+                <div class="service-card">
                     <ion-icon name="code-working-outline"></ion-icon>
                     <h3>Full Stack Dev</h3>
                     <p>Scalable Node.js architectures integrated with modern frontend frameworks and MongoDB systems.</p>
                 </div>
-                <div class="service-card reveal">
+                <div class="service-card">
                     <ion-icon name="terminal-outline"></ion-icon>
                     <h3>Systems Logic</h3>
                     <p>Low-level engineering using C and Rust for high-performance automation and custom kernel-level tasks.</p>
                 </div>
-                <div class="service-card reveal">
+                <div class="service-card">
                     <ion-icon name="cube-outline"></ion-icon>
                     <h3>3D Visualization</h3>
                     <p>Advanced rendering and modeling in Blender 4.5 for technical prototypes and environment design.</p>
@@ -302,17 +274,17 @@
 
         <div id="tab-security" class="tab-content">
             <div class="services-grid">
-                <div class="service-card reveal">
+                <div class="service-card">
                     <ion-icon name="shield-checkmark-outline"></ion-icon>
                     <h3>Cybersecurity Audits</h3>
                     <p>Penetration testing and vulnerability assessments for resilient network infrastructure.</p>
                 </div>
-                <div class="service-card reveal">
+                <div class="service-card">
                     <ion-icon name="phone-portrait-outline"></ion-icon>
                     <h3>Mobile Restoration</h3>
                     <p>Specialized recovery and security bypassing for iOS/Android devices utilizing low-level exploits.</p>
                 </div>
-                <div class="service-card reveal">
+                <div class="service-card">
                     <ion-icon name="hardware-chip-outline"></ion-icon>
                     <h3>Hardware Diagnostics</h3>
                     <p>Advanced component-level troubleshooting and performance optimization for professional nodes.</p>
@@ -324,7 +296,6 @@
     <footer class="site-footer">
         <div class="footer-container">
             <div class="footer-brand">
-                <img src="Pictures/logo.jpg" class="footer-logo" alt="AW" onclick="toggleTerminal()">
                 <p class="footer-text">© 2026 Arnold Wiston. Modernity. Security. Resilience.</p>
             </div>
             <div class="footer-socials">
@@ -334,38 +305,32 @@
         </div>
     </footer>
 
-    <div id="admin-login-overlay" class="hidden">
-        <div class="glass-panel">
-            <h3 style="color:var(--primary); font-family:var(--mono);">SYSTEM_AUTH</h3>
-            <input type="password" id="admin-pin" placeholder="ENTER PIN" maxlength="4" style="margin: 1rem 0;">
-            <button class="auth-btn" onclick="handlePinLogin()" style="background:var(--primary); color:white; border:none; padding:10px; border-radius:8px; cursor:pointer; width:100%;">AUTHORIZE</button>
-            <button onclick="toggleTerminal()" style="background:none; border:none; color:var(--muted); margin-top:10px; cursor:pointer; width:100%;">CLOSE</button>
-        </div>
-    </div>
-
-    <script src="type.js"></script>
     <script>
+        // Sidebar Toggle Logic
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebarNav');
+            const overlay = document.getElementById('sidebarOverlay');
+            const btn = document.getElementById('hamburgerBtn');
+            
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+            btn.classList.toggle('active');
+        }
+
         // Tab switching logic
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const target = btn.getAttribute('data-tab');
-                
-                // Reset buttons
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-
-                // Reset content
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.remove('active');
-                });
-                
-                // Activate target
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
                 document.getElementById(`tab-${target}`).classList.add('active');
             });
         });
 
         function toggleTerminal() {
-            document.getElementById('admin-login-overlay').classList.toggle('hidden');
+            const overlay = document.getElementById('admin-login-overlay');
+            if(overlay) overlay.classList.toggle('hidden');
         }
     </script>
 </body>
