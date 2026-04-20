@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kihima Arnold Wiston | Systems Engine</title>
+    <title>Kihima Arnold Wiston | Systems Engineer</title>
     
     <link rel="stylesheet" href="dumb.css">
     <link rel="icon" type="image/png" href="Pictures/apple-touch-icon.png">
@@ -12,7 +12,14 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     
     <style>
-        /* 1. MOBILE RESPONSIVE HERO & GRID */
+        /* --- 1. CORE LAYOUT & FIXES --- */
+        :root {
+            --primary: #bc13fe;
+            --primary-glow: rgba(188, 19, 254, 0.3);
+            --muted: #888;
+            --mono: 'Courier New', Courier, monospace;
+        }
+
         .hero {
             display: grid;
             grid-template-columns: 1.2fr 1fr;
@@ -22,7 +29,7 @@
             padding: 140px 5% 60px;
         }
 
-        /* SIDEBAR NAVIGATION */
+        /* --- 2. SIDEBAR NAVIGATION --- */
         .sidebar-nav {
             position: fixed;
             top: 0;
@@ -45,23 +52,89 @@
             transform: translateX(0);
         }
 
-        .sidebar-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            display: none;
-            z-index: 999;
-            animation: fadeIn 0.3s ease;
+        /* FIX: Remove default markers/dots and tap highlights */
+        .sidebar-menu {
+            flex: 1;
+            padding: 1.5rem 0;
+            list-style: none !important; /* Forces removal of dots */
+            margin: 0;
         }
 
-        .sidebar-overlay.active {
-            display: block;
+        .sidebar-menu li {
+            list-style: none !important;
+            margin: 0;
+            outline: none !important;
         }
 
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 1rem 1.5rem;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-family: var(--mono);
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            outline: none !important;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .sidebar-menu a:hover {
+            background: rgba(188, 19, 254, 0.1);
+            color: var(--primary);
+            border-left-color: var(--primary);
+            padding-left: 2rem;
+        }
+
+        /* --- 3. SIDEBAR FOOTER (NEW) --- */
+        .sidebar-footer-content {
+            padding: 2rem 1.5rem;
+            border-top: 1px solid rgba(188, 19, 254, 0.15);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar-footer-content .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 1.2rem;
+        }
+
+        .sidebar-footer-content .footer-logo {
+            height: 30px;
+            width: fit-content;
+            border-radius: 5px;
+        }
+
+        .sidebar-footer-content .footer-text {
+            font-size: 0.75rem;
+            color: var(--muted);
+            line-height: 1.4;
+            font-family: var(--mono);
+            margin: 0;
+        }
+
+        .sidebar-footer-content .footer-socials {
+            display: flex;
+            gap: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-footer-content .footer-socials a {
+            color: var(--muted);
+            font-size: 1.4rem;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .sidebar-footer-content .footer-socials a:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* --- 4. UI COMPONENTS --- */
         .sidebar-header {
             padding: 2rem 1.5rem;
             border-bottom: 1px solid rgba(188, 19, 254, 0.15);
@@ -78,87 +151,6 @@
             object-fit: cover;
         }
 
-        .sidebar-header-info h3 {
-            font-size: 0.95rem;
-            color: white;
-            margin: 0;
-            font-family: var(--mono);
-            font-weight: bold;
-        }
-
-        .sidebar-header-info p {
-            font-size: 0.75rem;
-            color: var(--muted);
-            margin: 3px 0 0 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .sidebar-menu {
-            flex: 1;
-            padding: 1.5rem 0;
-            list-style: none;
-            margin: 0;
-        }
-
-        .sidebar-menu li {
-            margin: 0;
-        }
-
-        .sidebar-menu a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 1rem 1.5rem;
-            color: var(--muted);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-family: var(--mono);
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
-            position: relative;
-        }
-
-        .sidebar-menu a:hover {
-            background: rgba(188, 19, 254, 0.1);
-            color: var(--primary);
-            border-left-color: var(--primary);
-            padding-left: 2rem;
-        }
-
-        .sidebar-menu a ion-icon {
-            font-size: 1.3rem;
-            flex-shrink: 0;
-        }
-
-        .sidebar-footer {
-            padding: 1.5rem;
-            border-top: 1px solid rgba(188, 19, 254, 0.15);
-            display: flex;
-            gap: 0.75rem;
-        }
-
-        .sidebar-footer button {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            border: 1px solid rgba(188, 19, 254, 0.3);
-            background: rgba(188, 19, 254, 0.1);
-            color: var(--primary);
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.75rem;
-            font-weight: bold;
-            font-family: var(--mono);
-            transition: all 0.3s ease;
-        }
-
-        .sidebar-footer button:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        /* HAMBURGER MENU BUTTON */
         .hamburger-btn {
             position: fixed;
             top: 2rem;
@@ -173,177 +165,25 @@
             align-items: center;
             justify-content: center;
             z-index: 1001;
-            transition: all 0.3s ease;
             flex-direction: column;
             gap: 5px;
         }
 
-        .hamburger-btn:hover {
-            background: rgba(188, 19, 254, 0.25);
-            border-color: var(--primary);
-        }
-
-        .hamburger-btn.active {
-            background: var(--primary);
-        }
-
-        .hamburger-line {
-            width: 22px;
-            height: 2px;
-            background: var(--primary);
-            transition: all 0.3s ease;
-            border-radius: 2px;
-        }
-
-        .hamburger-btn.active .hamburger-line:nth-child(1) {
-            transform: rotate(45deg) translateY(10px);
-        }
-
-        .hamburger-btn.active .hamburger-line:nth-child(2) {
-            opacity: 0;
-        }
-
-        .hamburger-btn.active .hamburger-line:nth-child(3) {
-            transform: rotate(-45deg) translateY(-10px);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
         @media (max-width: 768px) {
-            .hamburger-btn {
-                display: flex;
-            }
-            
-            .sidebar-nav {
-                width: 280px;
-            }
+            .hamburger-btn { display: flex; }
+            .sidebar-nav { width: 280px; }
         }
 
-        /* 2. TRIPLE IMAGE SWAP LOGIC */
         .image-node {
             width: 100%;
             height: 480px;
             background: url('Pictures/image1.jpg') center/cover no-repeat;
             border-radius: 30px;
             border: 1px solid var(--primary-glow);
-            transition: background-image 0.8s ease-in-out, transform 0.5s ease;
-            box-shadow: 0 0 40px rgba(255, 23, 68, 0.15);
-            cursor: pointer;
+            transition: 0.5s;
         }
 
-        .image-node:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 50px var(--primary-glow);
-        }
-
-        /* 3. FOOTER FIX - SECURE ONE-LINE LAYOUT */
-        .site-footer {
-            margin-top: 80px;
-            padding: 40px 0;
-            border-top: 1px solid var(--surface-border);
-            background: rgba(2, 4, 10, 0.8);
-        }
-
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .footer-brand {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .footer-logo {
-            height: 35px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .footer-text {
-            color: var(--muted);
-            font-size: 0.9rem;
-            margin: 0;
-        }
-
-        .footer-socials {
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        .footer-socials a {
-            color: var(--muted);
-            font-size: 1.6rem;
-            transition: 0.3s;
-        }
-
-        .footer-socials a:hover {
-            color: var(--primary);
-            transform: translateY(-3px);
-        }
-
-        /* 4. RESPONSIVE BREAKPOINTS */
-        @media (max-width: 968px) {
-            .hero { 
-                grid-template-columns: 1fr; 
-                text-align: center; 
-                padding-top: 100px;
-                gap: 2.5rem;
-            }
-            .image-node { 
-                height: 320px; 
-                order: -1; 
-            }
-            .hero-content div { justify-content: center; }
-            
-            .footer-container { 
-                flex-direction: column; 
-                gap: 2rem; 
-                text-align: center; 
-            }
-            .footer-brand {
-                flex-direction: column;
-            }
-        }
-
-        /* Ecosystem Styling */
-        .tab-nav { display: flex; justify-content: center; gap: 1rem; margin: 3rem 0; }
-        .tab-btn {
-            background: var(--surface);
-            border: 1px solid var(--surface-border);
-            color: var(--muted);
-            padding: 0.8rem 2.5rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-family: var(--mono);
-            transition: 0.4s;
-        }
-        .tab-btn.active {
-            color: #fff;
-            border-color: var(--primary);
-            background: var(--primary-glow);
-            box-shadow: 0 0 20px var(--primary-glow);
-        }
-        .tab-content { display: none; animation: fadeInUp 0.6s ease forwards; }
-        .tab-content.active { display: block; }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* OVERLAY STYLING */
-        .hidden {
-            display: none !important;
-        }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body class="dark-theme">
@@ -351,7 +191,7 @@
     <header class="main-header">
         <nav class="nav-container">
             <div class="nav-logo">
-                <img src="Pictures/logo.jpg" alt="AW" class="secret-trigger">
+                <img src="Pictures/logo.jpg" alt="AW">
             </div>
             <ul class="nav-links">
                 <li><a href="index.html" class="active">Home</a></li>
@@ -361,17 +201,14 @@
         </nav>
     </header>
 
-    <!-- SIDEBAR OVERLAY -->
     <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
-    <!-- HAMBURGER BUTTON -->
     <button id="hamburgerBtn" class="hamburger-btn" onclick="toggleSidebar()">
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
     </button>
 
-    <!-- SIDEBAR NAVIGATION -->
     <nav id="sidebarNav" class="sidebar-nav">
         <div class="sidebar-header">
             <img src="Pictures/logo.jpg" alt="AW">
@@ -385,20 +222,30 @@
             <li><a href="index.html" onclick="closeSidebar()"><ion-icon name="home-outline"></ion-icon>Home</a></li>
             <li><a href="Services.html" onclick="closeSidebar()"><ion-icon name="briefcase-outline"></ion-icon>Services</a></li>
             <li><a href="contact.htm" onclick="closeSidebar()"><ion-icon name="mail-outline"></ion-icon>Contact</a></li>
-            <li><a href="console/index.html" onclick="closeSidebar()"><ion-icon name="terminal-outline"></ion-icon>Console</a></li>
-            <li style="border-top: 1px solid rgba(188, 19, 254, 0.1); margin-top: 0.5rem;"><a href="#" onclick="scrollToProjects(event)"><ion-icon name="layers-outline"></ion-icon>Projects</a></li>
+            <li style="border-top: 1px solid rgba(188, 19, 254, 0.1); margin-top: 0.5rem;">
+                <a href="#" onclick="scrollToProjects(event)"><ion-icon name="layers-outline"></ion-icon>Projects</a>
+            </li>
             <li><a href="#" onclick="scrollToSkills(event)"><ion-icon name="code-slash-outline"></ion-icon>Skills</a></li>
         </ul>
 
-        <div class="sidebar-footer">
-            <button onclick="openGithub()">GITHUB</button>
-            <button onclick="closeSidebar()">CLOSE</button>
+        <div class="sidebar-footer-content">
+            <div class="footer-brand">
+                <img src="Pictures/logo.jpg" class="footer-logo" alt="AW">
+                <p class="footer-text">© 2026 Arnold Wiston.<br>Modernity. Security. Resilience.</p>
+            </div>
+            <div class="footer-socials">
+                <a href="https://github.com/Wiston1568"><ion-icon name="logo-github"></ion-icon></a>
+                <a href="https://wa.me/254700000000"><ion-icon name="logo-whatsapp"></ion-icon></a>
+                <a href="#"><ion-icon name="logo-linkedin"></ion-icon></a>
+                <a href="#"><ion-icon name="logo-instagram"></ion-icon></a>
+            </div>
+            <button class="close-sidebar-btn" onclick="closeSidebar()" style="width: 100%; padding: 0.8rem; background: rgba(188, 19, 254, 0.1); border: 1px solid var(--primary); color: var(--primary); font-family: var(--mono); cursor: pointer; border-radius: 8px;">CLOSE_NAV</button>
         </div>
     </nav>
 
     <main class="container">
         <section class="hero">
-            <div class="hero-content reveal">
+            <div class="hero-content">
                 <p class="job-badge">SYSTEMS_ARCHITECT // ICT_ENGINEER</p>
                 <h1 class="glitch-text" style="font-size: clamp(2.2rem, 6vw, 4.5rem);">Arnold Wiston</h1>
                 <p style="font-size: 1.1rem; color: var(--muted); margin: 1.5rem 0 2.5rem; max-width: 600px;">
@@ -409,102 +256,25 @@
                     <a href="contact.htm" class="btn-magnetic" style="border: 1px solid var(--primary); color: white; padding: 1rem 2.2rem; border-radius: 12px; text-decoration: none;">CONTACT_ME</a>
                 </div>
             </div>
-            
-            <div class="hero-visual reveal">
+            <div class="hero-visual">
                 <div id="cycle-image" class="image-node"></div>
-            </div>
-        </section>
-
-        <section class="ecosystem reveal" style="padding: 80px 0;">
-            <h2 style="text-align: center; font-family: var(--mono); color: var(--primary); letter-spacing: 2px;">TECHNICAL_ECOSYSTEM</h2>
-            <div class="tab-nav">
-                <button class="tab-btn active" data-tab="engineering">Engineering</button>
-                <button class="tab-btn" data-tab="solutions">Solutions</button>
-            </div>
-
-            <div id="tab-engineering" class="tab-content active">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
-                    <div class="glass-card">
-                        <ion-icon name="code-slash-outline" style="font-size: 2.5rem; color: var(--primary);"></ion-icon>
-                        <h3>Web Engineering</h3>
-                        <p>Specializing in Node.js, MongoDB, and React deployment for scalable applications.</p>
-                    </div>
-                    <div class="glass-card">
-                        <ion-icon name="terminal-outline" style="font-size: 2.5rem; color: var(--primary);"></ion-icon>
-                        <h3>System Logic</h3>
-                        <p>Low-level development in Rust and C for high-performance automation.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="tab-solutions" class="tab-content">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
-                    <div class="glass-card">
-                        <ion-icon name="shield-checkmark-outline" style="font-size: 2.5rem; color: var(--accent);"></ion-icon>
-                        <h3>Cybersecurity</h3>
-                        <p>Network auditing, vulnerability testing, and iOS/Android security restoration.</p>
-                    </div>
-                    <div class="glass-card">
-                        <ion-icon name="cube-outline" style="font-size: 2.5rem; color: var(--accent);"></ion-icon>
-                        <h3>3D Architecture</h3>
-                        <p>Technical modeling and rendering using Blender 4.5 for spatial visualization.</p>
-                    </div>
-                </div>
             </div>
         </section>
     </main>
 
-    <!-- LOGIN OVERLAY -->
-    <div id="admin-login-overlay" class="hidden">
-        <div class="glass-panel" style="text-align: center; max-width: 400px; padding: 2.5rem;">
-            <p class="job-badge">SECURE_HANDSHAKE_REQUIRED</p>
-            <h3 style="color: var(--primary); font-family: var(--mono); margin: 1rem 0;">ENTER_ADMIN_PIN</h3>
-            <input type="password" id="admin-pin" maxlength="4" placeholder="••••" style="width: 100%; padding: 1.2rem; background: rgba(0,0,0,0.5); border: 1px solid var(--primary); border-radius: 12px; color: white; font-size: 2.5rem; text-align: center; letter-spacing: 15px; margin-bottom: 1.5rem; font-family: var(--mono);">
-            <button class="auth-btn btn-magnetic" onclick="handlePinLogin()" style="width: 100%; padding: 1.2rem; background: var(--primary); color: white; border: none; border-radius: 12px; font-family: var(--mono); cursor: pointer; font-weight: bold;">AUTHORIZE_CONNECTION</button>
-            <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center;">
-                <button onclick="toggleTerminal()" style="background: none; border: none; color: var(--muted); cursor: pointer;">[DECLINE_REQUEST]</button>
-                <button onclick="showRecoveryEmail()" style="background: none; border: none; color: var(--primary); cursor: pointer; font-family: var(--mono);">[RECOVER_PIN]</button>
-            </div>
-        </div>
-    </div>
+    <script>
+        // Sidebar Toggle Logic
+        function toggleSidebar() {
+            document.getElementById('sidebarNav').classList.toggle('active');
+            document.getElementById('sidebarOverlay').classList.toggle('active');
+            document.getElementById('hamburgerBtn').classList.toggle('active');
+        }
 
-    <!-- RECOVERY EMAIL OVERLAY -->
-    <div id="recovery-email-overlay" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 1000;">
-        <div class="glass-panel" style="text-align: center; max-width: 400px; padding: 2.5rem;">
-            <p class="job-badge">PIN_RECOVERY_PROTOCOL</p>
-            <h3 style="color: var(--primary); font-family: var(--mono); margin: 1rem 0;">ENTER_RECOVERY_EMAIL</h3>
-            <input type="email" id="recovery-email" placeholder="email@example.com" style="width: 100%; padding: 1.2rem; background: rgba(0,0,0,0.5); border: 1px solid var(--primary); border-radius: 12px; color: white; margin-bottom: 1.5rem; font-family: var(--mono);">
-            <button id="send-recovery-btn" onclick="sendRecoveryCode()" style="width: 100%; padding: 1.2rem; background: var(--primary); color: white; border: none; border-radius: 12px; font-family: var(--mono); cursor: pointer; font-weight: bold;">SEND_RECOVERY_CODE</button>
-            <button onclick="hideRecoveryEmail()" style="background: none; border: none; color: var(--muted); margin-top: 1rem; cursor: pointer; font-family: var(--mono);">[CANCEL]</button>
-        </div>
-    </div>
-
-    <!-- RECOVERY CODE OVERLAY -->
-    <div id="recovery-code-overlay" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 1000;">
-        <div class="glass-panel" style="text-align: center; max-width: 400px; padding: 2.5rem;">
-            <p class="job-badge">CODE_VERIFICATION</p>
-            <h3 style="color: var(--primary); font-family: var(--mono); margin: 1rem 0;">ENTER_RECOVERY_CODE</h3>
-            <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Check your email for the 6-digit code</p>
-            <input type="text" id="recovery-code" maxlength="6" placeholder="000000" style="width: 100%; padding: 1.2rem; background: rgba(0,0,0,0.5); border: 1px solid var(--primary); border-radius: 12px; color: white; font-size: 1.8rem; text-align: center; letter-spacing: 10px; margin-bottom: 1.5rem; font-family: var(--mono);">
-            <button id="verify-code-btn" onclick="verifyRecoveryCode()" style="width: 100%; padding: 1.2rem; background: var(--primary); color: white; border: none; border-radius: 12px; font-family: var(--mono); cursor: pointer; font-weight: bold;">VERIFY_CODE</button>
-            <button onclick="hideRecoveryCode()" style="background: none; border: none; color: var(--muted); margin-top: 1rem; cursor: pointer; font-family: var(--mono);">[CANCEL]</button>
-        </div>
-    </div>
-
-    <footer class="site-footer">
-        <div class="footer-container">
-            <div class="footer-brand">
-                <img src="Pictures/logo.jpg" class="footer-logo secret-trigger" alt="AW">
-                <p class="footer-text">© 2026 Arnold Wiston. Modernity. Security. Resilience.</p>
-            </div>
-            <div class="footer-socials">
-                <a href="https://github.com/Wiston1568"><ion-icon name="logo-github"></ion-icon></a>
-                <a href="https://wa.me/254700000000"><ion-icon name="logo-whatsapp"></ion-icon></a>
-            </div>
-        </div>
-    </footer>
-
-    <script src="type.js"></script>
-
+        function closeSidebar() {
+            document.getElementById('sidebarNav').classList.remove('active');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+            document.getElementById('hamburgerBtn').classList.remove('active');
+        }
+    </script>
 </body>
 </html>
